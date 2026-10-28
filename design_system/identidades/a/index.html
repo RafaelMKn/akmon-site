@@ -1,0 +1,1281 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Akmon · Identidade A — Catálogo de Ferramentaria</title>
+<meta name="description" content="Board da identidade A do Akmon: catálogo industrial de ferramentaria para uma biblioteca de Agent Skills.">
+<meta name="theme-color" content="#F3F0E8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<script>
+  // ?frame=landing-desktop | landing-mobile | marca | paleta  → renderiza só aquele frame
+  (function(){var f=new URLSearchParams(location.search).get('frame');if(f)document.documentElement.setAttribute('data-frame',f);})();
+</script>
+<style>
+/* ============ Fontes (self-host, SIL OFL 1.1; ver fonts/OFL-*.txt) ============ */
+@font-face{font-family:"Big Shoulders Display";font-weight:700;font-display:swap;src:url(fonts/bigshoulders-700.woff2) format("woff2"),url(fonts/bigshoulders-700.ttf) format("truetype")}
+@font-face{font-family:"Big Shoulders Display";font-weight:800;font-display:swap;src:url(fonts/bigshoulders-800.woff2) format("woff2"),url(fonts/bigshoulders-800.ttf) format("truetype")}
+@font-face{font-family:"Big Shoulders Stencil Display";font-weight:800;font-display:swap;src:url(fonts/bigshoulders-stencil-800.woff2) format("woff2"),url(fonts/bigshoulders-stencil-800.ttf) format("truetype")}
+@font-face{font-family:"Barlow";font-weight:400;font-display:swap;src:url(fonts/barlow-400.woff2) format("woff2"),url(fonts/barlow-400.ttf) format("truetype")}
+@font-face{font-family:"Barlow";font-weight:500;font-display:swap;src:url(fonts/barlow-500.woff2) format("woff2"),url(fonts/barlow-500.ttf) format("truetype")}
+@font-face{font-family:"Barlow";font-weight:600;font-display:swap;src:url(fonts/barlow-600.woff2) format("woff2"),url(fonts/barlow-600.ttf) format("truetype")}
+@font-face{font-family:"JetBrains Mono";font-weight:400;font-display:swap;src:url(fonts/jetbrainsmono-400.woff2) format("woff2"),url(fonts/jetbrainsmono-400.ttf) format("truetype")}
+@font-face{font-family:"JetBrains Mono";font-weight:600;font-display:swap;src:url(fonts/jetbrainsmono-600.woff2) format("woff2"),url(fonts/jetbrainsmono-600.ttf) format("truetype")}
+
+/* ============ Tokens (fonte única dos hex: o board lê estas variáveis e calcula o contraste em JS) ============ */
+:root{
+  --papel:#F3F0E8;      /* folha de catálogo */
+  --papel-2:#E4E0D4;    /* aba, placa, régua */
+  --mesa:#CFCABB;       /* bancada atrás das folhas (só no board) */
+  --tinta:#16140F;      /* tinta de impressão */
+  --tinta-2:#4A463C;    /* texto secundário */
+  --aco:#7A7769;        /* linhas, réguas, rebites */
+  --aco-claro:#B9B5A7;  /* texto secundário sobre tinta */
+  --brasa:#B8340A;      /* marcação sobre papel */
+  --brasa-viva:#FF5A1F; /* marcação sobre tinta */
+
+  --f-titulo:"Big Shoulders Display","Arial Narrow",sans-serif;
+  --f-marca:"Big Shoulders Stencil Display","Big Shoulders Display","Arial Narrow",sans-serif;
+  --f-texto:"Barlow",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,monospace;
+
+  --t-xs:13px; --t-s:15px; --t-m:17px; --t-l:22px; --t-xl:32px; --t-2xl:48px; --t-3xl:72px; --t-4xl:96px;
+  --passo:90ms; /* duração total da troca de folha: 2 quadros */
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;color-scheme:light;accent-color:var(--brasa);caret-color:var(--brasa);
+  scrollbar-color:var(--aco) var(--papel-2);scrollbar-width:auto}
+body{margin:0;background:var(--mesa);color:var(--tinta);font:400 var(--t-m)/1.55 var(--f-texto);font-variant-numeric:lining-nums}
+::selection{background:var(--brasa);color:var(--papel)}
+::-webkit-scrollbar{width:14px;height:14px}
+::-webkit-scrollbar-track{background:var(--papel-2);border-left:1px solid var(--aco)}
+::-webkit-scrollbar-thumb{background:var(--aco);border:3px solid var(--papel-2)}
+::-webkit-scrollbar-thumb:hover{background:var(--tinta-2)}
+::placeholder{color:var(--tinta-2);opacity:1}
+:focus-visible{outline:3px solid var(--brasa);outline-offset:3px}
+a{color:var(--brasa);text-decoration-thickness:1px;text-underline-offset:.22em}
+a:hover{color:var(--tinta);text-decoration-thickness:2px}
+h1,h2,h3{margin:0;font-family:var(--f-titulo);font-weight:800;text-transform:uppercase;line-height:.95;letter-spacing:.005em;text-wrap:balance}
+p{margin:0}
+.mono,code,kbd,pre.cmd-pre{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-feature-settings:"zero" 0}
+table{border-collapse:collapse;font-variant-numeric:tabular-nums}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ic{width:1.1em;height:1.1em;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter}
+.dark ::selection,.dark::selection{background:var(--brasa-viva);color:var(--tinta)}
+.dark :focus-visible{outline-color:var(--brasa-viva)}
+
+/* ============ Régua milimetrada ============ */
+.regua{height:16px;border-bottom:1px solid var(--tinta);
+  background:
+    repeating-linear-gradient(90deg,var(--tinta) 0 1px,transparent 1px 80px) left bottom/100% 14px no-repeat,
+    repeating-linear-gradient(90deg,var(--tinta) 0 1px,transparent 1px 40px) left bottom/100% 10px no-repeat,
+    repeating-linear-gradient(90deg,var(--aco) 0 1px,transparent 1px 8px) left bottom/100% 6px no-repeat}
+
+/* ============ Botões ============ */
+.btn{--bg:var(--tinta);--fg:var(--papel);--bd:var(--tinta);
+  display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:46px;padding:0 22px;
+  font:700 20px/1 var(--f-titulo);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;
+  background:var(--bg);color:var(--fg);border:1px solid var(--bd);border-radius:0;cursor:pointer;
+  transition:background-color var(--passo) steps(2,jump-none),color var(--passo) steps(2,jump-none)}
+.btn,.btn:hover{color:var(--fg)}
+.btn:hover,.btn.is-hover{--bg:var(--brasa);--bd:var(--brasa);--fg:var(--papel)}
+.btn:active{--bg:var(--tinta-2);--bd:var(--tinta-2)}
+.btn.is-focus{outline:3px solid var(--brasa);outline-offset:3px}
+.btn[disabled],.btn.is-disabled{--bg:var(--papel-2);--fg:var(--tinta-2);--bd:var(--aco);cursor:not-allowed;border-style:dashed;
+}
+.btn-2{--bg:transparent;--fg:var(--tinta);--bd:var(--tinta)}
+.btn-2:hover,.btn-2.is-hover{--bg:var(--papel-2);--bd:var(--tinta);--fg:var(--tinta);box-shadow:inset 0 -4px 0 var(--brasa)}
+.btn-2:active{--bg:var(--papel-2)}
+
+/* ============ Placa de especificação (rebites + dupla borda) ============ */
+.placa{position:relative;background:var(--papel-2);border:1px solid var(--tinta);padding:20px 28px;
+  background-image:
+    radial-gradient(circle at 9px 9px,var(--aco) 0 2.5px,transparent 3px),
+    radial-gradient(circle at calc(100% - 9px) 9px,var(--aco) 0 2.5px,transparent 3px),
+    radial-gradient(circle at 9px calc(100% - 9px),var(--aco) 0 2.5px,transparent 3px),
+    radial-gradient(circle at calc(100% - 9px) calc(100% - 9px),var(--aco) 0 2.5px,transparent 3px)}
+.placa::after{content:"";position:absolute;inset:4px;border:1px solid var(--aco);pointer-events:none}
+.placa dl{display:grid;grid-template-columns:minmax(0,1fr);margin:0}
+.placa .lin{display:grid;grid-template-columns:minmax(0,7.5rem) minmax(0,1fr);gap:14px;padding:9px 0;border-top:1px solid var(--aco)}
+.placa .lin:first-child{border-top:0}
+.placa dt{font:600 var(--t-xs)/1.5 var(--f-texto);letter-spacing:.09em;text-transform:uppercase;color:var(--tinta-2);padding-top:2px}
+.placa dd{margin:0;font-size:var(--t-s);line-height:1.45}
+
+/* ============ Comando de instalação copiável ============ */
+.cmd{background:var(--tinta);color:var(--papel);border:1px solid var(--tinta);position:relative}
+.cmd-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px 10px 16px;border-bottom:1px solid var(--tinta-2)}
+.cmd-bar .cmd-rot{font:600 var(--t-xs)/1.2 var(--f-texto);letter-spacing:.09em;text-transform:uppercase;color:var(--aco-claro)}
+.cmd-pre{margin:0;padding:16px;font-size:14px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--papel)}
+.cmd-pre .ps{color:var(--brasa-viva);user-select:none;margin-right:1ch}
+.copybtn{--bg:var(--brasa);--fg:var(--papel);display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:10.5rem;min-height:38px;padding:0 14px;
+  font:600 14px/1 var(--f-texto);letter-spacing:.07em;text-transform:uppercase;background:var(--bg);color:var(--fg);border:1px solid var(--bg);border-radius:0;cursor:pointer}
+.copybtn:hover,.copybtn.is-hover{--bg:var(--brasa-viva);--fg:var(--tinta)}
+.copybtn[data-state="ok"]{--bg:var(--papel);--fg:var(--tinta);border:2px solid var(--brasa-viva)}
+.copybtn[data-state="fail"]{--bg:transparent;--fg:var(--papel);border:1px dashed var(--brasa-viva)}
+.cmd-msg{padding:0 16px 14px;font-size:var(--t-s);color:var(--aco-claro);min-height:0}
+.cmd-msg:empty{display:none}
+.cmd-msg strong{color:var(--brasa-viva);font-weight:600}
+
+/* ============ Trilho de abas (item de categoria) ============ */
+.tab{--bg:var(--papel-2);--fg:var(--tinta);position:relative;display:flex;align-items:center;gap:10px;width:100%;min-height:40px;padding:0 12px;text-align:left;
+  background:var(--bg);color:var(--fg);border:0;border-bottom:1px solid var(--tinta);border-radius:0;cursor:pointer;font:600 var(--t-s)/1.15 var(--f-texto);
+  transition:transform var(--passo) steps(2,jump-none),background-color var(--passo) steps(2,jump-none)}
+.tab-num{font:800 28px/1 var(--f-marca);flex:none;min-width:2ch;color:var(--tinta)}
+.tab-nome{display:block;min-width:0}
+.tab:hover,.tab.is-hover{--bg:var(--papel)}
+.tab[aria-selected="true"],.tab.is-sel{--bg:var(--tinta);--fg:var(--papel);transform:translateX(10px)}
+.tab[aria-selected="true"] .tab-num,.tab.is-sel .tab-num{color:var(--brasa-viva)}
+.tab[aria-selected="true"]::before,.tab.is-sel::before{content:"";position:absolute;left:-10px;top:0;bottom:0;width:10px;background:var(--tinta)}
+.tab:focus-visible{outline-offset:-5px}
+.tab[aria-selected="true"]:focus-visible{outline-color:var(--brasa-viva)}
+.tab.is-vazia{--bg:transparent;--fg:var(--tinta-2);border:1px dashed var(--aco);cursor:not-allowed;}
+.tab.is-vazia .tab-num{color:var(--tinta-2)}
+
+/* ============ Folha (painel da categoria) + troca em 2 quadros ============ */
+.folha{background:var(--papel);border:1px solid var(--tinta);padding:0 0 8px}
+.folha[hidden]{display:none}
+.folha.troca{animation:troca var(--passo) steps(2,jump-none) both}
+@keyframes troca{from{clip-path:inset(0 0 0 72%)}to{clip-path:inset(0 0 0 0)}}
+.folha-cab{display:flex;gap:28px;align-items:flex-start;padding:24px 28px 20px;border-bottom:1px solid var(--tinta);
+  background:repeating-linear-gradient(90deg,var(--papel-2) 0 1px,transparent 1px 8px) left bottom/100% 6px no-repeat}
+.folha-cod{font:800 clamp(72px,9cqi,112px)/.8 var(--f-marca);color:var(--brasa);flex:none}
+.folha-tit{min-width:0;display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.folha-tit h3{font-size:clamp(30px,3.4cqi,44px);line-height:.98}
+.folha-pasta{font-size:14px;color:var(--tinta)}
+.folha-n{font-size:var(--t-s);color:var(--tinta-2)}
+.folha-sub{padding:16px 28px 6px;font:600 var(--t-xs)/1.2 var(--f-texto);letter-spacing:.09em;text-transform:uppercase;color:var(--tinta-2)}
+.pecas{list-style:none;margin:0;padding:0 0 0}
+.pecas li{border-top:1px solid var(--aco)}
+.pecas li:first-child{border-top:0}
+
+/* ============ Item de skill ============ */
+.peca{--bg:transparent;display:grid;grid-template-columns:minmax(0,16rem) minmax(0,1fr) auto;gap:6px 24px;align-items:start;width:100%;
+  padding:14px 28px;text-align:left;background:var(--bg);border:0;border-radius:0;color:var(--tinta);cursor:pointer;font:400 var(--t-m)/1.4 var(--f-texto);
+  transition:background-color var(--passo) steps(2,jump-none)}
+.peca-nome{font:600 15px/1.35 var(--f-mono);color:var(--brasa);overflow-wrap:anywhere}
+.peca-desc{max-width:62ch}
+.peca-st{font:600 var(--t-xs)/1.2 var(--f-texto);letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-2);white-space:nowrap;padding-top:4px}
+.peca-st-on{display:none;align-items:center;gap:6px;color:var(--brasa)}
+.peca:hover,.peca.is-hover{--bg:var(--papel-2)}
+.peca:hover .peca-st,.peca.is-hover .peca-st{color:var(--tinta)}
+.peca:focus-visible{outline-offset:-4px}
+.peca[aria-pressed="true"]{--bg:var(--papel-2);box-shadow:inset 0 0 0 2px var(--brasa)}
+.peca[aria-pressed="true"] .peca-st-off{display:none}
+.peca[aria-pressed="true"] .peca-st-on{display:inline-flex}
+
+/* ============ Movimento: reduzido ============ */
+@media (prefers-reduced-motion:reduce){
+  .folha.troca{animation:none}
+  .tab,.btn,.peca{transition:none}
+}
+
+/* ============================================================
+   LANDING  (container query: o mesmo markup serve 1440, 390 e telas reais)
+   ============================================================ */
+#landing{display:none;container:lp/inline-size;background:var(--papel);color:var(--tinta);min-width:0}
+html[data-frame^="landing"] #landing{display:block}
+.lp-top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 14px}
+.lp-brand{display:inline-flex;align-items:center;gap:10px;color:var(--tinta);text-decoration:none}
+.lp-brand:hover{color:var(--tinta)}
+.lp-brand .sym{width:34px;height:34px;color:var(--tinta);--blade:var(--brasa)}
+.wm{font:800 32px/1 var(--f-marca);letter-spacing:.04em;text-transform:uppercase}
+.lp-cod{display:none;font:600 var(--t-xs)/1 var(--f-texto);letter-spacing:.12em;text-transform:uppercase;color:var(--tinta-2)}
+.lp-nav{display:flex;align-items:center;gap:6px}
+.lp-nav a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 10px;font:600 var(--t-s)/1 var(--f-texto);letter-spacing:.06em;text-transform:uppercase;color:var(--tinta);text-decoration:none}
+.lp-nav a:hover{color:var(--brasa);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:.3em}
+.lp-nav .lp-n-sec{display:none}
+.lp-body{display:grid;grid-template-columns:40px minmax(0,1fr);align-items:start}
+.rail-wrap{position:sticky;top:0;align-self:start;z-index:2}
+.rail-tabs{display:flex;flex-direction:column;height:680px;border-top:0;border-right:1px solid var(--tinta)}
+.rail-tabs .tab{flex:var(--n) 1 0;padding:0}
+.rail-tabs .tab{justify-content:center}
+.rail-tabs .tab-nome{display:none}
+.rail-tabs .tab-num{font-size:21px;min-width:0}
+.rail-tabs .tab[aria-selected="true"]{transform:translateX(6px)}
+.rail-tabs .tab[aria-selected="true"]::before{left:-6px;width:6px}
+.rail-nota{display:none}
+.lp-main{min-width:0;display:grid;grid-template-columns:minmax(0,1fr)}
+.lp-main>*{min-width:0}
+
+/* primeira dobra */
+.fold{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"txt" "grav" "placa";gap:28px;padding:20px 14px 44px 18px}
+.fold-txt{grid-area:txt;display:grid;grid-template-columns:minmax(0,1fr);gap:20px;align-content:start}
+.fold-grav{grid-area:grav}
+.fold-placa{grid-area:placa}
+.lp h1{font-size:46px;line-height:.92}
+.lp h1 em{font-style:normal;color:var(--brasa)}
+.lead{font-size:18px;line-height:1.5;max-width:56ch;color:var(--tinta)}
+.lead b{font-weight:600}
+
+/* instrução de montagem */
+.montagem{padding:18px 16px 16px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;background:var(--tinta);color:var(--papel)}
+.montagem h2{font-size:30px;color:var(--papel);line-height:1}
+.montagem .m-peca{font-size:var(--t-s);color:var(--aco-claro);line-height:1.45}
+.montagem .m-peca b{font:600 14px/1.4 var(--f-mono);color:var(--papel);overflow-wrap:anywhere}
+.montagem .m-peca a{color:var(--brasa-viva)}
+.montagem .m-peca a:hover{color:var(--papel)}
+.seg{display:grid;grid-template-columns:minmax(0,1fr);gap:0;border:1px solid var(--aco-claro)}
+.seg button{--bg:transparent;--fg:var(--papel);min-height:44px;padding:0 12px;text-align:left;background:var(--bg);color:var(--fg);border:0;border-top:1px solid var(--tinta-2);border-radius:0;cursor:pointer;
+  font:600 var(--t-s)/1.2 var(--f-texto);letter-spacing:.04em;transition:background-color var(--passo) steps(2,jump-none)}
+.seg button:first-child{border-top:0}
+.seg button:hover{--bg:var(--tinta-2)}
+.seg button[aria-checked="true"]{--bg:var(--papel);--fg:var(--tinta);box-shadow:inset 0 -4px 0 var(--brasa)}
+.seg button:focus-visible{outline-offset:-5px;outline-color:var(--brasa-viva)}
+.seg button[aria-checked="true"]:focus-visible{outline-color:var(--brasa)}
+.m-destino{font-size:var(--t-s);color:var(--aco-claro)}
+.m-destino .mono{color:var(--papel);font-size:14px}
+
+/* gravura (herói ASCII) */
+.gravura{margin:0;display:grid;grid-template-columns:minmax(0,1fr);gap:10px;container:grav/inline-size}
+.g-stage{--gfs:min(8.9px,calc(100cqw / 69.8));position:relative;width:calc(69.8 * var(--gfs));height:calc(93 * var(--gfs));font-size:var(--gfs);color:var(--tinta);max-width:100%;margin:0 auto}
+.g-lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.g-lines *{vector-effect:non-scaling-stroke}
+.g-art{position:absolute;left:9em;top:5em;margin:0;font:400 1em/1.2 var(--f-mono);white-space:pre;letter-spacing:0;font-variant-ligatures:none;color:var(--tinta);user-select:none;-webkit-user-select:none}
+.g-art i{font-style:normal;color:var(--brasa)}
+.g-chip{position:absolute;transform:translate(-50%,-50%);min-width:2.6em;height:2.6em;display:grid;place-items:center;background:var(--tinta);color:var(--papel);font:700 max(10px,1.6em)/1 var(--f-titulo);letter-spacing:.02em}
+.g-chip.on-art{background:var(--brasa)}
+.g-lbl{position:absolute;transform:translate(0,-50%);font:600 max(9px,1.45em)/1 var(--f-texto);letter-spacing:.08em;text-transform:uppercase;color:var(--tinta);white-space:nowrap;background:var(--papel);padding:.15em .3em}
+.g-lbl.l{transform:translate(-100%,-50%)}
+@container grav (max-width:430px){.g-lbl{display:none}.g-chip{font-size:max(8px,1.6em)}}
+.g-dim{position:absolute;transform:translate(-50%,-50%);font:600 max(9px,1.5em)/1 var(--f-mono);color:var(--brasa);background:var(--papel);padding:.1em .5em;white-space:nowrap}
+.g-dim.v{writing-mode:vertical-rl;padding:.5em .1em;transform:translate(-50%,-50%) rotate(180deg)}
+.g-tick{position:absolute;transform:translate(-50%,0);font:400 max(8px,1.25em)/1 var(--f-mono);color:var(--tinta-2)}
+.gravura figcaption{font-size:var(--t-s);line-height:1.45;color:var(--tinta-2);max-width:62ch}
+.gravura figcaption b{font-weight:600;color:var(--tinta)}
+.g-leg{display:flex;flex-wrap:wrap;gap:4px 18px;margin:6px 0 0;padding:0;list-style:none;font-size:var(--t-s);color:var(--tinta)}
+.g-leg b{display:inline-grid;place-items:center;width:1.6em;height:1.6em;margin-right:.45em;background:var(--tinta);color:var(--papel);font:700 14px/1 var(--f-titulo)}
+
+/* seções */
+.lp-sec{padding:44px 14px 52px 18px;border-top:1px solid var(--tinta);display:grid;grid-template-columns:minmax(0,1fr);gap:22px;container:sec/inline-size}
+.lp h2.sec-t{font-size:40px;line-height:.95}
+.sec-p{max-width:60ch;font-size:var(--t-m);color:var(--tinta)}
+.cat-nota{font-size:var(--t-s);color:var(--tinta-2);max-width:62ch}
+
+/* tabela de harnesses */
+.tbl-h{width:100%;border:1px solid var(--tinta);background:var(--papel)}
+.tbl-h th,.tbl-h td{text-align:left;vertical-align:top;padding:12px 14px;border-top:1px solid var(--aco);font-size:var(--t-s);line-height:1.4}
+.tbl-h thead th{border-top:0;background:var(--papel-2);font:600 var(--t-xs)/1.2 var(--f-texto);letter-spacing:.09em;text-transform:uppercase;color:var(--tinta-2);border-bottom:1px solid var(--tinta)}
+.tbl-h tbody th{font:800 22px/1.1 var(--f-titulo);text-transform:uppercase;letter-spacing:.02em;color:var(--tinta)}
+.tbl-h td.mono{font-size:14px;overflow-wrap:anywhere}
+.tbl-h .hide-s{display:none}
+
+/* rodapé */
+.lp-foot{background:var(--tinta);color:var(--papel);padding:36px 14px 28px 18px;display:grid;grid-template-columns:minmax(0,1fr);gap:20px}
+.lp-foot a{color:var(--brasa-viva)}
+.lp-foot a:hover{color:var(--papel)}
+.lp-foot .wm{color:var(--papel)}
+.lp-foot .sym{width:40px;height:40px;color:var(--papel);--blade:var(--brasa-viva)}
+.lp-foot .f-marca{display:flex;align-items:center;gap:12px}
+.lp-foot p{font-size:var(--t-s);color:var(--aco-claro);max-width:60ch}
+.lp-foot p b{color:var(--papel);font-weight:500}
+.lp-foot .regua{border-color:var(--aco);background:
+    repeating-linear-gradient(90deg,var(--aco-claro) 0 1px,transparent 1px 80px) left bottom/100% 14px no-repeat,
+    repeating-linear-gradient(90deg,var(--aco-claro) 0 1px,transparent 1px 40px) left bottom/100% 10px no-repeat,
+    repeating-linear-gradient(90deg,var(--aco) 0 1px,transparent 1px 8px) left bottom/100% 6px no-repeat}
+
+/* mobile: folha empilhada */
+@container lp (max-width:759px){
+  .peca{grid-template-columns:minmax(0,1fr);padding:14px 16px}
+  .peca-st{padding-top:2px}
+  .folha-cab{padding:18px 16px 16px;gap:16px}
+  .folha-sub{padding:14px 16px 6px}
+  .folha-cod{font-size:64px}
+  .folha-tit h3{font-size:26px}
+  .placa{padding:16px 18px}
+  .placa .lin{grid-template-columns:minmax(0,1fr);gap:2px}
+  .tbl-h thead{display:none}
+  .tbl-h tr{display:block;padding:10px 0;border-top:1px solid var(--aco)}
+  .tbl-h tbody tr:first-child{border-top:0}
+  .tbl-h th,.tbl-h td{display:block;border:0;padding:2px 14px}
+  .tbl-h td.mono::before{content:attr(data-l) " ";font:600 var(--t-xs)/1 var(--f-texto);letter-spacing:.09em;text-transform:uppercase;color:var(--tinta-2);display:block;margin-bottom:2px}
+}
+/* tablet */
+@container lp (min-width:760px){
+  .lp-top{padding:14px 28px}
+  .lp-body{grid-template-columns:208px minmax(0,1fr)}
+  .rail-tabs .tab{padding:0 14px 0 16px;justify-content:flex-start}
+  .rail-tabs .tab-nome{display:block}
+  .rail-tabs .tab-num{font-size:28px}
+  .rail-tabs .tab[aria-selected="true"]{transform:translateX(10px)}
+  .rail-tabs .tab[aria-selected="true"]::before{left:-10px;width:10px}
+  .rail-nota{display:block;padding:10px 14px 0 16px;font-size:var(--t-xs);line-height:1.4;color:var(--tinta-2)}
+  .lp-nav .lp-n-sec{display:inline-flex}
+  .lp-cod{display:block}
+  .fold{padding:36px 40px 64px 48px;gap:32px}
+  .lp h1{font-size:68px}
+  .lead{font-size:20px}
+  .montagem{padding:22px 24px 22px}
+  .seg{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .seg button{border-top:0;border-left:1px solid var(--tinta-2)}
+  .seg button:first-child{border-left:0}
+  .lp-sec{padding:56px 40px 64px 48px}
+  .lp h2.sec-t{font-size:56px}
+  .lp-foot{padding:44px 40px 32px 48px}
+  .tbl-h .hide-s{display:table-cell}
+}
+/* desktop */
+@container lp (min-width:1100px){
+  .fold{grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);grid-template-areas:"txt grav" "placa grav";gap:36px 56px;align-items:start}
+  .lp h1{font-size:92px}
+  .fold-grav{position:sticky;top:12px}
+  .lp-foot{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px 56px}
+  .lp-foot .regua,.lp-foot .f-fim{grid-column:1/-1}
+}
+
+/* ============================================================
+   BOARD (chrome da página, só fora dos frames)
+   ============================================================ */
+.board{max-width:1280px;margin:0 auto;padding:28px 24px 72px;display:grid;grid-template-columns:minmax(0,1fr);gap:28px}
+.board>*{min-width:0}
+.b-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding:6px 2px}
+.b-top .lp-brand .wm{font-size:28px}
+.b-nav{display:flex;flex-wrap:wrap;gap:2px 4px}
+.b-nav a{display:inline-flex;align-items:center;min-height:40px;padding:0 10px;font:600 var(--t-s)/1 var(--f-texto);letter-spacing:.07em;text-transform:uppercase;color:var(--tinta);text-decoration:none;border-bottom:2px solid transparent}
+.b-nav a:hover{border-bottom-color:var(--brasa);color:var(--tinta)}
+.bsec{background:var(--papel);border:1px solid var(--tinta);box-shadow:0 1px 2px rgba(22,20,15,.2),0 5px 10px -5px rgba(22,20,15,.3);padding:10px 10px 56px;display:grid;grid-template-columns:minmax(0,1fr);gap:0;min-width:0}
+.bsec>*{min-width:0}
+.bsec>.regua{margin-bottom:40px}
+.bsec .b-in{padding:0 38px;display:grid;grid-template-columns:minmax(0,1fr);gap:28px}
+.bsec h2.b-h{font-size:clamp(40px,5vw,64px)}
+.bsec h3.b-h3{font-size:30px;line-height:1}
+.b-p{max-width:68ch}
+.b-p+.b-p{margin-top:12px}
+.b-nota{font-size:var(--t-s);color:var(--tinta-2);max-width:68ch}
+html[data-frame] body{background:var(--papel)}
+html[data-frame] .board{padding:0;max-width:none;gap:0}
+html[data-frame] .b-top,html[data-frame] .bsec{display:none}
+html[data-frame] .bsec{box-shadow:none;border:0}
+html[data-frame="marca"] #marca,html[data-frame="paleta"] #paleta{display:grid}
+html[data-frame^="landing"] .board>*:not(#landing){display:none}
+
+/* abertura */
+.abertura .b-in{grid-template-columns:minmax(0,1fr)}
+.abertura h1{font-size:clamp(56px,9vw,112px);line-height:.88}
+.abertura h1 em{font-style:normal;color:var(--brasa)}
+.abertura .tese{font:500 clamp(20px,2.2vw,28px)/1.35 var(--f-texto);max-width:44ch}
+.ab-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:40px;align-items:end}
+.ab-links{display:grid;grid-template-columns:minmax(0,1fr);gap:0;border:1px solid var(--tinta);background:var(--papel-2)}
+.ab-links a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:0 16px;border-top:1px solid var(--aco);color:var(--tinta);text-decoration:none;font:600 var(--t-s)/1 var(--f-texto);letter-spacing:.05em}
+.ab-links .l{text-transform:uppercase}
+.ab-links a{flex-wrap:wrap;padding-top:12px;padding-bottom:12px}
+.ab-links .mono{overflow-wrap:anywhere}
+.ab-links a:first-child{border-top:0}
+.ab-links a:hover{background:var(--tinta);color:var(--papel)}
+.ab-links .mono{font-size:13px;text-transform:none;letter-spacing:0}
+
+/* marca */
+.marca-pal{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.m-cena{min-height:260px;display:grid;place-items:center;padding:32px;border:1px solid var(--tinta);position:relative}
+.m-cena .lock{display:flex;align-items:center;gap:20px}
+.m-cena .lock .sym{width:96px;height:96px}
+.m-cena .lock .wm{font-size:96px;line-height:.9}
+.m-cena .lock-info{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.m-cena .lock-cod{font:600 var(--t-s)/1.2 var(--f-texto);letter-spacing:.14em;text-transform:uppercase}
+.m-cena.pos{background:var(--papel);color:var(--tinta);--blade:var(--brasa)}
+.m-cena.neg{background:var(--tinta);color:var(--papel);--blade:var(--brasa-viva)}
+.m-cena.neg .lock-cod{color:var(--aco-claro)}
+.m-cena.bra{background:var(--brasa);color:var(--papel);--blade:var(--papel)}
+.m-grande{grid-column:1/-1}
+.m-leg{position:absolute;left:12px;bottom:8px;font:600 var(--t-xs)/1 var(--f-texto);letter-spacing:.09em;text-transform:uppercase;opacity:1}
+.m-cena.pos .m-leg{color:var(--tinta-2)}
+.m-cena.neg .m-leg{color:var(--aco-claro)}
+.m-cena.bra .m-leg{color:var(--papel)}
+.constr{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:36px;align-items:center}
+.constr svg{width:100%;height:auto;display:block;background:var(--papel);border:1px solid var(--tinta)}
+.fav-row{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-end}
+.fav-row figure{margin:0;display:grid;gap:8px;justify-items:start}
+.fav-row figcaption{font:600 var(--t-xs)/1.3 var(--f-mono);color:var(--tinta-2)}
+.fav-row svg{display:block}
+.fav-aba{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;background:var(--papel-2);border:1px solid var(--aco);font:500 var(--t-s)/1 var(--f-texto);color:var(--tinta)}
+
+/* paleta */
+.sw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:0;border:1px solid var(--tinta)}
+.sw{display:grid;grid-template-columns:minmax(0,1fr);align-content:start;border-left:1px solid var(--tinta)}
+.sw:first-child{border-left:0}
+.sw-cor{height:120px;border-bottom:1px solid var(--tinta)}
+.sw-txt{padding:14px 16px 18px;display:grid;gap:4px}
+.sw-n{font:800 26px/1 var(--f-titulo);text-transform:uppercase}
+.sw-h{font:600 16px/1.2 var(--f-mono)}
+.sw-u{font-size:var(--t-s);color:var(--tinta-2);line-height:1.35}
+.tbl-c{width:100%;border:1px solid var(--tinta)}
+.tbl-c th,.tbl-c td{padding:10px 14px;text-align:left;vertical-align:middle;border-top:1px solid var(--aco);font-size:var(--t-s)}
+.tbl-c thead th{background:var(--papel-2);border-top:0;border-bottom:1px solid var(--tinta);font:600 var(--t-xs)/1.2 var(--f-texto);letter-spacing:.09em;text-transform:uppercase;color:var(--tinta-2)}
+.tbl-c .amostra{display:inline-grid;place-items:center;min-width:112px;padding:6px 10px;font:600 16px/1 var(--f-texto);border:1px solid var(--aco)}
+.tbl-c .r{font:600 16px/1 var(--f-mono);text-align:right;white-space:nowrap}
+.sel{display:inline-block;padding:2px 10px;font:600 var(--t-xs)/1.5 var(--f-texto);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--tinta)}
+.sel.ok{background:var(--tinta);color:var(--papel)}
+.sel.ui{background:var(--papel-2);color:var(--tinta)}
+.sel.no{background:transparent;color:var(--brasa);border-style:dashed;border-color:var(--brasa)}
+.tbl-wrap{overflow-x:auto}
+.prop{display:flex;height:44px;border:1px solid var(--tinta)}
+.prop span{display:grid;align-items:center;padding:0 12px;font:600 var(--t-xs)/1 var(--f-texto);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;overflow:hidden}
+
+/* tipografia */
+.fam{display:grid;grid-template-columns:minmax(0,1fr);border:1px solid var(--tinta);padding:6px;background:var(--papel)}
+.fam-l{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr);border-top:1px solid var(--aco)}
+.fam-l:first-child{border-top:0}
+.fam-info{padding:18px 20px;background:var(--papel-2);border-right:1px solid var(--tinta);display:grid;gap:6px;align-content:start}
+.fam-info h3{font-size:26px}
+.fam-info p{font-size:var(--t-s);line-height:1.4;color:var(--tinta-2)}
+.fam-info a{font-size:var(--t-s)}
+.fam-amostra{padding:22px 24px;min-width:0;display:grid;gap:10px;align-content:center;overflow:hidden}
+.esc{width:100%;border:1px solid var(--tinta)}
+.esc td,.esc th{padding:14px 16px;vertical-align:baseline;border-top:1px solid var(--aco);text-align:left}
+.esc thead th{background:var(--papel-2);border-top:0;border-bottom:1px solid var(--tinta);font:600 var(--t-xs)/1.2 var(--f-texto);letter-spacing:.09em;text-transform:uppercase;color:var(--tinta-2)}
+.esc td.k{font:600 var(--t-s)/1.3 var(--f-mono);white-space:nowrap;color:var(--tinta-2);width:1%}
+.esc .ex{overflow:hidden}
+.esc .e-d{font:800 96px/.9 var(--f-titulo);text-transform:uppercase}
+.esc .e-1{font:800 72px/.92 var(--f-titulo);text-transform:uppercase}
+.esc .e-2{font:800 48px/.95 var(--f-titulo);text-transform:uppercase}
+.esc .e-3{font:700 28px/1 var(--f-titulo);text-transform:uppercase;letter-spacing:.02em}
+.esc .e-c{font:400 17px/1.55 var(--f-texto);max-width:68ch}
+.esc .e-r{font:600 13px/1.2 var(--f-texto);letter-spacing:.09em;text-transform:uppercase}
+.esc .e-m{font:400 14px/1.6 var(--f-mono)}
+.esc .e-s{font:800 40px/1 var(--f-marca);letter-spacing:.04em;text-transform:uppercase}
+.pesos{display:flex;flex-wrap:wrap;gap:6px 20px}
+
+/* movimento */
+.mov-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:36px;align-items:start}
+.demo{display:grid;grid-template-columns:150px minmax(0,1fr);align-items:start;border:1px solid var(--tinta);background:var(--papel)}
+.demo .rail-tabs{height:300px;border-right:1px solid var(--tinta)}
+.demo .rail-tabs .tab{padding:0 10px 0 12px;justify-content:flex-start}
+.demo .rail-tabs .tab-nome{display:block;font-size:14px}
+.demo .rail-tabs .tab-num{font-size:24px}
+.demo .rail-tabs .tab[aria-selected="true"]{transform:translateX(10px)}
+.demo .rail-tabs .tab[aria-selected="true"]::before{left:-10px;width:10px}
+.demo .folha{border:0;border-left:0;min-height:300px;container:fol/inline-size;padding-bottom:12px}
+.demo .folha-cab{padding:16px 18px 14px;gap:16px}
+.demo .folha-cod{font-size:64px}
+.demo .folha-tit h3{font-size:24px}
+.demo .peca{grid-template-columns:minmax(0,1fr);padding:10px 18px}
+.demo-ctl{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:16px}
+.rm-status{font:600 var(--t-s)/1.3 var(--f-texto);padding:6px 12px;border:1px solid var(--tinta);background:var(--papel-2)}
+.quadros{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.quadro{display:grid;gap:8px;align-content:start}
+.quadro .q-f{height:120px;border:1px solid var(--tinta);background:var(--papel);overflow:hidden;position:relative}
+.quadro .q-f .q-in{position:absolute;inset:0;padding:12px;display:grid;align-content:start;gap:6px;background:var(--papel)}
+.quadro .q-f .q-in b{font:800 44px/.85 var(--f-marca);color:var(--brasa)}
+.quadro .q-f .q-in span{font:800 17px/1 var(--f-titulo);text-transform:uppercase}
+.quadro .q-f .q-in i{display:block;height:6px;background:var(--aco);opacity:.6;font-style:normal}
+.quadro .q-f.q1 .q-in{clip-path:inset(0 0 0 72%)}
+.quadro .q-f.q0 .q-in{background:var(--papel-2)}
+.quadro p{font:600 var(--t-xs)/1.35 var(--f-mono);color:var(--tinta-2)}
+.regras{margin:0;padding:0;list-style:none;display:grid;gap:0;border:1px solid var(--tinta)}
+.regras li{padding:12px 16px;border-top:1px solid var(--aco);font-size:var(--t-s);line-height:1.45}
+.regras li:first-child{border-top:0}
+.regras b{font-weight:600}
+.formas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:20px}
+.forma{display:grid;gap:10px;align-content:start}
+.forma .f-amostra{height:104px;padding:12px;border:1px solid var(--tinta);background:var(--papel);display:grid;place-items:center;position:relative}
+.forma p{font-size:var(--t-s);color:var(--tinta-2);line-height:1.4}
+.forma b{color:var(--tinta);font-weight:600}
+
+/* componentes */
+.comp{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.comp-l{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:20px;align-items:start}
+.st{display:grid;gap:10px;align-content:start}
+.st>span.st-n{font:600 var(--t-xs)/1.2 var(--f-mono);color:var(--tinta-2)}
+.st-wide{grid-column:span 2}
+.st .cmd,.st .tab,.st .peca{width:100%}
+.st .tabcx{display:grid}
+.st .tabcx .tab{min-height:56px;border:1px solid var(--tinta)}
+.st .pcx{border:1px solid var(--tinta);background:var(--papel)}
+.st-vazia{display:grid;gap:6px}
+.fic{font:600 var(--t-xs)/1.2 var(--f-texto);letter-spacing:.09em;text-transform:uppercase;color:var(--brasa)}
+
+/* moldura da landing */
+.mold{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.mold-h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 20px}
+.mold-h h3{font-size:30px}
+.mold-h p{font:600 var(--t-s)/1.3 var(--f-mono);color:var(--tinta-2)}
+.mold-box{border:1px solid var(--tinta);background:var(--papel);overflow:hidden;position:relative}
+.mold-esc{transform-origin:0 0;width:1440px}
+.mold-esc iframe{display:block;width:1440px;height:2400px;border:0;background:var(--papel)}
+.mold-mob{display:grid;grid-template-columns:minmax(0,1fr);justify-items:start}
+.mold-mob .mold-box{width:392px;max-width:100%}
+.mold-mob iframe{display:block;width:390px;max-width:100%;height:2600px;border:0;background:var(--papel)}
+
+/* riscos */
+.risc{display:grid;grid-template-columns:minmax(0,1fr);gap:0;border:1px solid var(--tinta);margin:0;padding:0;list-style:none}
+.risc li{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr);gap:8px 28px;padding:16px 20px;border-top:1px solid var(--aco)}
+.risc li:first-child{border-top:0}
+.risc h3{font-size:24px;line-height:1}
+.risc p{font-size:var(--t-m);line-height:1.5;max-width:70ch}
+.risc .f{font:600 var(--t-xs)/1.2 var(--f-texto);letter-spacing:.09em;text-transform:uppercase;color:var(--brasa);margin-top:8px;display:block}
+
+/* frames isolados em tamanho real */
+html[data-frame="marca"] .bsec,html[data-frame="paleta"] .bsec{padding-bottom:40px}
+html[data-frame="marca"] .bsec>.regua,html[data-frame="paleta"] .bsec>.regua{margin-bottom:28px}
+
+@media (max-width:900px){
+  .bsec .b-in{padding:0 10px}
+  .ab-grid,.mov-grid,.constr{grid-template-columns:minmax(0,1fr)}
+  .fam-l,.risc li{grid-template-columns:minmax(0,1fr)}
+  .fam-info{border-right:0;border-bottom:1px solid var(--tinta)}
+  .marca-pal{grid-template-columns:minmax(0,1fr)}
+  .m-cena .lock .wm{font-size:60px}.m-cena .lock .sym{width:60px;height:60px}
+  .esc .e-d{font-size:56px}.esc .e-1{font-size:48px}
+  .esc td.k{white-space:normal}
+  .st-wide{grid-column:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ Sprite: símbolo e ícones autorais (traço 2, ponta quadrada) ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="sym-akmon" viewBox="0 0 64 64">
+    <path d="M4 20H60V30H46V36H52V50H58V56H12V50H18V36H26V30H18L4 22Z" fill="currentColor"/>
+    <rect x="16" y="12" width="30" height="8" style="fill:var(--blade,#B8340A)"/>
+    <rect x="22" y="5" width="4" height="4" style="fill:var(--blade,#B8340A)"/>
+    <rect x="31" y="2" width="4" height="4" style="fill:var(--blade,#B8340A)"/>
+    <rect x="40" y="6" width="4" height="4" style="fill:var(--blade,#B8340A)"/>
+  </symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12"/><path d="M4 16V4H16"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5L9.5 18L20 6.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5L19 19M19 5L5 19"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M7 17L17 7M8 7H17V16"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4V19M6 13L12 19L18 13"/></symbol>
+</svg>
+
+<main class="board">
+
+<!-- ============ Chrome do board ============ -->
+<header class="b-top">
+  <a class="lp-brand" href="#abertura" aria-label="Akmon, identidade A"><svg class="sym" aria-hidden="true" style="--blade:var(--brasa)"><use href="#sym-akmon"/></svg><span class="wm">Akmon</span></a>
+  <nav class="b-nav" aria-label="Seções do board">
+    <a href="#marca">Marca</a><a href="#paleta">Paleta</a><a href="#tipografia">Tipografia</a><a href="#movimento">Movimento</a><a href="#componentes">Componentes</a><a href="#landing-frames">Landing</a><a href="#riscos">Riscos</a>
+  </nav>
+</header>
+
+<!-- ============ 1. Abertura + tese ============ -->
+<section class="bsec abertura" id="abertura" aria-labelledby="h-ab">
+  <div class="regua" aria-hidden="true"></div>
+  <div class="b-in">
+    <h1 id="h-ab">Catálogo de <em>Ferramentaria</em></h1>
+    <div class="ab-grid">
+      <div style="display:grid;gap:16px">
+        <p class="tese">O Akmon é um catálogo industrial: cada skill é uma peça com código, placa de especificação e instrução de montagem, impressa em folha de papel e marcada em brasa.</p>
+        <p class="b-nota">Identidade A de 3 para o Akmon, biblioteca curada de Agent Skills. Recusa o grid de cards de marketing; o acervo vira trilho de abas, folha e régua. Contagem de skills em revisão: o README diz 136, o disco tem 174, e nenhum desses números é usado como destaque.</p>
+      </div>
+      <nav class="ab-links" aria-label="Frames em tamanho real">
+        <a href="?frame=landing-desktop"><span class="l">Landing desktop</span> <span class="mono">?frame=landing-desktop</span></a>
+        <a href="?frame=landing-mobile"><span class="l">Landing mobile</span> <span class="mono">?frame=landing-mobile</span></a>
+        <a href="?frame=marca"><span class="l">Marca</span> <span class="mono">?frame=marca</span></a>
+        <a href="?frame=paleta"><span class="l">Paleta</span> <span class="mono">?frame=paleta</span></a>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. Marca ============ -->
+<section class="bsec" id="marca" aria-labelledby="h-marca">
+  <div class="regua" aria-hidden="true"></div>
+  <div class="b-in">
+    <h2 class="b-h" id="h-marca">Marca</h2>
+    <p class="b-p">O símbolo é uma bigorna de cantos retos com a lâmina em brasa sobre a face e três faíscas: a mesma cena do ferreiro, reduzida a um bloco. O logotipo é <b>Akmon</b> em Big Shoulders Stencil, caixa-alta, com os cortes de estêncil de peça de ferramentaria.</p>
+    <div class="marca-pal">
+      <div class="m-cena pos m-grande"><div class="lock"><svg class="sym" aria-hidden="true"><use href="#sym-akmon"/></svg><div class="lock-info"><span class="wm">Akmon</span><span class="lock-cod">Cód. AKM-A · Catálogo</span></div></div><span class="m-leg">positivo · papel</span></div>
+      <div class="m-cena neg"><div class="lock"><svg class="sym" aria-hidden="true" style="width:72px;height:72px"><use href="#sym-akmon"/></svg><div class="lock-info"><span class="wm" style="font-size:64px">Akmon</span></div></div><span class="m-leg">negativo · tinta</span></div>
+      <div class="m-cena bra"><div class="lock"><svg class="sym" aria-hidden="true" style="width:72px;height:72px"><use href="#sym-akmon"/></svg><div class="lock-info"><span class="wm" style="font-size:64px">Akmon</span></div></div><span class="m-leg">sobre brasa</span></div>
+    </div>
+    <div class="constr">
+      <svg viewBox="-12 -10 88 82" role="img" aria-label="Construção do símbolo: bigorna com 56 unidades de largura e 44 de altura sobre grade de 4 unidades" xmlns="http://www.w3.org/2000/svg">
+        <defs><pattern id="gr" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M4 0H0V4" fill="none" stroke="#B9B5A7" stroke-width=".25"/></pattern></defs>
+        <rect x="0" y="0" width="64" height="64" fill="url(#gr)" stroke="#7A7769" stroke-width=".4"/>
+        <path d="M4 20H60V30H46V36H52V50H58V56H12V50H18V36H26V30H18L4 22Z" fill="#16140F"/>
+        <rect x="16" y="12" width="30" height="8" fill="#B8340A"/>
+        <g fill="#B8340A"><rect x="22" y="5" width="4" height="4"/><rect x="31" y="2" width="4" height="4"/><rect x="40" y="6" width="4" height="4"/></g>
+        <g stroke="#16140F" stroke-width=".5" fill="none">
+          <path d="M4 60V66M60 60V66M4 64H60"/><path d="M-4 2H-8M-4 56H-8M-6 2V56"/>
+        </g>
+        <g font-family="JetBrains Mono,monospace" font-size="3.6" fill="#16140F">
+          <text x="32" y="70" text-anchor="middle">56</text><text x="-9.5" y="31" text-anchor="middle" transform="rotate(-90 -9.5 31)">54</text>
+        </g>
+      </svg>
+      <div style="display:grid;gap:12px">
+        <h3 class="b-h3">Construção</h3>
+        <p class="b-p">Grade de 4 unidades sobre um quadrado de 64. A bigorna ocupa 56 de largura (x 4 a 60) e 54 de altura entre a ponta das faíscas e a base (y 2 a 56). A lâmina em brasa é o único elemento colorido; o resto é tinta. Nenhum arco, nenhum degradê.</p>
+        <p class="b-p">Área de proteção: a altura da lâmina (8 unidades) em todos os lados. Tamanho mínimo do logotipo: 72 px de largura; do símbolo: 16 px (sem as faíscas, como no favicon).</p>
+      </div>
+    </div>
+    <div style="display:grid;gap:14px">
+      <h3 class="b-h3">Favicon (SVG)</h3>
+      <div class="fav-row">
+        <figure><svg width="16" height="16" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" fill="#16140F"/><path d="M4 20H60V30H46V36H52V50H58V56H12V50H18V36H26V30H18L4 22Z" fill="#F3F0E8"/><rect x="16" y="12" width="30" height="8" fill="#FF5A1F"/></svg><figcaption>16 px</figcaption></figure>
+        <figure><svg width="32" height="32" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" fill="#16140F"/><path d="M4 20H60V30H46V36H52V50H58V56H12V50H18V36H26V30H18L4 22Z" fill="#F3F0E8"/><rect x="16" y="12" width="30" height="8" fill="#FF5A1F"/></svg><figcaption>32 px</figcaption></figure>
+        <figure><svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" fill="#16140F"/><path d="M4 20H60V30H46V36H52V50H58V56H12V50H18V36H26V30H18L4 22Z" fill="#F3F0E8"/><rect x="16" y="12" width="30" height="8" fill="#FF5A1F"/></svg><figcaption>64 px</figcaption></figure>
+        <figure><span class="fav-aba"><svg width="16" height="16" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" fill="#16140F"/><path d="M4 20H60V30H46V36H52V50H58V56H12V50H18V36H26V30H18L4 22Z" fill="#F3F0E8"/><rect x="16" y="12" width="30" height="8" fill="#FF5A1F"/></svg>Akmon · Catálogo</span><figcaption>na aba do navegador</figcaption></figure>
+        <p class="b-nota" style="max-width:36ch">Arquivo: <a href="favicon.svg">favicon.svg</a>. Tile em tinta para sobreviver a abas claras e escuras.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. Paleta ============ -->
+<section class="bsec" id="paleta" aria-labelledby="h-pal">
+  <div class="regua" aria-hidden="true"></div>
+  <div class="b-in">
+    <h2 class="b-h" id="h-pal">Paleta</h2>
+    <p class="b-p">Papel de catálogo, tinta e uma única cor de marcação: o vermelho-laranja de metal em brasa. Os hex vêm das variáveis CSS desta página e os contrastes abaixo são calculados no navegador pela fórmula WCAG 2.x. Nada nesta seção foi digitado.</p>
+    <div class="sw-grid" id="sw-grid" aria-label="Cores"></div>
+    <div id="pal-prop" class="prop" aria-hidden="true"></div>
+    <div class="tbl-wrap">
+      <table class="tbl-c">
+        <caption class="sr-only">Contraste entre pares de cores usados na identidade</caption>
+        <thead><tr><th scope="col">Uso</th><th scope="col">Amostra</th><th scope="col">Texto / fundo</th><th scope="col" style="text-align:right">Razão</th><th scope="col">Resultado</th></tr></thead>
+        <tbody id="ct-body"></tbody>
+      </table>
+    </div>
+    <p class="b-nota" id="pal-nota"></p>
+  </div>
+</section>
+
+<!-- ============ 4. Tipografia ============ -->
+<section class="bsec" id="tipografia" aria-labelledby="h-tip">
+  <div class="regua" aria-hidden="true"></div>
+  <div class="b-in">
+    <h2 class="b-h" id="h-tip">Tipografia</h2>
+    <p class="b-p">Títulos em grotesca condensada de ombros quadrados; a marca e os códigos de peça em sua versão estêncil; texto corrido em Barlow, sóbrio e de bom ritmo em tela. Monoespaçada só onde há código, dado ou medida. Todas as famílias têm licença SIL Open Font License 1.1 e estão hospedadas na pasta <span class="mono">fonts/</span>.</p>
+    <div class="fam">
+      <div class="fam-l">
+        <div class="fam-info"><h3>Big Shoulders Display</h3><p>Títulos e subtítulos · pesos 700 e 800 · SIL OFL 1.1</p><a href="fonts/OFL-bigshouldersdisplay.txt">Licença (Big Shoulders Project Authors)</a></div>
+        <div class="fam-amostra"><span style="font:800 64px/.95 var(--f-titulo);text-transform:uppercase">Folha de catálogo</span><span style="font:700 28px/1 var(--f-titulo);text-transform:uppercase;letter-spacing:.02em">Peça escolhida</span></div>
+      </div>
+      <div class="fam-l">
+        <div class="fam-info"><h3>Big Shoulders Stencil</h3><p>Marca, números de folha e código · peso 800 · SIL OFL 1.1</p><a href="fonts/OFL-bigshouldersstencildisplay.txt">Licença (Big Shoulders Project Authors)</a></div>
+        <div class="fam-amostra"><span style="font:800 72px/.9 var(--f-marca);letter-spacing:.04em;text-transform:uppercase">Akmon 01 02 03 04 05 06</span></div>
+      </div>
+      <div class="fam-l">
+        <div class="fam-info"><h3>Barlow</h3><p>Texto corrido, rótulos e interface · pesos 400, 500 e 600 · SIL OFL 1.1</p><a href="fonts/OFL-barlow.txt">Licença (Barlow Project Authors)</a></div>
+        <div class="fam-amostra"><span style="font:400 20px/1.5 var(--f-texto);max-width:62ch">Akmon é uma biblioteca curada de Agent Skills: pastas com SKILL.md que você aponta para o seu harness. Cada peça veio de operação real e foi saneada antes de entrar.</span><div class="pesos"><span style="font:400 17px var(--f-texto)">400 · texto</span><span style="font:500 17px var(--f-texto)">500 · tese</span><span style="font:600 17px var(--f-texto)">600 · rótulo e ênfase</span></div></div>
+      </div>
+      <div class="fam-l">
+        <div class="fam-info"><h3>JetBrains Mono</h3><p>Só comando, nome de pasta e medida · pesos 400 e 600 · SIL OFL 1.1</p><a href="fonts/OFL-jetbrainsmono.txt">Licença (JetBrains Mono Project Authors)</a></div>
+        <div class="fam-amostra"><span style="font:400 15px/1.6 var(--f-mono)">ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder</span><span style="font:600 15px/1.6 var(--f-mono);color:var(--brasa)">01-automacao-n8n-make/</span></div>
+      </div>
+    </div>
+    <div class="tbl-wrap">
+      <table class="esc">
+        <caption class="sr-only">Escala tipográfica com texto real</caption>
+        <thead><tr><th scope="col">Passo</th><th scope="col">Exemplo</th></tr></thead>
+        <tbody>
+          <tr><td class="k">Display<br>96 / 0,9 · 800</td><td class="ex"><div class="e-d">Peças para agentes</div></td></tr>
+          <tr><td class="k">H1 landing<br>92 / 0,92 · 800</td><td class="ex"><div class="e-1" style="font-size:92px">Skills para agentes</div></td></tr>
+          <tr><td class="k">H2<br>56 / 0,95 · 800</td><td class="ex"><div class="e-2">Seis folhas, seis pastas</div></td></tr>
+          <tr><td class="k">H3<br>28 / 1 · 700</td><td class="ex"><div class="e-3">Instrução de montagem</div></td></tr>
+          <tr><td class="k">Corpo<br>17 / 1,55 · 400<br>medida ≤ 68ch</td><td class="ex"><p class="e-c">Cada skill é uma pasta com SKILL.md e arquivos de apoio. Para instalar, aponte a pasta para o diretório de skills do seu harness: o que muda de um harness para outro é só o destino.</p></td></tr>
+          <tr><td class="k">Rótulo<br>13 · 600 · +0,09em</td><td class="ex"><span class="e-r">Peças de exemplo desta folha</span></td></tr>
+          <tr><td class="k">Mono<br>14 / 1,6 · 400</td><td class="ex"><span class="e-m">git clone https://github.com/RafaelMKn/skills-library.git</span></td></tr>
+          <tr><td class="k">Marca estêncil<br>40 · 800 · +0,04em</td><td class="ex"><span class="e-s">Akmon</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. Forma e movimento ============ -->
+<section class="bsec" id="movimento" aria-labelledby="h-mov">
+  <div class="regua" aria-hidden="true"></div>
+  <div class="b-in">
+    <h2 class="b-h" id="h-mov">Forma e movimento</h2>
+    <p class="b-p">A forma vem da folha impressa: cantos retos, linhas de 1 px, placa com rebites, régua milimetrada e cotas. A profundidade é só a da folha sobre a bancada (sombra suave e curta); nenhum bloco de sombra dura. O momento-assinatura é a troca de folha do índice.</p>
+    <div class="formas">
+      <div class="forma"><div class="f-amostra"><div class="regua" style="width:80%" aria-hidden="true"></div></div><p><b>Régua milimetrada.</b> Traço de 1 px a cada 8 px, médio a cada 40, longo a cada 80. Abre toda folha.</p></div>
+      <div class="forma"><div class="f-amostra"><div class="placa" style="width:78%;height:70%;padding:0"></div></div><p><b>Placa gravada.</b> Papel-2, dupla borda e quatro rebites em aço. Guarda a ficha técnica.</p></div>
+      <div class="forma"><div class="f-amostra"><svg width="80%" height="44" viewBox="0 0 200 44" aria-hidden="true" fill="none" stroke="#4A463C" stroke-width="1"><path d="M1 4V40M199 4V40M1 22H199"/><path d="M1 22L9 18V26ZM199 22L191 18V26Z" fill="#4A463C"/></svg><span class="g-dim" style="left:50%;top:50%">93 colunas</span></div><p><b>Cota.</b> Linha, setas cheias e a medida real em mono e brasa: aqui, a largura da gravura.</p></div>
+    </div>
+    <div class="mov-grid">
+      <div>
+        <h3 class="b-h3" style="margin-bottom:14px">Troca de folha</h3>
+        <div class="demo" id="demo" data-tabs>
+          <div class="rail-tabs" role="tablist" aria-orientation="vertical" aria-label="Categorias da demonstração">
+            <button class="tab" role="tab" id="d-tab-02" aria-controls="d-cat-02" aria-selected="false" tabindex="-1" style="--n:31"><span class="tab-num">02</span><span class="tab-nome">Design, motion, 3D, vídeo</span></button>
+            <button class="tab" role="tab" id="d-tab-04" aria-controls="d-cat-04" aria-selected="true" tabindex="0" style="--n:13"><span class="tab-num">04</span><span class="tab-nome">Backend, APIs, banco</span></button>
+            <button class="tab" role="tab" id="d-tab-05" aria-controls="d-cat-05" aria-selected="false" tabindex="-1" style="--n:60"><span class="tab-num">05</span><span class="tab-nome">Dev, CLI &amp; harness</span></button>
+          </div>
+          <div>
+            <section class="folha" role="tabpanel" id="d-cat-02" aria-labelledby="d-tab-02" tabindex="0" hidden>
+              <div class="folha-cab"><p class="folha-cod" aria-hidden="true">02</p><div class="folha-tit"><h3>Design, UI Motion, 3D Web, Vídeo &amp; Criativos</h3><p class="folha-pasta mono">02-design-ui-motion-3d/</p></div></div>
+              <ul class="pecas"><li><div class="peca" style="cursor:default"><span class="peca-nome">ascii-video</span><span class="peca-desc">Converte vídeo ou áudio em MP4/GIF de ASCII colorido.</span></div></li><li><div class="peca" style="cursor:default"><span class="peca-nome">architecture-diagram</span><span class="peca-desc">Gera diagramas de arquitetura em SVG dentro de HTML.</span></div></li></ul>
+            </section>
+            <section class="folha" role="tabpanel" id="d-cat-04" aria-labelledby="d-tab-04" tabindex="0">
+              <div class="folha-cab"><p class="folha-cod" aria-hidden="true">04</p><div class="folha-tit"><h3>APIs, Backend &amp; Banco de Dados</h3><p class="folha-pasta mono">04-backend-apis-banco/</p></div></div>
+              <ul class="pecas"><li><div class="peca" style="cursor:default"><span class="peca-nome">airtable</span><span class="peca-desc">API REST do Airtable via curl: CRUD, filtros e upserts.</span></div></li><li><div class="peca" style="cursor:default"><span class="peca-nome">prisma-cli</span><span class="peca-desc">Referência dos comandos da CLI do Prisma.</span></div></li></ul>
+            </section>
+            <section class="folha" role="tabpanel" id="d-cat-05" aria-labelledby="d-tab-05" tabindex="0" hidden>
+              <div class="folha-cab"><p class="folha-cod" aria-hidden="true">05</p><div class="folha-tit"><h3>Ferramental de Desenvolvimento, CLI &amp; Harness</h3><p class="folha-pasta mono">05-dev-harness-cli/</p></div></div>
+              <ul class="pecas"><li><div class="peca" style="cursor:default"><span class="peca-nome">systematic-debugging</span><span class="peca-desc">Depuração em 4 fases: causa raiz antes da correção.</span></div></li><li><div class="peca" style="cursor:default"><span class="peca-nome">spike</span><span class="peca-desc">Experimentos descartáveis antes de construir.</span></div></li></ul>
+            </section>
+          </div>
+        </div>
+        <div class="demo-ctl">
+          <button class="btn btn-2" type="button" id="repetir"><svg class="ic" aria-hidden="true"><use href="#i-down"/></svg>Repetir troca</button>
+          <span class="rm-status" id="rm-status" role="status">Lendo preferência de movimento…</span>
+        </div>
+        <p class="b-nota" style="margin-top:12px">Clique numa aba, use as setas do teclado ou aperte “Repetir troca”. O exemplo usa 3 das 6 categorias; a landing usa as 6.</p>
+      </div>
+      <div style="display:grid;gap:18px">
+        <div>
+          <h3 class="b-h3" style="margin-bottom:14px">Os 2 quadros</h3>
+          <div class="quadros">
+            <div class="quadro"><div class="q-f q0"><div class="q-in"><b>04</b><span>Folha anterior</span><i></i><i></i></div></div><p>antes · folha 05 aberta</p></div>
+            <div class="quadro"><div class="q-f q1"><div class="q-in"><b>04</b><span>Nova folha</span><i></i><i></i></div></div><p>quadro 1 · 0–45 ms · só 28% da folha à vista</p></div>
+            <div class="quadro"><div class="q-f q2"><div class="q-in"><b>04</b><span>Nova folha</span><i></i><i></i></div></div><p>quadro 2 · 45–90 ms · folha inteira</p></div>
+          </div>
+        </div>
+        <ul class="regras">
+          <li><b>Duração:</b> 90 ms no total, <span class="mono">steps(2, jump-none)</span>: dois quadros secos, sem easing nem interpolação.</li>
+          <li><b>Aba:</b> a aba escolhida desliza 10 px para dentro da folha no mesmo passo (6 px no celular).</li>
+          <li><b>Estado:</b> quem escolhe a peça ganha barra de brasa à esquerda e o rótulo muda de “Escolher peça” para “Escolhida”.</li>
+          <li><b>Movimento reduzido:</b> com <span class="mono">prefers-reduced-motion: reduce</span> a folha troca de uma vez, sem quadros e sem deslize.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. Componentes com estados ============ -->
+<section class="bsec" id="componentes" aria-labelledby="h-comp">
+  <div class="regua" aria-hidden="true"></div>
+  <div class="b-in">
+    <h2 class="b-h" id="h-comp">Componentes</h2>
+
+    <div class="comp">
+      <h3 class="b-h3">Botão</h3>
+      <div class="comp-l">
+        <div class="st"><span class="st-n">primário · normal</span><button class="btn" type="button">Ver categorias</button></div>
+        <div class="st"><span class="st-n">primário · hover</span><button class="btn is-hover" type="button" tabindex="-1">Ver categorias</button></div>
+        <div class="st"><span class="st-n">primário · foco (teclado)</span><button class="btn is-focus" type="button" tabindex="-1">Ver categorias</button></div>
+        <div class="st"><span class="st-n">primário · desabilitado</span><button class="btn" type="button" disabled>Ver categorias</button></div>
+      </div>
+      <div class="comp-l">
+        <div class="st"><span class="st-n">secundário · normal</span><button class="btn btn-2" type="button">Repositório</button></div>
+        <div class="st"><span class="st-n">secundário · hover</span><button class="btn btn-2 is-hover" type="button" tabindex="-1">Repositório</button></div>
+        <div class="st"><span class="st-n">secundário · foco (teclado)</span><button class="btn btn-2 is-focus" type="button" tabindex="-1">Repositório</button></div>
+        <div class="st"><span class="st-n">secundário · desabilitado</span><button class="btn btn-2" type="button" disabled>Repositório</button></div>
+      </div>
+    </div>
+
+    <div class="comp">
+      <h3 class="b-h3">Comando de instalação copiável</h3>
+      <p class="b-nota">Três estados distintos. “Copiado” fica marcado até o botão voltar ao normal, 5 s depois, e nunca se confunde com “não copiado”. A falha diz o problema e a saída: selecionar e copiar na mão.</p>
+      <div class="comp-l" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr))">
+        <div class="st"><span class="st-n">normal</span>
+          <div class="cmd dark"><div class="cmd-bar"><span class="cmd-rot">Instrução de montagem</span><button class="copybtn" type="button" tabindex="-1"><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg><span>Copiar</span></button></div><pre class="cmd-pre"><span class="ps">$</span>ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder</pre></div></div>
+        <div class="st"><span class="st-n">copiado</span>
+          <div class="cmd dark"><div class="cmd-bar"><span class="cmd-rot">Instrução de montagem</span><button class="copybtn" type="button" data-state="ok" tabindex="-1"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>Copiado</span></button></div><pre class="cmd-pre"><span class="ps">$</span>ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder</pre></div></div>
+        <div class="st"><span class="st-n">falha</span>
+          <div class="cmd dark"><div class="cmd-bar"><span class="cmd-rot">Instrução de montagem</span><button class="copybtn" type="button" data-state="fail" tabindex="-1"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg><span>Não copiou</span></button></div><pre class="cmd-pre"><span class="ps">$</span>ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder</pre><p class="cmd-msg"><strong>O navegador bloqueou a cópia.</strong> Selecione o comando acima e use Ctrl+C.</p></div></div>
+      </div>
+      <div class="st" style="max-width:640px"><span class="st-n">ao vivo · tente copiar</span>
+        <div class="cmd dark" data-cmd-live><div class="cmd-bar"><span class="cmd-rot">Instrução de montagem</span><button class="copybtn" type="button" data-copy><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg><span>Copiar</span></button></div><pre class="cmd-pre" data-copy-src><span class="ps">$</span>ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder</pre><p class="cmd-msg" role="status" aria-live="polite"></p></div></div>
+    </div>
+
+    <div class="comp">
+      <h3 class="b-h3">Item de skill</h3>
+      <div class="comp-l" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr))">
+        <div class="st"><span class="st-n">normal</span><div class="pcx"><button class="peca" type="button" tabindex="-1" style="grid-template-columns:minmax(0,1fr)"><span class="peca-nome">n8n-flow-builder</span><span class="peca-desc">Constrói fluxos n8n do zero ao ativo, com protocolo para cada alteração estrutural.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span></span></button></div></div>
+        <div class="st"><span class="st-n">hover</span><div class="pcx"><button class="peca is-hover" type="button" tabindex="-1" style="grid-template-columns:minmax(0,1fr)"><span class="peca-nome">n8n-flow-builder</span><span class="peca-desc">Constrói fluxos n8n do zero ao ativo, com protocolo para cada alteração estrutural.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span></span></button></div></div>
+        <div class="st"><span class="st-n">escolhida (aria-pressed)</span><div class="pcx"><button class="peca" aria-pressed="true" type="button" tabindex="-1" style="grid-template-columns:minmax(0,1fr)"><span class="peca-nome">n8n-flow-builder</span><span class="peca-desc">Constrói fluxos n8n do zero ao ativo, com protocolo para cada alteração estrutural.</span><span class="peca-st"><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></div></div>
+        <div class="st"><span class="st-n">foco (teclado)</span><div class="pcx"><button class="peca" type="button" tabindex="-1" style="grid-template-columns:minmax(0,1fr);outline:3px solid var(--brasa);outline-offset:-4px"><span class="peca-nome">n8n-flow-builder</span><span class="peca-desc">Constrói fluxos n8n do zero ao ativo, com protocolo para cada alteração estrutural.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span></span></button></div></div>
+      </div>
+    </div>
+
+    <div class="comp">
+      <h3 class="b-h3">Item de categoria (aba)</h3>
+      <div class="comp-l" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))">
+        <div class="st"><span class="st-n">normal</span><div class="tabcx"><button class="tab" type="button" tabindex="-1"><span class="tab-num">04</span><span class="tab-nome">Backend, APIs, banco</span></button></div></div>
+        <div class="st"><span class="st-n">hover</span><div class="tabcx"><button class="tab is-hover" type="button" tabindex="-1"><span class="tab-num">04</span><span class="tab-nome">Backend, APIs, banco</span></button></div></div>
+        <div class="st"><span class="st-n">selecionada</span><div class="tabcx" style="overflow:visible;margin-right:10px"><button class="tab is-sel" type="button" tabindex="-1"><span class="tab-num">04</span><span class="tab-nome">Backend, APIs, banco</span></button></div></div>
+        <div class="st st-vazia"><span class="st-n">vazia · <span class="fic">exemplo fictício</span></span><div class="tabcx" style="border:0"><button class="tab is-vazia" type="button" aria-disabled="true" tabindex="-1"><span class="tab-num">07</span><span class="tab-nome">Sem peças nesta folha</span></button></div></div>
+      </div>
+      <p class="b-nota">A pasta “07” não existe: a aba vazia só mostra como o componente se comporta se uma folha ficar sem peças. As seis categorias reais têm peças.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. Landing em moldura ============ -->
+<section class="bsec" id="landing-frames" aria-labelledby="h-land">
+  <div class="regua" aria-hidden="true"></div>
+  <div class="b-in">
+    <h2 class="b-h" id="h-land">Landing em moldura</h2>
+    <p class="b-p">Primeira dobra, uma seção de categorias, instalação e rodapé. É a mesma página que abre em tela cheia pelos parâmetros <span class="mono">?frame=landing-desktop</span> e <span class="mono">?frame=landing-mobile</span>; aqui ela aparece dentro de molduras.</p>
+    <div class="mold">
+      <div class="mold-h"><h3>Desktop · 1440</h3><p id="esc-info">escala calculada…</p></div>
+      <div class="mold-box" id="mold-d"><div class="mold-esc" id="mold-d-esc"><iframe title="Landing do Akmon em 1440 px de largura" data-src="index.html?frame=landing-desktop" id="if-d"></iframe></div></div>
+      <p class="b-nota"><a href="?frame=landing-desktop">Abrir em tamanho real <svg class="ic" aria-hidden="true" style="vertical-align:-.12em"><use href="#i-out"/></svg></a></p>
+    </div>
+    <div class="mold mold-mob">
+      <div class="mold-h"><h3>Mobile · 390</h3><p>escala 1,00</p></div>
+      <div class="mold-box"><iframe title="Landing do Akmon em 390 px de largura" data-src="index.html?frame=landing-mobile" id="if-m"></iframe></div>
+      <p class="b-nota"><a href="?frame=landing-mobile">Abrir em tamanho real <svg class="ic" aria-hidden="true" style="vertical-align:-.12em"><use href="#i-out"/></svg></a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. Riscos ============ -->
+<section class="bsec" id="riscos" aria-labelledby="h-ris">
+  <div class="regua" aria-hidden="true"></div>
+  <div class="b-in">
+    <h2 class="b-h" id="h-ris">Riscos</h2>
+    <ul class="risc">
+      <li><h3>Frio, B2B demais</h3><div><p>Papel, régua e ficha técnica leem como distribuidor industrial. Quem chega por um post pode achar a página séria demais para uma biblioteca de skills. O calor vem do ferreiro em brasa e da cor de marcação; se não bastar, o texto da landing é o lugar de ganhar voz.</p></div></li>
+      <li><h3>Contagem não reconciliada</h3><div><p>O README diz 136, o disco tem 174 arquivos SKILL.md (23, 31, 10, 13, 60 e 37 por pasta). A altura das abas usa a contagem do disco e vem rotulada “contagem em revisão”. Se a reconciliação mudar os volumes, as abas mudam de altura; nenhum número é exibido como destaque.</p></div></li>
+      <li><h3>Gravura ASCII no celular</h3><div><p>A arte tem 93 colunas. Em 390 px ela cai para uns 5 px de corpo: lê-se como silhueta, não como texto, e as cotas e legendas ficam apertadas. É decorativa (<span class="mono">aria-hidden</span>) e traz alternativa em texto.</p></div></li>
+      <li><h3>Comandos fora do Claude Code</h3><div><p>O BRIEF fixa o comando exato só do Claude Code. Para Antigravity, Codex, Hermes e OpenClaw ele fixa apenas o destino (<span class="mono">.agents/skills/</span> e <span class="mono">~/.hermes/skills/&lt;categoria&gt;/&lt;skill&gt;/</span>); os comandos da landing usam o mesmo <span class="mono">ln -s</span> apontando para esses destinos e precisam de conferência num harness de verdade.</p></div></li>
+      <li><h3>Trilho fixo no celular</h3><div><p>A aba lateral de 40 px custa largura num viewport de 390 e, na categoria menor, a aba tem 40 px de altura mínima (proporcional só até esse piso). Mostra só o número; o nome entra no <span class="mono">aria-label</span> e na folha.</p></div></li>
+      <li><h3>Marca por validar</h3><div><p>Conflito do nome Akmon (GitHub, npm, domínio) não foi checado, e o código “AKM-A” é só um código de catálogo do board, não identificador oficial.</p></div></li>
+      <li><h3>Brasa só como marcação</h3><div><p>Em texto pequeno sobre papel a brasa passa por pouco (veja a razão na paleta) e não passa sobre papel-2; fora disso ela serve a títulos grandes, códigos e gráficos. Sobre tinta, usa-se a brasa viva.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================
+     LANDING (renderizada só nos frames landing-*)
+     ============================================================ -->
+<div id="landing" class="lp" data-tabs>
+  <header class="lp-top">
+    <a class="lp-brand" href="#landing" aria-label="Akmon, início"><svg class="sym" aria-hidden="true"><use href="#sym-akmon"/></svg><span class="wm">Akmon</span></a>
+    <span class="lp-cod">Catálogo de Ferramentaria</span>
+    <nav class="lp-nav" aria-label="Principal">
+      <a class="lp-n-sec" href="#lp-cats">Categorias</a>
+      <a class="lp-n-sec" href="#lp-install">Instalar</a>
+      <a href="https://github.com/RafaelMKn/skills-library">GitHub<svg class="ic" aria-hidden="true"><use href="#i-out"/></svg></a>
+    </nav>
+  </header>
+  <div class="regua" aria-hidden="true"></div>
+
+  <div class="lp-body">
+    <div class="rail-wrap">
+      <div>
+        <div class="rail-tabs" role="tablist" aria-orientation="vertical" aria-label="Categorias de skills">
+<button class="tab" role="tab" id="tab-01" aria-controls="cat-01" aria-selected="true" tabindex="0" style="--n:23" aria-label="01 Automação de Processos &amp; n8n / Make"><span class="tab-num">01</span><span class="tab-nome">Automação n8n / Make</span></button>
+<button class="tab" role="tab" id="tab-02" aria-controls="cat-02" aria-selected="false" tabindex="-1" style="--n:31" aria-label="02 Design, UI Motion, 3D Web, Vídeo &amp; Criativos"><span class="tab-num">02</span><span class="tab-nome">Design, motion, 3D, vídeo</span></button>
+<button class="tab" role="tab" id="tab-03" aria-controls="cat-03" aria-selected="false" tabindex="-1" style="--n:10" aria-label="03 Agentes Autônomos &amp; Engenharia de Prompt"><span class="tab-num">03</span><span class="tab-nome">Agentes e prompts</span></button>
+<button class="tab" role="tab" id="tab-04" aria-controls="cat-04" aria-selected="false" tabindex="-1" style="--n:13" aria-label="04 APIs, Backend &amp; Banco de Dados"><span class="tab-num">04</span><span class="tab-nome">Backend, APIs, banco</span></button>
+<button class="tab" role="tab" id="tab-05" aria-controls="cat-05" aria-selected="false" tabindex="-1" style="--n:60" aria-label="05 Ferramental de Desenvolvimento, CLI &amp; Harness"><span class="tab-num">05</span><span class="tab-nome">Dev, CLI &amp; harness</span></button>
+<button class="tab" role="tab" id="tab-06" aria-controls="cat-06" aria-selected="false" tabindex="-1" style="--n:37" aria-label="06 Produtividade, Pesquisa, Documentos &amp; Mídia"><span class="tab-num">06</span><span class="tab-nome">Produtividade &amp; docs</span></button>
+        </div>
+      </div>
+      <p class="rail-nota">Altura da aba proporcional ao volume na pasta (mínimo de 40 px). Contagem em revisão.</p>
+    </div>
+
+    <div class="lp-main">
+      <section class="fold" aria-labelledby="lp-h1">
+        <div class="fold-txt">
+          <h1 id="lp-h1">Skills para agentes, catalogadas como <em>ferramentas</em>.</h1>
+          <p class="lead">Akmon é uma biblioteca curada de <b>Agent Skills</b>: pastas com SKILL.md que funcionam em Claude Code, Codex, Google Antigravity, OpenClaw e Hermes. Cada peça veio de operação real e tem pasta, código e instrução de montagem.</p>
+
+          <div class="montagem dark" id="lp-montagem" aria-labelledby="lp-h-mont">
+            <h2 id="lp-h-mont">Instrução de montagem</h2>
+            <div class="seg" role="radiogroup" aria-label="Harness">
+              <button type="button" role="radio" aria-checked="true" data-h="claude" tabindex="0">Claude Code</button>
+              <button type="button" role="radio" aria-checked="false" data-h="agents" tabindex="-1">Antigravity · Codex</button>
+              <button type="button" role="radio" aria-checked="false" data-h="hermes" tabindex="-1">Hermes · OpenClaw</button>
+            </div>
+            <p class="m-peca">Peça: <b id="m-peca">01-automacao-n8n-make/n8n-flow-builder</b>. <a href="#lp-cats" data-goto="cats">Trocar peça</a></p>
+            <div class="cmd" data-cmd-live id="lp-cmd">
+              <div class="cmd-bar"><span class="cmd-rot" id="m-rot">Claude Code</span><button class="copybtn" type="button" data-copy><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg><span>Copiar</span></button></div>
+              <pre class="cmd-pre" data-copy-src id="m-pre" tabindex="0" aria-label="Comando de instalação"></pre>
+              <p class="cmd-msg" role="status" aria-live="polite"></p>
+            </div>
+            <p class="m-destino" id="m-destino"></p>
+          </div>
+        </div>
+
+        <figure class="gravura fold-grav" role="img" aria-label="Gravura em ASCII de Hefesto, o ferreiro, com o martelo erguido sobre uma lâmina em brasa apoiada na bigorna, com cotas de 93 colunas por 70 linhas">
+          <div class="g-stage" aria-hidden="true">
+            <svg class="g-lines" viewBox="0 0 698 930" preserveAspectRatio="none" fill="none" stroke="#4A463C" stroke-width="1">
+              <!-- cota superior -->
+              <path d="M90 12V46M648 12V46M90 26H648"/>
+              <path d="M90 26L100 22V30ZM648 26L638 22V30Z" fill="#4A463C" stroke="none"/>
+              <!-- cota direita -->
+              <path d="M652 50H690M652 890H690M676 50V890"/>
+              <path d="M676 50L672 60H680ZM676 890L672 880H680Z" fill="#4A463C" stroke="none"/>
+              <!-- régua inferior: colunas -->
+              <path id="g-rc" d="" stroke="#4A463C"/>
+              <!-- régua esquerda: linhas -->
+              <path id="g-rl" d="" stroke="#4A463C"/>
+              <!-- linhas-guia das legendas (coordenadas = 10 unidades por em; coluna c em x=50+6c, linha r em y=50+12r) -->
+              <path d="M210 70L346 74M44 460L225 560M272 490L302 606M44 756H150" stroke="#16140F"/>
+              <circle cx="346" cy="74" r="4" fill="#16140F" stroke="none"/>
+              <circle cx="225" cy="560" r="4" fill="#B8340A" stroke="none"/>
+              <circle cx="302" cy="606" r="4" fill="#B8340A" stroke="none"/>
+              <circle cx="150" cy="756" r="4" fill="#16140F" stroke="none"/>
+            </svg>
+            <pre class="g-art">                                               *
+                                            ####%%%
+                                          %@@@###%+
+                                        %@@@%@@@.
+                                      @@%#%@@%+
+                                  %%@@%%#*@%
+                               :%%@@@@@@%
+                              +%%@@@@@@@%
+                             #@%##%%*:%:
+                           %#%++%%-
+                        =%%###*=                       .%@%%%%
+                      %%%#####--                     .%@@@@@@@@%
+                     %%%#%####                      ####@@@@@@@@%
+                    %@@@@%##--                     #%%#%@@@@%@%%+
+                   #@@@@@@@@%                   ##%#%%%%@@@@%%%:
+                  *%@@@@@@@@@%@%+=            =%####+%%%@@@%%%#%
+                  +@@@@@@@@@@@@@@@@*-#%%%=....   #%##=%%@@%%%%#
+                 :*%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@###*=%%%%%@% #
+                    *=%@@@@@@@@@@@@@@@@@@@@@@@@@@*# %.%+=%%%#+++
+                       ==-%@%@@@@@@@@@%@@@@@@@@@@+#*%%#-%%#*=+%%%
+                              .:-----#@%%@@@@@@@@@%.%%* %#*-=#%%@%%%@%
+                                  -%@@%*@@@@@@@@@@@%@@%.%:%%#%%@%@@%@%%%
+                                   :@@@%*%@@@@@@@%@%%@%%%%%%%%%%%%%%%%%%*
+                                   :%%@@%**%@@@@@%%%%%%%%%%%%%%%%###%%%%#
+                                    .%%@%@@%+**++++*#%%%%%%%%%%%%#%%%%%%%%-
+                                      :@@@@@@@@@@%%%%%%%.=%%%%%.#%%%%%%%%@@:
+                                        =%@@@@@@@%%%%%%%%%%%%%%%%#%%%%%%%%%.:
+                                         =%@@@@@@%%%%%%%%%%#%%%%%+%%%%%%%@%:%
+                                          %@@@@@@@@@%%%%%%%%%@**  =@@%%%@%%=%
+                                          #@@@@@%%@@%%%###%%%%+     -+%%%%%%%
+                                           %@@@@@@@@%%%%@%%@%:       #%%@@@@@+
+                                          -%@@%@@@%%@%@@%%@@%.%     :%@%@@@@@%
+                                         =%%%%%#*##%%%%#%%%%%%%     -%%@@@@@%-
+                                         .%%%###%%*%%%*#%%%%#%@     -+###%%@%
+                                         .%@%%%###**+***###%%%%%     *####%%%:
+                                        %.@@@@@@@@@@@@@@@@@%%%%%%    ####%%%%
+                                      <i>:</i>@%#@@@@@@@@@@@@@@@@%%%%%%%%= -####%%%
+                                     <i>+</i>%@@%@@@@@@@@@@@@@@@%%@%%%%%%%%+##*#%%
+                                    @@@@<i>.</i>%@@@@@@@@@@@@@@@@@%%%%%%%% :*%#%%
+                                   %%@@%<i>.</i>%@@@@@@@@@@@@@@@@@@%%%%%%##%%%@@%@%
+                           <i>=</i>    <i>:</i> %%@@%%<i>:</i>@@@@@@@@@@@@@@@@%%%%#%@@%**##%@@%#
+                             <i>*</i>   %%%%%@@%%%@@@@@@@@%%#--====+#*+=+*##%%%%
+                    <i>.</i>   <i>.</i>   <i>+</i> <i>:</i> #%%@@@@<i>=</i>%@%@<i>+</i> <i>...:::</i>::----#%%##++++@@@%%
+                    <i>..</i>   <i>-:</i> <i>:.</i> <i>+</i>#%%<i>*</i>        <i>......-</i>%%@@@@@@@@@%%%%%%%%%%%
+            <i>.</i> <i>-</i> <i>-:</i> <i>-..</i> <i>+++*.</i>               <i>+++++*</i>%@@%@%@@@@@@@%%%@@%%%%%
+             <i>.**</i>  <i>*.</i>               <i>.*+++++**</i>#<i>+++++++</i>++####%%@@%%%@@@@@@@%
+    <i>:*++++++++=</i>             <i>-++++++=:++++++=++</i>############%@@%%%%@@@@@@@@:
+   %%@@@@%%%#@%%%%%%%<i>=+++++++=++*++=++</i>####################%@%%%%%@@@@@@@@%
+   %@@@@@@@@@@%@%%%<i>.</i>%@ %%<i>:</i>%%<i>*</i>@%%@%####<i>*</i>###################%@@@%%%%@@@@@@@@%
+   %%@%@%@%%%%%%%*%%% %#%%%%%%%%@%########################%@@%%%%%*%@%#%@@%%
+   %%%%%@%%%%%@%%%%@%%%%%%%%@%%%%%#####################%%@@@%@@%%% +%%%%##%@%.
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%##############%@@@@@@@@@@@@%@%%% +%@@@@@@@@%
+       *%@@@%%%%%%%%%%%%%%%%%%%%%%#######%@@@@@@@@@@@@@@@@@@@@%%%% =%@@@@@@@@@%
+          %@@@@@@@@@@@@@@@@@@@@@%%%%@%@@@@@%@@%@@@@@@@@@@@@@@@@@%%# =%@@@@@@@@@%
+           -@@@@@@@@@@@@@@@%@@@%@%@@@@@%%%%%%@%%%@@@@@@@@@@%@@%%%%%  =@@@@@@@@@@@
+            =@@@@@@@@@@@@@@@@%%%%%@@%%%%%%%%%%%%%@@@@@@@@@@@@@%%%%%   =+%@@@@%%%%%
+             %@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%@@@@@@@@@@@@%%@%%%     -+ %@%%%%%
+             %@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%@@@@@@@@@@@@%%%%%:     ..+%%@@%%
+             %@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%%@@@@@@@@@@@@@%%%%       :*%%%%%@
+            %@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%#%@@@@@@@@@@%%%#         :%=%@@%
+          %@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%%##                       -%@@@%
+        %%%%%%%@@@@@@@@@@@@@@@@@@%%%%%%%%%%%#%%%%%%%%%%###                    -**#%%
+    *%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%###%%###%#######%%%%%%%-                    +*%%%%
+   #@@@@@@@@@@@@@%%%%%%%%%%%%%%#%%#########%%%%%%%%%%%%%%%-                     %@##*#
+   =@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%%%%%%%-                    %:%%%%@%**%
+   :%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%%%%%%=                    %@%%%@@%#%%*%
+    %@@@@@@@@@@@@@@@@@@@%@@@@@@@@@%%%%%%%%%%%%%%%%%%%%%%%%                       :#%@%%%%%#+%
+    %%%@@@@@@@@@@@@@@%@%%%@@@%%%%%%%%%%%%%%%%%%%%#
+                 .*%%%%%%%%%%%%%%%%%%%%%%#
+                                  :</pre>
+            <span class="g-dim" style="left:52.9%;top:2.8%">93 colunas</span>
+            <span class="g-dim v" style="left:96.8%;top:50.5%">70 linhas</span>
+            <span class="g-chip" style="left:30.1%;top:7.5%">A</span><span class="g-lbl" style="left:32.5%;top:7.5%">Martelo</span>
+            <span class="g-chip on-art" style="left:6.3%;top:49.5%">B</span><span class="g-lbl" style="left:8.7%;top:49.5%">Faíscas</span>
+            <span class="g-chip on-art" style="left:39%;top:52.7%">C</span><span class="g-lbl l" style="left:36.5%;top:52.7%">Lâmina</span>
+            <span class="g-chip" style="left:6.3%;top:81.3%">D</span>
+            <span class="g-tick" style="left:12.9%;top:97%">0</span><span class="g-tick" style="left:21.5%;top:97%">10</span><span class="g-tick" style="left:30.1%;top:97%">20</span><span class="g-tick" style="left:38.7%;top:97%">30</span><span class="g-tick" style="left:47.3%;top:97%">40</span><span class="g-tick" style="left:55.9%;top:97%">50</span><span class="g-tick" style="left:64.5%;top:97%">60</span><span class="g-tick" style="left:73.1%;top:97%">70</span><span class="g-tick" style="left:81.7%;top:97%">80</span><span class="g-tick" style="left:90.3%;top:97%">90</span>
+          </div>
+          <figcaption><b>Fig. 1.</b> Hefesto forjando uma lâmina, impresso como gravura técnica em 93 colunas por 70 linhas de caracteres. Faíscas e lâmina em brasa.</figcaption>
+          <ul class="g-leg" aria-hidden="true"><li><b>A</b>Martelo</li><li><b>B</b>Faíscas</li><li><b>C</b>Lâmina</li><li><b>D</b>Bigorna</li></ul>
+        </figure>
+
+        <div class="placa fold-placa">
+          <dl>
+            <div class="lin"><dt>Peça</dt><dd>Agent Skill: pasta com SKILL.md e arquivos de apoio.</dd></div>
+            <div class="lin"><dt>Harnesses</dt><dd>Claude Code, Codex, Google Antigravity, OpenClaw e Hermes, todos com o mesmo peso.</dd></div>
+            <div class="lin"><dt>Montagem</dt><dd>Aponte (symlink) ou copie a pasta para o diretório de skills do harness.</dd></div>
+            <div class="lin"><dt>Origem</dt><dd>Forjada em operação real e saneada antes de entrar.</dd></div>
+            <div class="lin"><dt>Repositório</dt><dd><a href="https://github.com/RafaelMKn/skills-library">github.com/RafaelMKn/skills-library</a></dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="lp-sec" id="lp-cats" aria-labelledby="lp-h-cats">
+        <h2 class="sec-t" id="lp-h-cats">Seis folhas, seis pastas</h2>
+        <p class="sec-p">Cada categoria é uma pasta numerada do repositório. Escolha a aba para abrir a folha, depois marque a peça que quer montar: o comando lá em cima muda para ela.</p>
+<section class="folha" role="tabpanel" id="cat-01" aria-labelledby="tab-01" tabindex="0"><div class="folha-cab"><p class="folha-cod" aria-hidden="true">01</p><div class="folha-tit"><h3>Automação de Processos &amp; n8n / Make</h3><p class="folha-pasta mono">01-automacao-n8n-make/</p><p class="folha-n"><span class="mono">23</span> SKILL.md no disco · contagem em revisão</p></div></div><p class="folha-sub">Peças de exemplo desta folha</p><ul class="pecas"><li><button type="button" class="peca" aria-pressed="false" data-cat="01-automacao-n8n-make" data-skill="n8n-flow-builder"><span class="peca-nome">n8n-flow-builder</span><span class="peca-desc">Constrói fluxos n8n do zero ao ativo, com protocolo para cada alteração estrutural.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li><li><button type="button" class="peca" aria-pressed="false" data-cat="01-automacao-n8n-make" data-skill="n8n-flow-debugger"><span class="peca-nome">n8n-flow-debugger</span><span class="peca-desc">Diagnostica fluxos que falham ou se comportam errado em execução.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li><li><button type="button" class="peca" aria-pressed="false" data-cat="01-automacao-n8n-make" data-skill="make-manager"><span class="peca-nome">make-manager</span><span class="peca-desc">Consulta, cria, edita, ativa e investiga logs de cenários do Make pela API v2.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li><li><button type="button" class="peca" aria-pressed="false" data-cat="01-automacao-n8n-make" data-skill="n8n-agents"><span class="peca-nome">n8n-agents</span><span class="peca-desc">Desenha agentes de IA no n8n do jeito certo: AI Agent, LLM chain, classificadores.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li></ul></section>
+<section class="folha" role="tabpanel" id="cat-02" aria-labelledby="tab-02" tabindex="0" hidden><div class="folha-cab"><p class="folha-cod" aria-hidden="true">02</p><div class="folha-tit"><h3>Design, UI Motion, 3D Web, Vídeo &amp; Criativos</h3><p class="folha-pasta mono">02-design-ui-motion-3d/</p><p class="folha-n"><span class="mono">31</span> SKILL.md no disco · contagem em revisão</p></div></div><p class="folha-sub">Peças de exemplo desta folha</p><ul class="pecas"><li><button type="button" class="peca" aria-pressed="false" data-cat="02-design-ui-motion-3d" data-skill="ascii-video"><span class="peca-nome">ascii-video</span><span class="peca-desc">Converte vídeo ou áudio em MP4/GIF de ASCII colorido.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li><li><button type="button" class="peca" aria-pressed="false" data-cat="02-design-ui-motion-3d" data-skill="architecture-diagram"><span class="peca-nome">architecture-diagram</span><span class="peca-desc">Gera diagramas de arquitetura, nuvem e infraestrutura em SVG dentro de HTML, tema escuro.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li><li><button type="button" class="peca" aria-pressed="false" data-cat="02-design-ui-motion-3d" data-skill="ad-creative"><span class="peca-nome">ad-creative</span><span class="peca-desc">Gera, itera e escala criativos de anúncios pagos: ganchos, títulos, textos e roteiros.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li><li><button type="button" class="peca" aria-pressed="false" data-cat="02-design-ui-motion-3d" data-skill="remotion-video"><span class="peca-nome">remotion-video</span><span class="peca-desc">Renderiza vídeo de verdade com Remotion: composições React, transições e legendas.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li></ul></section>
+<section class="folha" role="tabpanel" id="cat-03" aria-labelledby="tab-03" tabindex="0" hidden><div class="folha-cab"><p class="folha-cod" aria-hidden="true">03</p><div class="folha-tit"><h3>Agentes Autônomos &amp; Engenharia de Prompt</h3><p class="folha-pasta mono">03-agentes-ia-prompts/</p><p class="folha-n"><span class="mono">10</span> SKILL.md no disco · contagem em revisão</p></div></div><p class="folha-sub">Peças de exemplo desta folha</p><ul class="pecas"><li><button type="button" class="peca" aria-pressed="false" data-cat="03-agentes-ia-prompts" data-skill="auditoria-trabalho-de-agente"><span class="peca-nome">auditoria-trabalho-de-agente</span><span class="peca-desc">Confere o que outro agente de IA fez antes de você aceitar o resultado.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li><li><button type="button" class="peca" aria-pressed="false" data-cat="03-agentes-ia-prompts" data-skill="eval-set-agentes"><span class="peca-nome">eval-set-agentes</span><span class="peca-desc">Mede se uma mudança em agente melhorou ou piorou: eval set versionado e comparação de rodadas.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li><li><button type="button" class="peca" aria-pressed="false" data-cat="03-agentes-ia-prompts" data-skill="create-subagent"><span class="peca-nome">create-subagent</span><span class="peca-desc">Cria subagentes personalizados para tarefas especializadas.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li><li><button type="button" class="peca" aria-pressed="false" data-cat="03-agentes-ia-prompts" data-skill="prompt-engineering-agentes"><span class="peca-nome">prompt-engineering-agentes</span><span class="peca-desc">Técnicas de prompt para agentes autônomos: system prompt, persona e instruções.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li></ul></section>
+<section class="folha" role="tabpanel" id="cat-04" aria-labelledby="tab-04" tabindex="0" hidden><div class="folha-cab"><p class="folha-cod" aria-hidden="true">04</p><div class="folha-tit"><h3>APIs, Backend &amp; Banco de Dados</h3><p class="folha-pasta mono">04-backend-apis-banco/</p><p class="folha-n"><span class="mono">13</span> SKILL.md no disco · contagem em revisão</p></div></div><p class="folha-sub">Peças de exemplo desta folha</p><ul class="pecas"><li><button type="button" class="peca" aria-pressed="false" data-cat="04-backend-apis-banco" data-skill="airtable"><span class="peca-nome">airtable</span><span class="peca-desc">API REST do Airtable via curl: CRUD de registros, filtros e upserts.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li><li><button type="button" class="peca" aria-pressed="false" data-cat="04-backend-apis-banco" data-skill="clickup-api"><span class="peca-nome">clickup-api</span><span class="peca-desc">Chama a API REST v2/v3 do ClickUp: tarefas, listas, comentários e webhooks.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li><li><button type="button" class="peca" aria-pressed="false" data-cat="04-backend-apis-banco" data-skill="fastify-best-practices"><span class="peca-nome">fastify-best-practices</span><span class="peca-desc">Guia o desenvolvimento de servidores e APIs REST com Fastify em TypeScript ou JavaScript.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li><li><button type="button" class="peca" aria-pressed="false" data-cat="04-backend-apis-banco" data-skill="prisma-cli"><span class="peca-nome">prisma-cli</span><span class="peca-desc">Referência dos comandos da CLI do Prisma: init, generate, migrate, db, studio.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li></ul></section>
+<section class="folha" role="tabpanel" id="cat-05" aria-labelledby="tab-05" tabindex="0" hidden><div class="folha-cab"><p class="folha-cod" aria-hidden="true">05</p><div class="folha-tit"><h3>Ferramental de Desenvolvimento, CLI &amp; Harness</h3><p class="folha-pasta mono">05-dev-harness-cli/</p><p class="folha-n"><span class="mono">60</span> SKILL.md no disco · contagem em revisão</p></div></div><p class="folha-sub">Peças de exemplo desta folha</p><ul class="pecas"><li><button type="button" class="peca" aria-pressed="false" data-cat="05-dev-harness-cli" data-skill="agent-session-handoff"><span class="peca-nome">agent-session-handoff</span><span class="peca-desc">Encaminha instruções para uma sessão de agente que já está rodando.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li><li><button type="button" class="peca" aria-pressed="false" data-cat="05-dev-harness-cli" data-skill="blocked-page-recovery"><span class="peca-nome">blocked-page-recovery</span><span class="peca-desc">Recupera o acesso quando o fetch falha: 403/429, paywall, WAF, bot wall.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li><li><button type="button" class="peca" aria-pressed="false" data-cat="05-dev-harness-cli" data-skill="systematic-debugging"><span class="peca-nome">systematic-debugging</span><span class="peca-desc">Depuração em 4 fases: entender a causa raiz antes de corrigir.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li><li><button type="button" class="peca" aria-pressed="false" data-cat="05-dev-harness-cli" data-skill="spike"><span class="peca-nome">spike</span><span class="peca-desc">Experimentos descartáveis para validar uma ideia antes de construir.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li></ul></section>
+<section class="folha" role="tabpanel" id="cat-06" aria-labelledby="tab-06" tabindex="0" hidden><div class="folha-cab"><p class="folha-cod" aria-hidden="true">06</p><div class="folha-tit"><h3>Produtividade, Pesquisa, Documentos &amp; Mídia</h3><p class="folha-pasta mono">06-produtividade-pesquisa-docs/</p><p class="folha-n"><span class="mono">37</span> SKILL.md no disco · contagem em revisão</p></div></div><p class="folha-sub">Peças de exemplo desta folha</p><ul class="pecas"><li><button type="button" class="peca" aria-pressed="false" data-cat="06-produtividade-pesquisa-docs" data-skill="arxiv"><span class="peca-nome">arxiv</span><span class="peca-desc">Busca artigos no arXiv por palavra-chave, autor, categoria ou ID.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li><li><button type="button" class="peca" aria-pressed="false" data-cat="06-produtividade-pesquisa-docs" data-skill="competitor-news-monitor"><span class="peca-nome">competitor-news-monitor</span><span class="peca-desc">Vigia empresas nomeadas e entrega resumos com fonte.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li><li><button type="button" class="peca" aria-pressed="false" data-cat="06-produtividade-pesquisa-docs" data-skill="pdf"><span class="peca-nome">pdf</span><span class="peca-desc">Cria, lê, junta, preenche e edita PDFs, com OCR.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li><li><button type="button" class="peca" aria-pressed="false" data-cat="06-produtividade-pesquisa-docs" data-skill="obsidian"><span class="peca-nome">obsidian</span><span class="peca-desc">Lê, busca, cria e edita notas no vault do Obsidian.</span><span class="peca-st"><span class="peca-st-off">Escolher peça</span><span class="peca-st-on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Escolhida</span></span></button></li></ul></section>
+        <p class="cat-nota" id="cat-nota" role="status" aria-live="polite">Mostrando algumas peças de cada folha, não a lista completa. A altura das abas segue o volume de SKILL.md no disco; a contagem está em revisão (o README ainda diz outro número).</p>
+      </section>
+
+      <section class="lp-sec" id="lp-install" aria-labelledby="lp-h-inst">
+        <h2 class="sec-t" id="lp-h-inst">Onde cada harness lê as skills</h2>
+        <p class="sec-p">Uma pasta, vários harnesses. Skills são pastas: o que muda de um harness para outro é só o destino. Use o comando da instrução de montagem no topo, ou aponte a pasta na mão.</p>
+        <table class="tbl-h">
+          <caption class="sr-only">Destino das skills por harness</caption>
+          <thead><tr><th scope="col">Harness</th><th scope="col">Destino das skills</th><th scope="col" class="hide-s">Como</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Claude Code</th><td class="mono" data-l="Destino">~/.claude/skills/</td><td class="hide-s">Symlink da pasta da skill</td></tr>
+            <tr><th scope="row">Google Antigravity</th><td class="mono" data-l="Destino">.agents/skills/</td><td class="hide-s">Apontar a pasta</td></tr>
+            <tr><th scope="row">Codex</th><td class="mono" data-l="Destino">.agents/skills/</td><td class="hide-s">Apontar a pasta</td></tr>
+            <tr><th scope="row">OpenClaw</th><td class="mono" data-l="Destino">~/.hermes/skills/&lt;categoria&gt;/&lt;skill&gt;/</td><td class="hide-s">Copiar ou apontar</td></tr>
+            <tr><th scope="row">Hermes</th><td class="mono" data-l="Destino">~/.hermes/skills/&lt;categoria&gt;/&lt;skill&gt;/</td><td class="hide-s">Copiar ou apontar</td></tr>
+          </tbody>
+        </table>
+        <p><a class="btn" href="#lp-montagem" data-goto="mont">Voltar à instrução de montagem</a></p>
+      </section>
+
+      <footer class="lp-foot dark">
+        <div class="regua" aria-hidden="true"></div>
+        <div style="display:grid;gap:12px">
+          <div class="f-marca"><svg class="sym" aria-hidden="true"><use href="#sym-akmon"/></svg><span class="wm">Akmon</span></div>
+          <p>Do grego <b>ákmōn</b>, “bigorna”. Biblioteca curada de Agent Skills, forjada em operação real.</p>
+        </div>
+        <div style="display:grid;gap:10px;align-content:start">
+          <p><a href="https://github.com/RafaelMKn/skills-library">Repositório no GitHub</a></p>
+          <p>Contagem de skills em revisão: README e disco ainda divergem.</p>
+        </div>
+        <p class="f-fim">Tipografia: Big Shoulders Display, Big Shoulders Stencil Display, Barlow e JetBrains Mono, todas sob a SIL Open Font License 1.1.</p>
+      </footer>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+(function(){
+  'use strict';
+  var frame=new URLSearchParams(location.search).get('frame');
+  var isLanding=frame&&frame.indexOf('landing')===0;
+  var $=function(s,r){return (r||document).querySelector(s)};
+  var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* ---------- troca de folha (abas) ---------- */
+  function replay(panel){
+    panel.classList.remove('troca');
+    void panel.offsetWidth;
+    if(!reduced.matches){panel.classList.add('troca');}
+  }
+  function initTabs(root){
+    var tabs=$$('[role="tab"]',root), panels=$$('[role="tabpanel"]',root);
+    function select(tab,focus){
+      tabs.forEach(function(t){var on=t===tab;t.setAttribute('aria-selected',on?'true':'false');t.tabIndex=on?0:-1;});
+      var id=tab.getAttribute('aria-controls'),cur=null;
+      panels.forEach(function(p){var show=p.id===id;p.hidden=!show;if(show)cur=p;});
+      if(cur)replay(cur);
+      if(focus)tab.focus();
+    }
+    tabs.forEach(function(t,i){
+      t.addEventListener('click',function(){select(t);root.dispatchEvent(new CustomEvent('tabsel',{detail:t}));});
+      t.addEventListener('keydown',function(e){
+        var k=e.key,n=tabs.length,j=null;
+        if(k==='ArrowDown'||k==='ArrowRight')j=(i+1)%n;
+        else if(k==='ArrowUp'||k==='ArrowLeft')j=(i-1+n)%n;
+        else if(k==='Home')j=0;else if(k==='End')j=n-1;
+        if(j!==null){e.preventDefault();select(tabs[j],true);root.dispatchEvent(new CustomEvent('tabsel',{detail:tabs[j]}));}
+      });
+    });
+    $$('.folha',root).forEach(function(p){p.addEventListener('animationend',function(){p.classList.remove('troca');});});
+    return {select:select,tabs:tabs,panels:panels};
+  }
+
+  /* ---------- copiar ---------- */
+  function copyText(txt){
+    if(navigator.clipboard&&window.isSecureContext){
+      return navigator.clipboard.writeText(txt).then(function(){return true;},function(){return legacy(txt);});
+    }
+    return Promise.resolve(legacy(txt));
+  }
+  function legacy(txt){
+    try{
+      var ta=document.createElement('textarea');ta.value=txt;ta.setAttribute('readonly','');
+      ta.style.cssText='position:fixed;top:0;left:0;opacity:0';document.body.appendChild(ta);ta.select();
+      var ok=document.execCommand('copy');document.body.removeChild(ta);return ok;
+    }catch(e){return false;}
+  }
+  function initCopy(box){
+    var btn=$('[data-copy]',box),src=$('[data-copy-src]',box),msg=$('.cmd-msg',box),lab=$('span',btn),ic=$('use',btn),t;
+    function set(state,text,icon){
+      btn.setAttribute('data-state',state);lab.textContent=text;ic.setAttribute('href',icon);
+    }
+    function reset(){set('idle','Copiar','#i-copy');msg.innerHTML='';btn.removeAttribute('data-state');}
+    box._reset=reset;
+    btn.addEventListener('click',function(){
+      var txt=src.getAttribute('data-raw')||src.textContent.replace(/^\$/gm,'');
+      clearTimeout(t);
+      copyText(txt).then(function(ok){
+        if(ok){set('ok','Copiado','#i-check');msg.textContent='Comando copiado para a área de transferência.';}
+        else{set('fail','Não copiou','#i-x');msg.innerHTML='<strong>O navegador bloqueou a cópia.</strong> Selecione o comando acima e use Ctrl+C.';}
+        t=setTimeout(reset,5000);
+      });
+    });
+  }
+
+  /* ---------- landing ---------- */
+  var PECA={cat:'01-automacao-n8n-make',skill:'n8n-flow-builder'};
+  var HARN={
+    claude:{rot:'Claude Code',dest:'Destino: <span class="mono">~/.claude/skills/</span>. Rode dentro da pasta clonada.',
+      lines:function(p){return ['git clone https://github.com/RafaelMKn/skills-library.git && cd skills-library','ln -s "$(pwd)/'+p.cat+'/'+p.skill+'" ~/.claude/skills/'+p.skill];}},
+    agents:{rot:'Google Antigravity · Codex',dest:'Destino: <span class="mono">.agents/skills/</span>, na raiz do projeto onde o harness roda.',
+      lines:function(p){return ['git clone https://github.com/RafaelMKn/skills-library.git && cd skills-library','ln -s "$(pwd)/'+p.cat+'/'+p.skill+'" .agents/skills/'+p.skill];}},
+    hermes:{rot:'Hermes · OpenClaw',dest:'Destino: <span class="mono">~/.hermes/skills/&lt;categoria&gt;/&lt;skill&gt;/</span>. Em vez do link, você pode copiar a pasta com <span class="mono">cp -r</span>.',
+      lines:function(p){return ['git clone https://github.com/RafaelMKn/skills-library.git && cd skills-library','mkdir -p ~/.hermes/skills/'+p.cat,'ln -s "$(pwd)/'+p.cat+'/'+p.skill+'" ~/.hermes/skills/'+p.cat+'/'+p.skill];}}
+  };
+  var harness='claude';
+
+  function renderCmd(){
+    var h=HARN[harness],L=h.lines(PECA),pre=$('#m-pre');
+    pre.setAttribute('data-raw',L.join('\n'));
+    pre.innerHTML=L.map(function(l){return '<span class="ps">$</span>'+l.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\//g,'/<wbr>');}).join('\n');
+    $('#m-rot').textContent=h.rot;$('#m-destino').innerHTML=h.dest;
+    $('#m-peca').textContent=PECA.cat+'/'+PECA.skill;
+    var box=$('#lp-cmd');if(box._reset)box._reset();
+  }
+  function go(el){
+    var r=el.getBoundingClientRect();
+    if(r.top>window.innerHeight*0.6||r.bottom<0){window.scrollTo(0,r.top+window.pageYOffset);}
+  }
+  function initLanding(){
+    var lp=$('#landing');
+    var T=initTabs(lp);
+    lp.addEventListener('tabsel',function(){var s=$('#lp-cats');if(s)go(s);});
+    $$('.peca',lp).forEach(function(b){
+      b.addEventListener('click',function(){
+        PECA={cat:b.getAttribute('data-cat'),skill:b.getAttribute('data-skill')};
+        $$('.peca',lp).forEach(function(o){o.setAttribute('aria-pressed',o===b?'true':'false');});
+        renderCmd();
+        $('#cat-nota').textContent='Peça escolhida: '+PECA.cat+'/'+PECA.skill+'. O comando em Instrução de montagem foi atualizado.';
+      });
+    });
+    var radios=$$('[role="radio"]',lp);
+    radios.forEach(function(r,i){
+      function pick(x,focus){radios.forEach(function(o){o.setAttribute('aria-checked',o===x?'true':'false');o.tabIndex=o===x?0:-1;});harness=x.getAttribute('data-h');renderCmd();if(focus)x.focus();}
+      r.addEventListener('click',function(){pick(r);});
+      r.addEventListener('keydown',function(e){
+        var n=radios.length,j=null;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown')j=(i+1)%n;else if(e.key==='ArrowLeft'||e.key==='ArrowUp')j=(i-1+n)%n;
+        if(j!==null){e.preventDefault();pick(radios[j],true);}
+      });
+    });
+    $$('[data-goto]',lp).forEach(function(a){a.addEventListener('click',function(e){
+      e.preventDefault();var t=$(a.getAttribute('href'));if(t){window.scrollTo(0,t.getBoundingClientRect().top+window.pageYOffset-8);var f=$('button,a',t);}
+    });});
+    renderCmd();initCopy($('#lp-cmd'));
+    // pré-marca a peça padrão do BRIEF
+    var def=$('.peca[data-skill="n8n-flow-builder"]',lp);if(def)def.setAttribute('aria-pressed','true');
+    // régua da gravura
+    var rc='',rl='';
+    for(var c=0;c<=93;c++){var x=90+c*6,len=c%10===0?10:(c%5===0?7:4);rc+='M'+x+' 900V'+(900+len);}
+    rc='M90 900H648'+rc;
+    for(var r=0;r<=70;r++){var y=50+r*12,l2=r%10===0?10:(r%5===0?7:4);rl+='M80 '+y+'H'+(80-l2);}
+    rl='M80 50V890'+rl;
+    $('#g-rc').setAttribute('d',rc);$('#g-rl').setAttribute('d',rl);
+    // altura para o board (moldura)
+    if(window.parent!==window){
+      var send=function(){parent.postMessage({akmon:'h',frame:frame,h:Math.ceil(document.body.getBoundingClientRect().height)},'*');};
+      if(window.ResizeObserver)new ResizeObserver(send).observe(document.body);
+      window.addEventListener('load',send);send();
+    }
+  }
+
+  /* ---------- board ---------- */
+  function hex2rgb(h){h=h.replace('#','');return [0,2,4].map(function(i){return parseInt(h.substr(i,2),16);});}
+  function lum(h){var c=hex2rgb(h).map(function(v){v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);});return 0.2126*c[0]+0.7152*c[1]+0.0722*c[2];}
+  function ratio(a,b){var x=lum(a),y=lum(b),hi=Math.max(x,y),lo=Math.min(x,y);return (hi+0.05)/(lo+0.05);}
+  var cs=getComputedStyle(document.documentElement);
+  function V(n){return cs.getPropertyValue(n).trim().toUpperCase();}
+
+  function initPalette(){
+    var CORES=[
+      ['--papel','Papel','Fundo da folha. Metade do board e de toda a landing.'],
+      ['--papel-2','Papel 2','Abas, placas, régua e estado de hover.'],
+      ['--tinta','Tinta','Texto, títulos, linhas fortes e placas escuras.'],
+      ['--tinta-2','Tinta 2','Texto secundário sobre papel.'],
+      ['--aco','Aço','Linhas finas, rebites e régua. Nunca texto.'],
+      ['--aco-claro','Aço claro','Texto secundário sobre tinta.'],
+      ['--brasa','Brasa','Marcação sobre papel: código de peça, seleção, lâmina.'],
+      ['--brasa-viva','Brasa viva','Marcação sobre tinta. Não serve a texto sobre papel.'],
+      ['--mesa','Mesa','Bancada atrás das folhas, só no board.']
+    ];
+    var g=$('#sw-grid');
+    CORES.forEach(function(c){
+      var hx=V(c[0]),d=document.createElement('div');d.className='sw';
+      d.innerHTML='<div class="sw-cor" style="background:'+hx+'"></div><div class="sw-txt"><span class="sw-n">'+c[1]+'</span><span class="sw-h">'+hx+' · rgb('+hex2rgb(hx).join(' ')+')</span><span class="sw-u">'+c[2]+'</span></div>';
+      g.appendChild(d);
+    });
+    var PARES=[
+      ['Texto principal','--tinta','--papel','Corpo e títulos',4.5],
+      ['Texto secundário','--tinta-2','--papel','Notas, legendas',4.5],
+      ['Texto secundário sobre aba','--tinta-2','--papel-2','Legenda em placa e aba',4.5],
+      ['Marcação sobre papel','--brasa','--papel','Código de peça, links, número de folha',4.5],
+      ['Marcação sobre papel 2','--brasa','--papel-2','Hover e aba em papel-2',4.5],
+      ['Texto sobre brasa','--papel','--brasa','Botão de copiar, seleção de texto',4.5],
+      ['Texto sobre tinta','--papel','--tinta','Instrução de montagem, rodapé',4.5],
+      ['Texto secundário sobre tinta','--aco-claro','--tinta','Rótulos da placa escura',4.5],
+      ['Brasa viva sobre tinta','--brasa-viva','--tinta','Prompt do comando, foco sobre tinta',4.5],
+      ['Texto sobre brasa viva','--tinta','--brasa-viva','Botão de copiar em hover',4.5],
+      ['Linhas de aço sobre papel','--aco','--papel','Réguas, bordas, rebites (gráfico)',3],
+      ['Brasa viva sobre papel','--brasa-viva','--papel','Não usar: só ornamento',4.5]
+    ];
+    var tb=$('#ct-body'),fails=[];
+    PARES.forEach(function(p){
+      var fg=V(p[1]),bg=V(p[2]),r=ratio(fg,bg),ok=r>=p[4];
+      var cls,txt;
+      if(r>=7){cls='ok';txt='AAA · texto';}
+      else if(r>=4.5){cls='ok';txt='AA · texto';}
+      else if(r>=3){cls='ui';txt='AA grande e gráfico';}
+      else{cls='no';txt='falha';}
+      var uso=p[0]+' <span style="color:var(--tinta-2)">· '+p[3]+'</span>';
+      var tr=document.createElement('tr');
+      tr.innerHTML='<td>'+uso+'</td><td><span class="amostra" style="background:'+bg+';color:'+fg+'">Akmon 04</span></td><td class="mono" style="font-size:13px">'+fg+' / '+bg+'</td><td class="r">'+r.toFixed(2)+':1</td><td><span class="sel '+cls+'">'+txt+'</span></td>';
+      tb.appendChild(tr);
+      if(!ok)fails.push(p[0]);
+    });
+    $('#pal-nota').textContent='Cálculo: (L1 + 0,05) / (L2 + 0,05), com luminância relativa WCAG 2.x, rodado agora no navegador. Pares que ficam abaixo de 4,5:1 para texto: '+(fails.length?fails.join('; '):'nenhum')+'. O que falha aparece como “falha” ou “AA grande e gráfico” e não é usado como texto pequeno.';
+    var pr=$('#pal-prop');
+    [['--papel','Papel',54,'--tinta'],['--papel-2','Papel 2',16,'--tinta'],['--tinta','Tinta',20,'--papel'],['--brasa','Brasa',10,'--papel']].forEach(function(s){
+      var e=document.createElement('span');e.style.flex=s[2]+' 1 0';e.style.background=V(s[0]);e.style.color=V(s[3]);e.textContent=s[1];pr.appendChild(e);
+    });
+  }
+
+  function initDemo(){
+    var demo=$('#demo');if(!demo)return;
+    var T=initTabs(demo);
+    $('#repetir').addEventListener('click',function(){var p=T.panels.filter(function(x){return !x.hidden;})[0];if(p)replay(p);});
+    var st=$('#rm-status');
+    function upd(){st.textContent=reduced.matches?'Movimento reduzido ativo: a troca é imediata.':'Movimento reduzido inativo: a troca roda em 2 quadros.';}
+    upd();if(reduced.addEventListener)reduced.addEventListener('change',upd);
+  }
+
+  function initFrames(){
+    var d=$('#mold-d'),esc=$('#mold-d-esc'),ifd=$('#if-d'),ifm=$('#if-m'),info=$('#esc-info');
+    if(!d)return;
+    var H=2400;ifd.src=ifd.getAttribute('data-src');ifm.src=ifm.getAttribute('data-src');
+    function scale(){
+      var s=Math.min(1,d.clientWidth/1440);
+      esc.style.transform='scale('+s+')';
+      d.style.height=Math.ceil(H*s)+'px';
+      if(info)info.textContent='escala '+s.toFixed(2).replace('.',',')+' · '+Math.round(1440*s)+' px de largura real na tela';
+    }
+    window.addEventListener('message',function(e){
+      var m=e.data;if(!m||m.akmon!=='h')return;
+      if(e.source===ifd.contentWindow){H=m.h;ifd.style.height=H+'px';scale();}
+      else if(e.source===ifm.contentWindow){ifm.style.height=m.h+'px';}
+    });
+    window.addEventListener('resize',scale);scale();
+  }
+
+  if(isLanding){initLanding();}
+  else if(frame==='marca'||frame==='paleta'){initPalette();}
+  else{
+    $$('.cmd[data-cmd-live]').forEach(function(b){initCopy(b);});
+    initPalette();initDemo();initFrames();
+  }
+})();
+</script>
+</body>
+</html>

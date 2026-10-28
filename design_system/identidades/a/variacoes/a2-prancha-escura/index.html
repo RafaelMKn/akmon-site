@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Akmon · A2 Prancha escura</title>
+<meta name="description" content="Akmon: biblioteca curada de Agent Skills para Claude Code, Codex, Google Antigravity, OpenClaw e Hermes.">
+<meta name="theme-color" content="#16140F">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="stylesheet" href="../shared/base.css">
+<style>
+.folha-cab{display:flex;gap:20px;align-items:flex-start;margin-bottom:20px}
+.folha-cod{font:800 88px/.8 var(--f-marca);color:var(--marca);margin:0}
+.folha-cab h3{font:800 28px/1 var(--f-titulo);text-transform:uppercase;margin:0 0 6px}
+.folha-pasta{margin:0;color:var(--texto-2)}
+.folha-n{margin:4px 0 0;font-size:14px;color:var(--texto-2)}
+.folha-nota{font-size:13px;color:var(--texto-2);margin:12px 0 0}
+.top{border-color:#4A463C}
+.regua{--linha:#4A463C}
+/* prancha: gravura grande à esquerda, cotada; texto e montagem à direita */
+.prancha{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);border-bottom:1px solid #4A463C;}
+.lado-art{position:relative;border-right:1px solid #4A463C;overflow:hidden;padding:56px 0 28px 56px;
+  background:linear-gradient(#2A2720 1px,transparent 1px) 0 0/24px 24px,linear-gradient(90deg,#2A2720 1px,transparent 1px) 0 0/24px 24px}
+.lado-art .art{--fs:clamp(5px,.86vw,12.4px);--lh:1.1;position:relative;width:max-content}
+.lado-art .corpo{color:var(--papel)}
+.lado-art .faisca{color:var(--brasa-viva)}
+.r-top,.r-esq{position:absolute;font:400 10px/1 var(--f-mono);color:var(--aco)}
+.r-top{left:56px;right:0;top:0;height:40px;border-bottom:1px solid #4A463C;
+  background:repeating-linear-gradient(90deg,#4A463C 0 1px,transparent 1px calc(var(--cw)*1)) bottom/100% 5px no-repeat,repeating-linear-gradient(90deg,var(--aco) 0 1px,transparent 1px calc(var(--cw)*10)) bottom/100% 12px no-repeat}
+.r-esq{top:56px;bottom:0;left:0;width:40px;border-right:1px solid #4A463C;
+  background:repeating-linear-gradient(#4A463C 0 1px,transparent 1px calc(var(--lhp)*1)) right/5px 100% no-repeat,repeating-linear-gradient(var(--aco) 0 1px,transparent 1px calc(var(--lhp)*10)) right/12px 100% no-repeat}
+.r-top span{position:absolute;top:12px;transform:translateX(-50%)}
+.r-esq span{position:absolute;left:8px;transform:translateY(-50%)}
+.leg{position:absolute;display:flex;align-items:center;gap:8px;background:var(--tinta);padding:3px 6px 3px 0;transform:translateY(-50%);font:600 11px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--papel);white-space:nowrap}
+.leg b{display:inline-grid;place-items:center;width:20px;height:20px;background:var(--brasa-viva);color:var(--tinta);font:800 13px/1 var(--f-titulo)}
+.leg::before{content:"";width:28px;height:1px;background:var(--brasa-viva);order:-1}
+.fig-cap{margin:28px 0 0;font-size:13px;color:var(--aco-claro);max-width:44ch}
+.fig-cap b{color:var(--papel)}
+.lado-txt{padding:56px clamp(20px,4vw,56px) 48px;display:flex;flex-direction:column;gap:26px;justify-content:center}
+.lado-txt .cod{font:600 11px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--brasa-viva);margin:0}
+.lado-txt h1{font:800 clamp(52px,6.4vw,104px)/.86 var(--f-titulo);text-transform:uppercase;margin:0;letter-spacing:-.01em}
+.lado-txt h1 .st{font-family:var(--f-marca)}
+.lado-txt .lead{color:var(--aco-claro);margin:0;max-width:52ch}
+.lado-txt .lead b{color:var(--papel)}
+.lado-txt .mont{background:#0E0D0A;border-color:#4A463C}
+.harn{display:flex;flex-wrap:wrap;gap:0;margin:0;padding:0;list-style:none;border-top:1px solid #4A463C}
+.harn li{flex:1 1 auto;padding:10px 10px 0 0;font:700 14px/1 var(--f-titulo);text-transform:uppercase;letter-spacing:.06em;color:var(--aco-claro)}
+
+/* trilho horizontal: largura de cada aba proporcional ao volume */
+.sec{padding:72px clamp(20px,4vw,56px);border-bottom:1px solid #4A463C}
+.trilho{display:flex;border:1px solid var(--papel);margin-bottom:32px}
+.tab{all:unset;box-sizing:border-box;cursor:pointer;flex:var(--n) 1 0;min-width:0;display:grid;grid-template-rows:auto 1fr auto;gap:10px;padding:14px 14px 12px;min-height:170px;border-right:1px solid var(--papel)}
+.tab:last-child{border-right:0}
+.tab-num{font:800 48px/.8 var(--f-marca);color:var(--aco)}
+.tab-nome{font:700 16px/1.05 var(--f-titulo);text-transform:uppercase;letter-spacing:.03em;overflow-wrap:anywhere}
+.tab-nome-l{display:none}
+.tab-pasta{font-size:11px;color:var(--aco);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tab-n{display:none}
+.tab:hover .tab-num{color:var(--brasa-viva)}
+.tab[aria-selected="true"]{background:var(--brasa-viva);color:var(--tinta)}
+.tab[aria-selected="true"] .tab-num,.tab[aria-selected="true"] .tab-pasta{color:var(--tinta)}
+.tab:focus-visible{outline:2px solid var(--papel);outline-offset:-5px}
+.trilho-nota{font-size:13px;color:var(--aco-claro);margin:-20px 0 28px}
+.duas{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:48px;align-items:start}
+.duas .t-sec{position:sticky;top:24px}
+.peca[aria-pressed="true"]{background:var(--papel);color:var(--tinta)}
+.peca[aria-pressed="true"] .peca-nome,.peca[aria-pressed="true"] .peca-acao{color:var(--brasa)}
+.tbl thead th{border-bottom-color:var(--papel)}
+.foot{border-top:1px solid #4A463C}
+
+@media (max-width:980px){
+  .prancha{grid-template-columns:1fr;min-height:0}
+  .lado-art{border-right:0;border-bottom:1px solid #4A463C;padding:44px 0 56px 44px}
+  .lado-art .art{--fs:clamp(4px,1.45vw,9px)}
+  .r-top{left:44px;height:32px}.r-esq{top:44px;width:32px}
+  .r-top span,.r-esq span{display:none}
+  .fig-cap{font-size:12px;padding-right:12px}
+  .lado-txt{order:-1;padding-top:36px}
+  .trilho{flex-wrap:wrap}
+  .tab{flex:1 1 30%;min-height:110px;border-bottom:1px solid var(--papel)}
+  .duas{grid-template-columns:1fr;gap:20px}
+  .duas .t-sec{position:static}
+}
+@media (max-width:640px){
+  .lado-txt h1{font-size:52px}
+  .leg{font-size:9px}.leg::before{width:14px}
+  .tab{flex:1 1 45%}
+  .tab-num{font-size:36px}
+  .folha-cod{font-size:60px}
+}
+
+.art-wrap{position:relative;width:max-content;--fs:clamp(5px,.86vw,12.4px);--lh:1.1}
+@media (max-width:980px){.art-wrap{--fs:clamp(4px,1.45vw,9px)}}
+
+</style>
+</head>
+<body class="escuro">
+<header class="top">
+  <a class="brand" href="#" aria-label="Akmon, início"><svg class="sym" aria-hidden="true"><use href="#sym-akmon"/></svg><span class="wm">Akmon</span></a>
+  <span class="cod">Prancha técnica · Fig. 1</span>
+  <nav aria-label="Principal"><a class="n-sec" href="#categorias">Categorias</a><a class="n-sec" href="#instalar">Instalar</a><a href="https://github.com/RafaelMKn/skills-library">GitHub<svg class="ic" aria-hidden="true"><use href="#i-out"/></svg></a></nav>
+</header>
+<main>
+<section class="prancha" aria-labelledby="h1">
+  <div class="lado-art" style="--cw:calc(.6*clamp(5px,.86vw,12.4px));--lhp:calc(1.1*clamp(5px,.86vw,12.4px))">
+    <div class="r-top" aria-hidden="true"><span style="left:calc(0*var(--cw))">0</span><span style="left:calc(10*var(--cw))">10</span><span style="left:calc(20*var(--cw))">20</span><span style="left:calc(30*var(--cw))">30</span><span style="left:calc(40*var(--cw))">40</span><span style="left:calc(50*var(--cw))">50</span><span style="left:calc(60*var(--cw))">60</span><span style="left:calc(70*var(--cw))">70</span><span style="left:calc(80*var(--cw))">80</span><span style="left:calc(90*var(--cw))">90</span></div>
+    <div class="r-esq" aria-hidden="true"><span style="top:calc(0*var(--lhp))">0</span><span style="top:calc(10*var(--lhp))">10</span><span style="top:calc(20*var(--lhp))">20</span><span style="top:calc(30*var(--lhp))">30</span><span style="top:calc(40*var(--lhp))">40</span><span style="top:calc(50*var(--lhp))">50</span><span style="top:calc(60*var(--lhp))">60</span><span style="top:calc(70*var(--lhp))">70</span></div>
+    <div class="art-wrap"><figure class="art" data-art role="img" aria-label="Gravura em ASCII de Hefesto, o ferreiro, com o martelo erguido sobre uma lâmina em brasa apoiada na bigorna"></figure>
+    <span class="leg" aria-hidden="true" style="left:calc(58*.6*var(--fs));top:calc(2*var(--lh)*var(--fs))"><b>A</b>Martelo</span><span class="leg" aria-hidden="true" style="left:calc(2*.6*var(--fs));top:calc(38*var(--lh)*var(--fs))"><b>B</b>Faíscas</span><span class="leg" aria-hidden="true" style="left:calc(47*.6*var(--fs));top:calc(42.5*var(--lh)*var(--fs))"><b>C</b>Lâmina</span><span class="leg" aria-hidden="true" style="left:calc(3*.6*var(--fs));top:calc(64.5*var(--lh)*var(--fs))"><b>D</b>Bigorna</span></div>
+    <p class="fig-cap"><b>Fig. 1.</b> Hefesto forjando uma lâmina, gravado em 93 colunas por 70 linhas de caracteres. Faíscas e lâmina em brasa.</p>
+  </div>
+  <div class="lado-txt">
+    <p class="cod">Akmon · biblioteca de Agent Skills</p>
+    <h1 id="h1">Skills para agentes, <span class="st">forjadas</span> como <em class="m">ferramentas</em>.</h1>
+    <p class="lead">Akmon é uma biblioteca curada de <b>Agent Skills</b>: pastas com SKILL.md que funcionam em Claude Code, Codex, Google Antigravity, OpenClaw e Hermes. Cada peça veio de operação real e tem pasta, código e instrução de montagem.</p>
+    <div class="mont" id="montagem" aria-labelledby="h-mont">
+  <h2 id="h-mont">Instrução de montagem</h2>
+  <div class="seg" role="radiogroup" aria-label="Harness">
+    <button type="button" role="radio" aria-checked="true" data-h="claude" tabindex="0">Claude Code</button>
+    <button type="button" role="radio" aria-checked="false" data-h="agents" tabindex="-1">Antigravity · Codex</button>
+    <button type="button" role="radio" aria-checked="false" data-h="hermes" tabindex="-1">Hermes · OpenClaw</button>
+  </div>
+  <p class="m-peca">Peça: <b data-m-peca></b>. <a href="#categorias">Trocar peça</a></p>
+  <div class="cmd">
+    <div class="cmd-bar"><span data-m-rot></span><button class="copy" type="button"></button></div>
+    <pre data-m-pre tabindex="0" aria-label="Comando de instalação"></pre>
+    <p class="cmd-msg" role="status" aria-live="polite"></p>
+  </div>
+  <p class="m-dest" data-m-dest></p>
+</div>
+    <ul class="harn" aria-label="Harnesses compatíveis"><li>Claude Code</li><li>Codex</li><li>Antigravity</li><li>OpenClaw</li><li>Hermes</li></ul>
+  </div>
+</section>
+
+<section class="sec" id="categorias" aria-labelledby="h-cats">
+  <h2 class="t-sec" id="h-cats">Seis pastas, <em class="m">um trilho</em></h2>
+  <p class="p-sec">A largura de cada aba segue o volume de SKILL.md na pasta. Escolha a aba, depois a peça: o comando da prancha muda para ela.</p>
+  <div class="trilho" data-tabs="#folha" aria-label="Categorias de skills"></div>
+  <p class="trilho-nota">Contagem em revisão: README e disco ainda divergem.</p>
+  <div id="folha"></div>
+</section>
+
+<section class="sec" id="instalar" aria-labelledby="h-inst">
+  <div class="duas">
+    <h2 class="t-sec" id="h-inst">Onde cada harness lê as skills</h2>
+    <div><table class="tbl">
+  <caption class="sr-only">Destino das skills por harness</caption>
+  <thead><tr><th scope="col">Harness</th><th scope="col">Destino das skills</th><th scope="col" class="hide-s">Como</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Claude Code</th><td class="mono">~/.claude/skills/</td><td class="hide-s">Symlink da pasta da skill</td></tr>
+    <tr><th scope="row">Google Antigravity</th><td class="mono">.agents/skills/</td><td class="hide-s">Apontar a pasta</td></tr>
+    <tr><th scope="row">Codex</th><td class="mono">.agents/skills/</td><td class="hide-s">Apontar a pasta</td></tr>
+    <tr><th scope="row">OpenClaw</th><td class="mono">~/.hermes/skills/&lt;categoria&gt;/&lt;skill&gt;/</td><td class="hide-s">Copiar ou apontar</td></tr>
+    <tr><th scope="row">Hermes</th><td class="mono">~/.hermes/skills/&lt;categoria&gt;/&lt;skill&gt;/</td><td class="hide-s">Copiar ou apontar</td></tr>
+  </tbody>
+</table><p><a class="btn alt" href="#montagem">Voltar à instrução de montagem</a></p></div>
+  </div>
+</section>
+</main>
+<footer class="foot">
+  <div style="display:grid;gap:12px"><div class="f-marca"><svg class="sym" aria-hidden="true"><use href="#sym-akmon"/></svg><span class="wm">Akmon</span></div>
+  <p>Do grego <b>ákmōn</b>, “bigorna”. Biblioteca curada de Agent Skills, forjada em operação real.</p></div>
+  <div style="display:grid;gap:10px;align-content:start"><p><a href="https://github.com/RafaelMKn/skills-library">Repositório no GitHub</a></p><p>Contagem de skills em revisão: README e disco ainda divergem.</p></div>
+  <p class="f-fim">Tipografia: Big Shoulders Display, Big Shoulders Stencil Display, Barlow e JetBrains Mono, todas sob a SIL Open Font License 1.1.</p>
+</footer>
+<script src="../shared/dados.js"></script>
+<script src="../shared/base.js"></script>
+</body>
+</html>

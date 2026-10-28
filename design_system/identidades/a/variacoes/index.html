@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Akmon · Identidade A — 3 variações de landing</title>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<style>
+  :root{--bg:#111;--fg:#eee;--muted:#9a9a9a;--line:#2a2a2a}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:14px/1.4 system-ui,sans-serif}
+  body{display:grid;grid-template-rows:auto minmax(0,1fr)}
+  header{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}
+  header strong{margin-right:auto}
+  .btns{display:flex;flex-wrap:wrap;gap:6px}
+  button{font:inherit;color:var(--fg);background:transparent;border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer}
+  button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+  button:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+  main{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));min-height:0}
+  main.solo{grid-template-columns:minmax(0,1fr)}
+  figure{margin:0;display:grid;grid-template-rows:auto minmax(0,1fr);min-height:0;border-right:1px solid var(--line)}
+  figure[hidden]{display:none}
+  figcaption{padding:8px 12px;color:var(--muted)}
+  figcaption b{color:var(--fg)}
+  figcaption a{color:var(--fg)}
+  iframe{width:100%;height:100%;border:0;background:#fff}
+  .mob iframe{width:390px;justify-self:center;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+</style>
+</head>
+<body>
+<header>
+  <strong>Akmon · Identidade A — 3 variações de landing</strong>
+  <div class="btns" role="group" aria-label="Mostrar">
+    <button type="button" data-v="todas" aria-pressed="true">Lado a lado</button>
+    <button type="button" data-v="a1" aria-pressed="false">A1</button>
+    <button type="button" data-v="a1b" aria-pressed="false">A1 tela inteira</button>
+    <button type="button" data-v="a2" aria-pressed="false">A2</button>
+    <button type="button" data-v="a3" aria-pressed="false">A3</button>
+  </div>
+  <div class="btns" role="group" aria-label="Largura">
+    <button type="button" data-w="desk" aria-pressed="true">Desktop</button>
+    <button type="button" data-w="mob" aria-pressed="false">390</button>
+  </div>
+</header>
+<main>
+  <figure id="a1"><figcaption><b>A1 · Gravura central</b> (Alethe): wordmark gigante, ferreiro sobreposto ao centro, bigorna pousada na bancada. <a href="a1-gravura-central/index.html">abrir</a></figcaption><iframe src="a1-gravura-central/index.html" title="Variação A1"></iframe></figure>
+  <figure id="a1b" hidden><figcaption><b>A1 · tela inteira</b>: mesma composição, sem a moldura; wordmark e gravura crescem até telas largas. <a href="a1b-gravura-tela-inteira/index.html">abrir</a></figcaption><iframe src="a1b-gravura-tela-inteira/index.html" title="Variação A1 tela inteira"></iframe></figure>
+  <figure id="a2"><figcaption><b>A2 · Prancha escura</b>: gravura grande e cotada à esquerda, texto à direita, trilho horizontal proporcional. <a href="a2-prancha-escura/index.html">abrir</a></figcaption><iframe src="a2-prancha-escura/index.html" title="Variação A2"></iframe></figure>
+  <figure id="a3"><figcaption><b>A3 · Índice</b>: índice geral como protagonista, ferreiro em ex-libris, barra de montagem fixa. <a href="a3-indice/index.html">abrir</a></figcaption><iframe src="a3-indice/index.html" title="Variação A3"></iframe></figure>
+</main>
+<script>
+  var m=document.querySelector('main');
+  document.querySelectorAll('[data-v]').forEach(function(b){b.onclick=function(){
+    document.querySelectorAll('[data-v]').forEach(function(x){x.setAttribute('aria-pressed',x===b)});
+    var v=b.dataset.v;['a1','a1b','a2','a3'].forEach(function(id){document.getElementById(id).hidden=!((v==='todas'&&id!=='a1b')||v===id)});
+    m.classList.toggle('solo',v!=='todas');
+  }});
+  document.querySelectorAll('[data-w]').forEach(function(b){b.onclick=function(){
+    document.querySelectorAll('[data-w]').forEach(function(x){x.setAttribute('aria-pressed',x===b)});
+    m.classList.toggle('mob',b.dataset.w==='mob');
+  }});
+</script>
+</body>
+</html>

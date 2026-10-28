@@ -1,0 +1,917 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Akmon · Identidade C · Livro Aparafusado</title>
+<meta name="description" content="Board da identidade C do Akmon: manifesto de oficina em tipografia de madeira, preso por dois parafusos.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<script>
+/* define o frame antes da pintura: ?frame=landing-desktop | landing-mobile | marca | paleta */
+(function(){var f=new URLSearchParams(location.search).get('frame');if(f)document.documentElement.setAttribute('data-frame',f);})();
+</script>
+<style>
+@font-face{font-family:"Holtwood One SC";src:url(fonts/HoltwoodOneSC-latin.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Archivo";src:url(fonts/Archivo-latin.woff2) format("woff2");font-weight:100 900; 125%;font-style:normal;font-display:swap}
+@font-face{font-family:"JetBrains Mono";src:url(fonts/JetBrainsMono-latin.woff2) format("woff2");font-weight:400 800;font-style:normal;font-display:swap}
+
+:root{
+  --paper:#F3EDDF;      /* papel off-white cru */
+  --paper-2:#E7DECA;    /* papel mais velho: faixas, espinha */
+  --ink:#15120E;        /* tinta de tipo de madeira */
+  --muted:#574E41;      /* tinta apagada: texto secundário */
+  --red:#C42E08;        /* vermelho-laranja mecânico: só a palavra sob pressão */
+  --alu:#B4BABF;        /* alumínio do parafuso */
+  --alu-hi:#E4E8EB;
+  --alu-lo:#7B838A;
+
+  --display:"Holtwood One SC","Rockwell Extra Bold",serif;
+  --text:"Archivo",system-ui,sans-serif;
+  --code:"JetBrains Mono",ui-monospace,monospace;
+
+  --spine:72px;
+  --screw:36px;
+  --pad:clamp(16px,3.2vw,48px);
+  --tilt:15deg;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--paper);color:var(--ink);scrollbar-color:var(--ink) var(--paper-2);scroll-behavior:smooth;overflow-x:hidden}
+body{margin:0;font:400 1.0625rem/1.55 var(--text);overflow-x:clip;-webkit-text-size-adjust:100%}
+::selection{background:var(--ink);color:var(--paper)}
+input,textarea{caret-color:var(--red)}
+::-webkit-scrollbar{width:14px;height:14px}
+::-webkit-scrollbar-track{background:var(--paper-2);border-left:2px solid var(--ink)}
+::-webkit-scrollbar-thumb{background:var(--ink);border:3px solid var(--paper-2)}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.on-ink :focus-visible,.cmd :focus-visible{outline-color:var(--paper)}
+a{color:inherit;text-decoration-thickness:2px;text-underline-offset:.22em}
+a:hover{color:var(--red)}
+.on-ink a:hover{color:var(--paper)}
+code,kbd,samp,pre{font-family:var(--code)}
+h1,h2,h3,p{margin:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+
+/* ---------- livro: espinha + dois parafusos sempre visíveis ---------- */
+.spine{position:fixed;inset:0 auto 0 0;width:var(--spine);background:var(--paper-2);border-right:2px solid var(--ink);z-index:20;pointer-events:none}
+.screw{position:fixed;left:calc((var(--spine) - var(--screw)) / 2);width:var(--screw);height:var(--screw);z-index:21;pointer-events:none}
+.screw.s1{top:22px;transform:rotate(38deg)}
+.screw.s2{bottom:22px;transform:rotate(-17deg)}
+.sheet{padding-left:var(--spine);min-width:0}
+
+/* ---------- tipo ---------- */
+.d{font-family:var(--display);font-weight:400;text-transform:uppercase;line-height:.92;letter-spacing:-.01em}
+.t{font-family:var(--text);font-weight:900;text-transform:uppercase;letter-spacing:-.005em;line-height:.95}
+.lead{font-size:clamp(1.0625rem,1.2vw + .6rem,1.3125rem);line-height:1.5;max-width:62ch;text-wrap:pretty}
+.small{font-size:.875rem;line-height:1.5;color:var(--muted)}
+.mono{font-family:var(--code)}
+h2.sec-h{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(1.75rem,3.2vw + .5rem,3.5rem);line-height:.98;letter-spacing:-.01em;text-wrap:balance}
+
+/* ---------- a palavra sob pressão ---------- */
+.press{position:relative;display:inline-block;color:var(--red);transform-origin:50% 60%}
+.press::before,.press::after{content:"";position:absolute;inset:-.2em -.2em -.18em -.2em;border-radius:50%;pointer-events:none}
+.press::before{border:2px solid var(--ink);transform:rotate(-5deg)}
+.press::after{border:3px solid var(--red);opacity:0}
+.press.on-dark::before{border-color:var(--paper)}
+
+.stage .smith{transform-origin:50% 100%}
+.onoma{position:absolute;font-family:var(--display);text-transform:uppercase;line-height:1;color:transparent;-webkit-text-stroke:2px var(--ink);white-space:nowrap;pointer-events:none;user-select:none;transform:rotate(var(--r,-20deg))}
+.fa{color:var(--red)}
+
+/* animação: só quando o palco recebe .hit-N (JS) e movimento é permitido */
+@media (prefers-reduced-motion: no-preference){
+  .stage:not(.static).hit-1{--peak:1.10}
+  .stage:not(.static).hit-2{--peak:1.18}
+  .stage:not(.static).hit-3{--peak:1.32}
+  .stage:not(.static)[class*="hit-"] .smith{animation:recoil 900ms var(--ease) both}
+  .stage:not(.static)[class*="hit-"] .press{animation:bate 900ms var(--ease) 220ms both}
+  .stage:not(.static)[class*="hit-"] .press::after{animation:choque 760ms var(--ease) 220ms both}
+  .stage:not(.static)[class*="hit-"] .fa{animation:fagulha 900ms linear both}
+  .stage:not(.static).hit-1 .n1,.stage:not(.static).hit-2 .n2,.stage:not(.static).hit-3 .n3{animation:onoma 900ms var(--ease) 220ms both}
+}
+@keyframes recoil{0%{transform:none}24%{transform:translateY(-1.6%) rotate(-1.2deg)}30%{transform:translateY(.9%) rotate(.7deg)}100%{transform:none}}
+@keyframes bate{0%{transform:scale(1)}16%{transform:scale(var(--peak,1.15)) rotate(-1.5deg)}100%{transform:scale(1)}}
+@keyframes choque{0%{opacity:.95;transform:scale(.82)}100%{opacity:0;transform:scale(2.1)}}
+@keyframes fagulha{0%{opacity:1}24%{opacity:.2}30%{opacity:1}44%{opacity:.35}60%{opacity:1}}
+@keyframes onoma{0%{color:var(--ink);transform:rotate(var(--r)) scale(1.25)}100%{color:transparent;transform:rotate(var(--r)) scale(1)}}
+
+/* ---------- botão ---------- */
+.btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:46px;padding:.7em 1.35em;border:2px solid var(--ink);border-radius:0;background:var(--ink);color:var(--paper);font:900 .9375rem/1 var(--text);letter-spacing:.07em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:background-color .12s,color .12s,border-color .12s,transform .12s}
+.btn:hover,.btn.is-hover{background:var(--red);border-color:var(--red);color:var(--paper)}
+.btn:active{transform:translateY(2px)}
+.btn:focus-visible,.btn.is-focus{outline:3px solid var(--ink);outline-offset:3px}
+.btn[disabled],.btn[aria-disabled="true"]{background:var(--paper-2);border:2px dashed var(--muted);color:var(--muted);cursor:not-allowed;transform:none}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover,.btn.ghost.is-hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn svg{width:1.15em;height:1.15em;flex:none}
+.on-ink .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.on-ink .btn:hover{background:var(--red);border-color:var(--red);color:var(--paper)}
+
+/* ---------- comando copiável ---------- */
+.cmd{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:stretch;background:var(--ink);color:var(--paper);border:2px solid var(--ink)}
+.cmd code{display:block;padding:14px 16px;font-size:.8125rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word}
+.cmd .btn{border-radius:0;border-width:0 0 0 2px;border-left:2px solid var(--paper);background:var(--paper);color:var(--ink);min-width:9.5rem}
+.cmd .btn:hover,.cmd .btn.is-hover{background:var(--red);color:var(--paper)}
+.cmd[data-state="copiado"] .btn{background:var(--paper-2);color:var(--ink)}
+.cmd[data-state="falha"] .btn{background:var(--paper);color:var(--ink);text-decoration:underline wavy}
+.cmd .msg{grid-column:1/-1;margin:0;padding:7px 16px;border-top:2px solid var(--paper);font-size:.8125rem;line-height:1.4;min-height:2.3em}
+.cmd[data-state="idle"] .msg{color:var(--paper);opacity:.85}
+
+/* ---------- item de categoria ---------- */
+.cat{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 20px;align-items:baseline;padding:18px 20px;border-top:2px solid var(--ink);background:transparent;color:var(--ink);text-align:left;font:inherit}
+.cat .no{grid-row:1/3;font-family:var(--display);font-size:2.25rem;line-height:1}
+.cat .nm{font:900 clamp(1.2rem,1.1vw + .8rem,1.65rem)/1.1 var(--text);text-wrap:balance}
+.cat .pa{font:500 .8125rem/1.4 var(--code);overflow-wrap:anywhere;color:var(--muted)}
+.cat .ex{grid-column:2;font-size:.9375rem;margin-top:6px}
+.cat.is-selected{background:var(--ink);color:var(--paper)}
+.cat.is-selected .pa{color:var(--paper-2)}
+.cat.is-empty{border-top:2px dashed var(--muted);color:var(--muted)}
+.cat.is-empty .no{color:var(--muted)}
+button.cat{width:100%;cursor:pointer;border-width:2px 0 0 0;border-style:solid;border-color:var(--ink)}
+button.cat:hover{background:var(--paper-2)}
+button.cat.is-selected:hover{background:var(--ink)}
+button.cat.is-empty{border-top:2px dashed var(--muted)}
+
+/* ---------- item de skill ---------- */
+.skill{border:2px solid var(--ink);padding:16px 18px;display:grid;gap:8px;background:var(--paper)}
+.skill:hover,.skill.is-hover{background:var(--paper-2)}
+.skill .sn{font:700 1.125rem/1.35 var(--code);overflow-wrap:anywhere}
+.skill .sd{font-size:.9375rem}
+.skill .sp{font:500 .78125rem/1.4 var(--code);color:var(--muted);overflow-wrap:anywhere}
+.skill .cmd code{font-size:.75rem}
+
+/* =====================================================================
+   LANDING
+   ===================================================================== */
+.landing{display:none}
+html[data-frame^="landing"] .landing{display:block}
+html[data-frame^="landing"] .board{display:none}
+html[data-frame="marca"] .board .sec:not(#marca),html[data-frame="paleta"] .board .sec:not(#paleta){display:none}
+html[data-frame="marca"] .board .site-foot,html[data-frame="paleta"] .board .site-foot{display:none}
+html[data-frame="marca"] .board .sec,html[data-frame="paleta"] .board .sec{min-height:100vh}
+
+.hero{position:relative;display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);grid-template-areas:"slab fig" "lede fig";column-gap:var(--pad);padding:200px var(--pad) 56px calc(var(--pad) + 8px);min-height:900px;align-content:start}
+.slab{grid-area:slab;transform:rotate(calc(var(--tilt) * -1));transform-origin:0 100%;padding-bottom:6px;margin-left:clamp(0px,6.4vw,100px)}
+.wordmark{display:flex;align-items:center;gap:.28em;font-size:clamp(3rem,6.2vw,6rem);margin-bottom:.3em;color:var(--ink)}
+.wordmark svg{width:.95em;height:.95em;flex:none;overflow:visible}
+.wordmark .arcs{stroke:var(--red);fill:none;stroke-width:3.2}
+.tagline{display:block}
+.tagline>span{display:block;white-space:nowrap}
+.tagline .t1{font-size:clamp(1.25rem,2.2vw,2rem);margin-bottom:.35em}
+.tagline .t2{font-size:clamp(2.6rem,5.4vw,5rem);margin:.1em 0 .34em .5em}
+.tagline .t3{font-size:clamp(1rem,1.6vw,1.5rem);margin-left:.3em;margin-bottom:.1em}
+.tagline .t4{font-size:clamp(1.9rem,3.8vw,3.4rem);margin-left:1.4em}
+.lede-wrap{grid-area:lede;margin-top:26px;display:grid;gap:18px;align-content:start;max-width:46rem}
+.lede-wrap .lead strong{font-weight:800}
+.harnesses{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 22px;font:800 .875rem/1.2 var(--text);letter-spacing:.06em;text-transform:uppercase}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.install-note{font-size:.875rem;color:var(--muted);max-width:56ch}
+.install-note code{font-size:.8125rem;color:var(--ink)}
+
+.figure{grid-area:fig;position:relative;container-type:inline-size;width:min(100%,440px);justify-self:center;align-self:start;margin-top:-20px}
+.smith{transform:rotate(calc(var(--tilt) * -1))}
+.figure pre{margin:0;font:400 calc(100cqw / 55.8)/1.2 var(--code);letter-spacing:0;color:var(--ink);white-space:pre;overflow:visible;tab-size:1}
+.figure .o1{--r:-24deg;font-size:clamp(1.4rem,2.4vw,2.3rem);left:-26%;top:20%;-webkit-text-stroke-width:1.5px}
+.figure .o2{--r:34deg;font-size:clamp(2.2rem,4vw,3.8rem);left:-34%;top:48%}
+.figure .o3{--r:-18deg;font-size:clamp(3.2rem,6.6vw,6rem);left:-2%;bottom:-6%;-webkit-text-stroke-width:3px}
+
+.band{position:relative;margin-top:40px;background:var(--ink);color:var(--paper);clip-path:polygon(0 9%,100% 0,100% 91%,0 100%);padding:clamp(80px,9vw,128px) var(--pad) clamp(80px,9vw,128px) calc(var(--pad) + 8px)}
+.band .in{max-width:70rem;display:grid;gap:18px}
+.band h2{font-size:clamp(1.9rem,3.4vw,3.4rem);line-height:1}
+.band h2>span{display:block}
+.band h2 .big{padding:.12em 0 .1em .12em;font-size:clamp(2.6rem,6vw,5.2rem);color:var(--red);margin:.05em 0}
+.band p{max-width:60ch;margin-top:.6em}
+
+.cats{padding:72px var(--pad) 40px calc(var(--pad) + 8px)}
+.cats h2{margin-bottom:34px}
+.cats h2>span{display:block}
+.cats h2 .h-a{font-size:clamp(1.75rem,4vw,3.4rem)}
+.cats h2 .h-b{font-size:clamp(1rem,1.8vw,1.5rem);margin-left:.5em}
+.cats h2 .h-c{font-size:clamp(2.4rem,5.6vw,5rem);margin-left:1.2em}
+.cats ol{list-style:none;margin:0;padding:0;display:grid;gap:0;grid-template-columns:minmax(0,1fr)}
+.cats li{margin-left:calc(var(--i) * clamp(0px,3.4vw,56px));border-bottom:0}
+.cats li:last-child{border-bottom:2px solid var(--ink)}
+.cats .foot-note{margin-top:22px;max-width:62ch}
+
+.inst{padding:48px var(--pad) 96px calc(var(--pad) + 8px)}
+.inst h2{margin-bottom:30px}
+.inst h2>span{display:block}
+.inst h2 .h-a{font-size:clamp(1.75rem,4vw,3.4rem)}
+.inst h2 .h-b{font-size:clamp(2.4rem,5.6vw,5rem);margin-left:.8em}
+.inst-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px var(--pad);align-items:start}
+.inst .steps{display:grid;gap:14px}
+.inst .steps h3{font:900 1.375rem/1.1 var(--text);text-transform:uppercase}
+.inst .alt{display:grid;gap:22px}
+.alt-item{background:var(--paper-2);padding:18px 20px;display:grid;gap:8px;transform:rotate(-1deg);border:2px solid var(--ink)}
+.alt-item:nth-child(2){transform:rotate(1deg);margin-left:22px}
+.alt-item h3{font:900 1.125rem/1.1 var(--text);text-transform:uppercase}
+.alt-item code{font-size:.875rem;overflow-wrap:anywhere;font-weight:600}
+
+.l-foot{border-top:2px solid var(--ink);padding:28px var(--pad) 40px calc(var(--pad) + 8px);display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px 32px;align-items:center}
+.l-foot .wordmark{font-size:1.5rem;margin:0}
+.l-foot p{font-size:.9375rem}
+
+/* ---------- landing: mobile = empuxo vertical ---------- */
+@media (max-width:760px){
+  :root{--spine:36px;--screw:24px;--pad:16px;--tilt:5deg}
+  .screw.s1{top:14px}.screw.s2{bottom:14px}
+  .hero{display:block;padding:56px var(--pad) 40px 20px;min-height:0}
+  .slab{padding-bottom:10px;margin-left:14px}
+  .wordmark{font-size:2.5rem}
+  .tagline .t1{font-size:1.125rem}
+  .tagline .t2{font-size:2.15rem;margin-left:.2em}
+  .tagline .t3{font-size:.9rem;margin-left:.2em}
+  .tagline .t4{font-size:1.8rem;margin-left:.6em}
+  .lede-wrap{margin-top:24px}
+  .figure{width:100%;margin:56px 0 24px;overflow:hidden;padding:20px 0 110px}
+  .figure .smith{transform:rotate(calc(var(--tilt) * -1))}
+  .figure .o1{left:0;top:6%}
+  .figure .o2{left:auto;right:0;top:44%}
+  .figure .o3{left:4%;bottom:34px;font-size:2.6rem}
+  .band{clip-path:polygon(0 4%,100% 0,100% 96%,0 100%);padding:64px var(--pad) 64px 20px}
+  .cats{padding:40px var(--pad) 24px 20px}
+  .cats li{margin-left:0}
+  .cat{grid-template-columns:auto minmax(0,1fr);padding:16px 12px}
+  .inst{padding:32px var(--pad) 56px 20px}
+  .inst-grid{grid-template-columns:minmax(0,1fr)}
+  .alt-item:nth-child(2){margin-left:0}
+  .cmd{grid-template-columns:minmax(0,1fr)}
+  .cmd .btn{border-left:0;border-top:2px solid var(--paper);min-height:52px}
+  .l-foot{grid-template-columns:minmax(0,1fr);padding:24px var(--pad) 40px 20px}
+}
+
+/* =====================================================================
+   BOARD
+   ===================================================================== */
+.board{display:block}
+.sec{padding:clamp(48px,7vw,104px) var(--pad) clamp(48px,6vw,88px) calc(var(--pad) + 8px);border-bottom:2px solid var(--ink)}
+.sec>*{max-width:1280px}
+.sec .cols{display:grid;grid-template-columns:minmax(0,1fr);gap:28px var(--pad)}
+@media(min-width:960px){.sec .cols.c2{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.sec .cols.c32{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}.sec .cols.c23{grid-template-columns:minmax(0,1fr) minmax(0,1.4fr)}}
+.sec h2.sec-h{margin-bottom:28px}
+.sec p+p{margin-top:.9em}
+.sec .prose{max-width:66ch}
+
+.open{padding-top:clamp(120px,14vw,200px);padding-bottom:96px;position:relative;overflow:hidden}
+.open h1{display:block;margin-left:clamp(0px,7vw,120px);transform:rotate(calc(var(--tilt) * -1));transform-origin:0 100%;margin-bottom:56px}
+.open h1>span{display:block}
+.open h1 .a{margin-bottom:.5em;font-size:clamp(1.5rem,3vw,2.5rem);font-family:var(--text);font-weight:900;}
+.open h1 .b{font-size:clamp(2.2rem,8.2vw,6rem);margin-left:.3em;line-height:1.05;padding-top:.1em}
+.open .tese{font-size:clamp(1.25rem,1.6vw + .7rem,1.875rem);line-height:1.3;max-width:34ch;font-weight:700;text-wrap:balance}
+.open .meta{margin-top:22px;max-width:60ch}
+.toc{display:flex;flex-wrap:wrap;gap:8px 22px;list-style:none;padding:0;margin:34px 0 0;font:800 .9375rem/1.2 var(--text);text-transform:uppercase;letter-spacing:.06em}
+.toc a{display:inline-block;padding:10px 0;min-height:44px}
+
+.lockups{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:8px;padding:8px;border:2px solid var(--ink);margin-top:8px}
+.lock{padding:clamp(20px,3vw,48px);display:flex;align-items:center;min-width:0}
+.lock.inv{background:var(--ink);color:var(--paper)}
+.lock .wordmark{font-size:clamp(1.9rem,4.6vw,4.6rem);margin:0}
+.lock.inv .wordmark{color:var(--paper)}
+.lock.sym{justify-content:center}
+.lock.sym svg{width:min(100%,160px);height:auto}
+.lock svg .anv{fill:currentColor}
+.lock svg .arcs{stroke:var(--red);fill:none;stroke-width:3.2}
+.fav-row{display:flex;flex-wrap:wrap;gap:24px 32px;align-items:flex-end;margin-top:26px}
+.fav-row figure{margin:0;display:grid;gap:8px;justify-items:start}
+.fav-row img{display:block;image-rendering:auto}
+.fav-row figcaption{font:500 .8125rem/1.3 var(--code);color:var(--muted)}
+.rules{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.rules li{padding:12px 0;border-top:2px solid var(--ink)}
+.rules li:last-child{border-bottom:2px solid var(--ink)}
+
+.paleta-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-rows:minmax(150px,auto);gap:0;border:2px solid var(--ink);margin-bottom:36px}
+.sw{padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;gap:36px;min-width:0}
+.sw b{font:900 1.375rem/1 var(--text);text-transform:uppercase}
+.sw .hx{font:600 .9375rem/1.3 var(--code)}
+.sw p{font-size:.875rem;line-height:1.4;max-width:34ch}
+.sw.paper{grid-column:span 6;grid-row:span 2;background:var(--paper);color:var(--ink)}
+.sw.ink{grid-column:span 6;background:var(--ink);color:var(--paper)}
+.sw.red{grid-column:span 3;background:var(--red);color:var(--paper)}
+.sw.paper2{grid-column:span 3;background:var(--paper-2);color:var(--ink)}
+.sw.muted{grid-column:span 6;background:var(--muted);color:var(--paper)}
+.sw.alu{grid-column:span 6;background:var(--alu);color:var(--ink)}
+@media(max-width:760px){.sw.paper,.sw.ink,.sw.muted,.sw.alu{grid-column:span 12}.sw.red,.sw.paper2{grid-column:span 6}.sw.paper{grid-row:auto}}
+.ctable-wrap{overflow-x:auto;border:2px solid var(--ink)}
+table.ct{width:100%;border-collapse:collapse;font-size:.9375rem;font-variant-numeric:tabular-nums}
+table.ct th,table.ct td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--ink);vertical-align:top}
+table.ct th{font:800 .8125rem/1.2 var(--text);text-transform:uppercase;letter-spacing:.06em;background:var(--paper-2)}
+table.ct td.n{font-family:var(--code);font-weight:700;white-space:nowrap}
+table.ct .chip{display:inline-block;min-width:3.2em;padding:4px 10px;font:800 .8125rem/1.2 var(--text);border:2px solid var(--ink);text-align:center;margin-right:6px}
+table.ct .chip.ok{background:var(--ink);color:var(--paper)}
+table.ct .chip.big{background:var(--paper);color:var(--ink)}
+table.ct .chip.no{background:var(--paper);color:var(--ink);border-style:dashed;text-decoration:line-through}
+.demo-pair{display:inline-block;padding:2px 10px;font:900 1rem/1.3 var(--text);white-space:nowrap}
+
+.spec{display:grid;grid-template-columns:minmax(0,1fr);gap:0;border-top:2px solid var(--ink)}
+.spec .row{display:grid;grid-template-columns:minmax(0,11rem) minmax(0,1fr);gap:8px 24px;padding:18px 0;border-bottom:2px solid var(--ink);align-items:baseline}
+.spec .row .k{font:500 .8125rem/1.4 var(--code);color:var(--muted)}
+.spec .row .v{min-width:0;overflow-wrap:anywhere}
+@media(max-width:760px){.spec .row{grid-template-columns:minmax(0,1fr)}}
+.lic{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:26px;font-size:.9375rem}
+
+.demo{border:2px solid var(--ink);padding:clamp(20px,3vw,40px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,260px);gap:24px var(--pad);align-items:center;position:relative;overflow:hidden;min-height:420px}
+.demo .word{font-size:clamp(2.6rem,7vw,5.5rem);line-height:1;padding:.3em .2em;margin-left:.1em}
+.demo .fig{position:relative;container-type:inline-size;width:100%;align-self:stretch;min-height:260px}
+.demo .fig pre{margin:0;font:400 calc(100cqw / 55.8)/1.2 var(--code);color:var(--ink);white-space:pre}
+.demo .fig .smith{transform:rotate(-15deg)}
+.demo .fig .o1{--r:-24deg;left:-60%;top:6%;font-size:1.4rem;-webkit-text-stroke-width:1.5px}
+.demo .fig .o2{--r:34deg;left:-70%;top:48%;font-size:2.2rem}
+.demo .fig .o3{--r:-18deg;left:-90%;bottom:-10%;font-size:3.4rem;-webkit-text-stroke-width:3px}
+.demo-ctl{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;margin-top:20px}
+.demo-ctl label{display:inline-flex;gap:10px;align-items:center;min-height:44px;font-size:.9375rem;cursor:pointer}
+.demo-ctl input{width:20px;height:20px;accent-color:var(--ink)}
+.timeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:22px 0 0;padding:0;list-style:none;border:2px solid var(--ink)}
+.timeline li{padding:12px 14px;font-size:.875rem;line-height:1.35;border-left:2px solid var(--ink)}
+.timeline li:first-child{border-left:0}
+.timeline b{display:block;font:500 .8125rem/1.3 var(--code)}
+@media(max-width:760px){.timeline{grid-template-columns:minmax(0,1fr)}.timeline li{border-left:0;border-top:2px solid var(--ink)}.timeline li:first-child{border-top:0}.demo{grid-template-columns:minmax(0,1fr)}.demo .fig{max-width:280px}.demo .fig .o1{left:0}.demo .fig .o2{left:auto;right:0}.demo .fig .o3{left:0}}
+
+.comp-block{margin-top:34px;padding-top:22px;border-top:2px solid var(--ink)}
+.comp-block h3{font:900 1.375rem/1.2 var(--text);margin-bottom:6px}
+.comp-block>.small{margin-bottom:16px;max-width:66ch}
+.states{display:flex;flex-wrap:wrap;gap:22px 28px;align-items:flex-end}
+.states figure{margin:0;display:grid;gap:8px;justify-items:start}
+.states figcaption{font:500 .8125rem/1.3 var(--code);color:var(--muted)}
+.cmd-states{display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
+@media(min-width:1100px){.cmd-states{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.cmd-states figure{margin:0;display:grid;gap:8px;min-width:0}
+.cmd-states figcaption{font:500 .8125rem/1.3 var(--code);color:var(--muted)}
+.cat-states{display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
+@media(min-width:960px){.cat-states{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.cat-states figure{margin:0;display:grid;gap:8px;min-width:0;align-content:start}
+.cat-states figcaption{font:500 .8125rem/1.3 var(--code);color:var(--muted)}
+.skills{display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
+@media(min-width:960px){.skills{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}}
+.skills figure{margin:0;display:grid;gap:8px;min-width:0;align-content:start}
+.skills figcaption{font:500 .8125rem/1.3 var(--code);color:var(--muted)}
+
+.frames{display:grid;gap:44px}
+.frame-box{position:relative;border:2px solid var(--ink);background:var(--paper);overflow:hidden}
+.frame-box iframe{position:absolute;left:0;top:0;border:0;background:var(--paper);transform-origin:0 0}
+.frame-cap{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:baseline;margin-bottom:12px}
+.frame-cap h3{font:900 1.375rem/1.1 var(--text);text-transform:uppercase}
+.frame-cap a,.frame-cap span{font:500 .875rem/1.3 var(--code)}
+.mob-wrap{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);gap:28px var(--pad);align-items:start}
+@media(max-width:900px){.mob-wrap{grid-template-columns:minmax(0,1fr)}}
+
+.risk{display:grid;gap:0;margin:0;padding:0;list-style:none;border-top:2px solid var(--ink)}
+.risk li{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr);gap:6px 28px;padding:18px 0;border-bottom:2px solid var(--ink)}
+.risk b{font:900 1.125rem/1.25 var(--text)}
+@media(max-width:760px){.risk li{grid-template-columns:minmax(0,1fr)}}
+.site-foot{padding:28px var(--pad) 40px calc(var(--pad) + 8px)}
+
+/* telas pequenas do board */
+@media(max-width:760px){
+  .lockups{grid-template-columns:minmax(0,1fr)}
+  .open h1 .b{margin-left:0}
+  .cmd-states .cmd,.states .cmd{width:100%}
+}
+
+/* frames dedicados: marca e paleta renderizam sozinhos */
+html[data-frame]:not([data-frame^="landing"]) .open{display:none}
+
+/* movimento reduzido: tudo estático, sem animação nem transição */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+.stage.static *,.stage.static *::before,.stage.static *::after{animation:none!important}
+@media print{.spine,.screw{display:none}}
+</style>
+</head>
+<body>
+
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="alu-g" cx="36%" cy="32%" r="80%">
+      <stop offset="0" stop-color="#E4E8EB"/><stop offset=".55" stop-color="#B4BABF"/><stop offset="1" stop-color="#8E959B"/>
+    </radialGradient>
+  </defs>
+  <symbol id="screw" viewBox="0 0 40 40">
+    <circle cx="20" cy="20" r="18.5" fill="url(#alu-g)" stroke="#15120E" stroke-width="2"/>
+    <circle cx="20" cy="20" r="13" fill="none" stroke="#7B838A" stroke-width="1.5"/>
+    <rect x="6.5" y="17.6" width="27" height="4.8" fill="#15120E"/>
+    <path d="M9 11.5A13 13 0 0 1 17 7" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" opacity=".75"/>
+  </symbol>
+  <symbol id="anvil" viewBox="0 0 64 64">
+    <path class="anv" d="M3 33 L16 26 H60 V38 H46 L41 45 V51 H52 V60 H14 V51 H25 V45 L20 38 H16 Z"/>
+    <path class="arcs" d="M30.7 20.6A8 8 0 0 1 45.3 20.6M25.3 18.1A14 14 0 0 1 50.7 18.1M19.9 15.5A20 20 0 0 1 56.1 15.5"/>
+  </symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M3 13 L9 19 L21 5" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><path d="M8 3 H21 V16 H8 Z M3 8 V21 H16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M4 4 L20 20 M20 4 L4 20" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square"/></symbol>
+</svg>
+
+<div class="spine" aria-hidden="true"></div>
+<svg class="screw s1" aria-hidden="true" focusable="false"><use href="#screw"/></svg>
+<svg class="screw s2" aria-hidden="true" focusable="false"><use href="#screw"/></svg>
+
+<div class="sheet">
+
+<!-- =====================================================================
+     LANDING (renderizada só em ?frame=landing-desktop / landing-mobile)
+     ===================================================================== -->
+<main class="landing" id="landing">
+  <section class="hero stage" id="topo" aria-labelledby="h-marca">
+    <div class="slab">
+      <h1 class="wordmark d" id="h-marca"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><use href="#anvil"/></svg><span>Akmon</span></h1>
+      <h2 class="tagline t"><span class="t1">Skills</span><span class="t2 d"><span class="press">forjadas</span></span><span class="t3">para o seu</span><span class="t4">harness</span></h2>
+    </div>
+
+    <div class="lede-wrap">
+      <p class="lead"><strong>Biblioteca curada de Agent Skills</strong>: pastas com <code>SKILL.md</code> que você pluga em Claude Code, Codex, Google Antigravity, OpenClaw ou Hermes. Extraídas de operação real e saneadas.</p>
+      <ul class="harnesses" aria-label="Harnesses compatíveis"><li>Claude Code</li><li>Codex</li><li>Google Antigravity</li><li>OpenClaw</li><li>Hermes</li></ul>
+      <div class="cmd" data-state="idle" data-copy-root>
+        <code id="cmd-hero">ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder</code>
+        <button class="btn" type="button" data-copy="#cmd-hero"><svg aria-hidden="true"><use href="#i-copy"/></svg><span class="lbl">Copiar</span></button>
+        <p class="msg" role="status" aria-live="polite">Claude Code, exemplo com a skill n8n-flow-builder. Rode na raiz do clone.</p>
+      </div>
+      <div class="cta-row">
+        <a class="btn ghost" href="https://github.com/RafaelMKn/skills-library">Ver no GitHub</a>
+        <a class="btn ghost" href="#instalar">Outros harnesses</a>
+      </div>
+    </div>
+
+    <div class="figure" role="img" aria-label="Ferreiro de Hefesto martelando uma lâmina sobre a bigorna, desenhado em caracteres ASCII; faíscas saltam à esquerda.">
+      <div class="smith"><pre aria-hidden="true">                                               *
+                                            ####%%%
+                                          %@@@###%+
+                                        %@@@%@@@.
+                                      @@%#%@@%+
+                                  %%@@%%#*@%
+                               :%%@@@@@@%
+                              +%%@@@@@@@%
+                             #@%##%%*:%:
+                           %#%++%%-
+                        =%%###*=                       .%@%%%%
+                      %%%#####--                     .%@@@@@@@@%
+                     %%%#%####                      ####@@@@@@@@%
+                    %@@@@%##--                     #%%#%@@@@%@%%+
+                   #@@@@@@@@%                   ##%#%%%%@@@@%%%:
+                  *%@@@@@@@@@%@%+=            =%####+%%%@@@%%%#%
+                  +@@@@@@@@@@@@@@@@*-#%%%=....   #%##=%%@@%%%%#
+                 :*%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@###*=%%%%%@% #
+                    *=%@@@@@@@@@@@@@@@@@@@@@@@@@@*# %.%+=%%%#+++
+                       ==-%@%@@@@@@@@@%@@@@@@@@@@+#*%%#-%%#*=+%%%
+                              .:-----#@%%@@@@@@@@@%.%%* %#*-=#%%@%%%@%
+                                  -%@@%*@@@@@@@@@@@%@@%.%:%%#%%@%@@%@%%%
+                                   :@@@%*%@@@@@@@%@%%@%%%%%%%%%%%%%%%%%%*
+                                   :%%@@%**%@@@@@%%%%%%%%%%%%%%%%###%%%%#
+                                    .%%@%@@%+**++++*#%%%%%%%%%%%%#%%%%%%%%-
+                                      :@@@@@@@@@@%%%%%%%.=%%%%%.#%%%%%%%%@@:
+                                        =%@@@@@@@%%%%%%%%%%%%%%%%#%%%%%%%%%.:
+                                         =%@@@@@@%%%%%%%%%%#%%%%%+%%%%%%%@%:%
+                                          %@@@@@@@@@%%%%%%%%%@**  =@@%%%@%%=%
+                                          #@@@@@%%@@%%%###%%%%+     -+%%%%%%%
+                                           %@@@@@@@@%%%%@%%@%:       #%%@@@@@+
+                                          -%@@%@@@%%@%@@%%@@%.%     :%@%@@@@@%
+                                         =%%%%%#*##%%%%#%%%%%%%     -%%@@@@@%-
+                                         .%%%###%%*%%%*#%%%%#%@     -+###%%@%
+                                         .%@%%%###**+***###%%%%%     *####%%%:
+                                        %.@@@@@@@@@@@@@@@@@%%%%%%    ####%%%%
+                                      :@%#@@@@@@@@@@@@@@@@%%%%%%%%= -####%%%
+                                     +%@@%@@@@@@@@@@@@@@@%%@%%%%%%%%+##*#%%
+                                    @@@@.%@@@@@@@@@@@@@@@@@%%%%%%%% :*%#%%
+                                   %%@@%.%@@@@@@@@@@@@@@@@@@%%%%%%##%%%@@%@%
+                           =    : %%@@%%:@@@@@@@@@@@@@@@@%%%%#%@@%**##%@@%#
+                             *   %%%%%@@%%%@@@@@@@@%%#--====+#*+=+*##%%%%
+                    .   .   + : #%%@@@@=%@%@+ ...:::::----#%%##++++@@@%%
+                    ..   -: :. +#%%*        ......-%%@@@@@@@@@%%%%%%%%%%%
+            <span class="fa">. - -: -.. +++*.               +++++*</span>%@@%@%@@@@@@@%%%@@%%%%%
+             <span class="fa">.**  *.               .*+++++**</span>#+++++++++####%%@@%%%@@@@@@@%
+    <span class="fa">:*++++++++=             -++++++=:++++++=++</span>############%@@%%%%@@@@@@@@:
+   %%@@@@%%%#@%%%%%%%=+++++++=++*++=++####################%@%%%%%@@@@@@@@%
+   %@@@@@@@@@@%@%%%.%@ %%:%%*@%%@%####*###################%@@@%%%%@@@@@@@@%
+   %%@%@%@%%%%%%%*%%% %#%%%%%%%%@%########################%@@%%%%%*%@%#%@@%%
+   %%%%%@%%%%%@%%%%@%%%%%%%%@%%%%%#####################%%@@@%@@%%% +%%%%##%@%.
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%##############%@@@@@@@@@@@@%@%%% +%@@@@@@@@%
+       <span class="fa">*</span>%@@@%%%%%%%%%%%%%%%%%%%%%%#######%@@@@@@@@@@@@@@@@@@@@%%%% =%@@@@@@@@@%
+          %@@@@@@@@@@@@@@@@@@@@@%%%%@%@@@@@%@@%@@@@@@@@@@@@@@@@@%%# =%@@@@@@@@@%
+           -@@@@@@@@@@@@@@@%@@@%@%@@@@@%%%%%%@%%%@@@@@@@@@@%@@%%%%%  =@@@@@@@@@@@
+            =@@@@@@@@@@@@@@@@%%%%%@@%%%%%%%%%%%%%@@@@@@@@@@@@@%%%%%   =+%@@@@%%%%%
+             %@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%@@@@@@@@@@@@%%@%%%     -+ %@%%%%%
+             %@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%@@@@@@@@@@@@%%%%%:     ..+%%@@%%
+             %@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%%@@@@@@@@@@@@@%%%%       :*%%%%%@
+            %@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%#%@@@@@@@@@@%%%#         :%=%@@%
+          %@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%%##                       -%@@@%
+        %%%%%%%@@@@@@@@@@@@@@@@@@%%%%%%%%%%%#%%%%%%%%%%###                    -**#%%
+    *%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%###%%###%#######%%%%%%%-                    +*%%%%
+   #@@@@@@@@@@@@@%%%%%%%%%%%%%%#%%#########%%%%%%%%%%%%%%%-                     %@##*#
+   =@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%%%%%%%-                    %:%%%%@%**%
+   :%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%%%%%%=                    %@%%%@@%#%%*%
+    %@@@@@@@@@@@@@@@@@@@%@@@@@@@@@%%%%%%%%%%%%%%%%%%%%%%%%                       :#%@%%%%%#+%
+    %%%@@@@@@@@@@@@@@%@%%%@@@%%%%%%%%%%%%%%%%%%%%#
+                 .*%%%%%%%%%%%%%%%%%%%%%%#
+                                  :</pre></div>
+      <span class="onoma o1 n1" aria-hidden="true">tang</span>
+      <span class="onoma o2 n2" aria-hidden="true">TANG</span>
+      <span class="onoma o3 n3" aria-hidden="true">KLANG</span>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="h-op">
+    <div class="in">
+      <h2 class="d" id="h-op"><span>Skills</span><span class="big"><span class="press on-dark">forjadas</span></span><span>em operação real</span></h2>
+      <p class="lead">n8n em produção, agentes de clientes, motion, infraestrutura. Cada skill nasceu de um trabalho feito de verdade e foi saneada antes de entrar aqui. Não é um catálogo agregado de terceiros.</p>
+    </div>
+  </section>
+
+  <section class="cats" id="categorias" aria-labelledby="h-cats">
+    <h2 class="d" id="h-cats"><span class="h-a">Ache a pasta.</span><span class="h-b t">Leve a</span><span class="h-c"><span class="press">skill</span>.</span></h2>
+    <ol>
+      <li style="--i:0"><div class="cat"><span class="no" aria-hidden="true">01</span><span class="nm">Automação de Processos &amp; n8n / Make</span><span class="pa">01-automacao-n8n-make/</span><span class="ex">make-manager, n8n-agents, n8n-code-javascript, n8n-flow-builder</span></div></li>
+      <li style="--i:1"><div class="cat"><span class="no" aria-hidden="true">02</span><span class="nm">Design, UI Motion, 3D Web, Vídeo &amp; Criativos</span><span class="pa">02-design-ui-motion-3d/</span><span class="ex">ascii-video, architecture-diagram, ad-creative</span></div></li>
+      <li style="--i:2"><div class="cat"><span class="no" aria-hidden="true">03</span><span class="nm">Agentes Autônomos &amp; Engenharia de Prompt</span><span class="pa">03-agentes-ia-prompts/</span><span class="ex">auditoria-trabalho-de-agente, eval-set-agentes, create-subagent</span></div></li>
+      <li style="--i:3"><div class="cat"><span class="no" aria-hidden="true">04</span><span class="nm">APIs, Backend &amp; Banco de Dados</span><span class="pa">04-backend-apis-banco/</span><span class="ex">airtable, clickup-api, fastify-best-practices</span></div></li>
+      <li style="--i:4"><div class="cat"><span class="no" aria-hidden="true">05</span><span class="nm">Ferramental de Desenvolvimento, CLI &amp; Harness</span><span class="pa">05-dev-harness-cli/</span><span class="ex">agent-session-handoff, blocked-page-recovery</span></div></li>
+      <li style="--i:5"><div class="cat"><span class="no" aria-hidden="true">06</span><span class="nm">Produtividade, Pesquisa, Documentos &amp; Mídia</span><span class="pa">06-produtividade-pesquisa-docs/</span><span class="ex">arxiv, competitor-news-monitor</span></div></li>
+    </ol>
+    <p class="small foot-note">Os números 01 a 06 são o nome real das pastas. As skills citadas são exemplos de cada pasta; a contagem total de skills está em revisão.</p>
+  </section>
+
+  <section class="inst" id="instalar" aria-labelledby="h-inst">
+    <h2 class="d" id="h-inst"><span class="h-a">Instalar é</span><span class="h-b"><span class="press">apontar</span></span></h2>
+    <div class="inst-grid">
+      <div class="steps">
+        <h3>Claude Code</h3>
+        <div class="cmd" data-state="idle" data-copy-root>
+          <code id="cmd-clone">git clone https://github.com/RafaelMKn/skills-library &amp;&amp; cd skills-library</code>
+          <button class="btn" type="button" data-copy="#cmd-clone"><svg aria-hidden="true"><use href="#i-copy"/></svg><span class="lbl">Copiar</span></button>
+          <p class="msg" role="status" aria-live="polite">1. Clone o repositório.</p>
+        </div>
+        <div class="cmd" data-state="idle" data-copy-root>
+          <code id="cmd-ln">ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder</code>
+          <button class="btn" type="button" data-copy="#cmd-ln"><svg aria-hidden="true"><use href="#i-copy"/></svg><span class="lbl">Copiar</span></button>
+          <p class="msg" role="status" aria-live="polite">2. Aponte uma skill para a pasta do harness. Troque categoria e skill pelas que você quer.</p>
+        </div>
+      </div>
+      <div class="alt">
+        <div class="alt-item"><h3>Antigravity e Codex</h3><p>Aponte via <code>.agents/skills/</code> ou importe diretamente no arquivo de configuração do seu projeto.</p></div>
+        <div class="alt-item"><h3>OpenClaw e Hermes</h3><p>Copie ou aponte as skills desejadas para <code>~/.hermes/skills/&lt;categoria&gt;/&lt;skill&gt;/</code></p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="l-foot">
+    <div class="wordmark d"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><use href="#anvil"/></svg><span>Akmon</span></div>
+    <p>Do grego <em>ákmōn</em>, “bigorna”. Repositório: <a href="https://github.com/RafaelMKn/skills-library">github.com/RafaelMKn/skills-library</a></p>
+    <a class="btn ghost" href="#topo">Voltar ao topo</a>
+  </footer>
+</main>
+
+<!-- =====================================================================
+     BOARD
+     ===================================================================== -->
+<div class="board">
+
+<!-- 1. Abertura + tese -->
+<header class="sec open" id="abertura">
+  <h1 class="d"><span class="a">Identidade C</span><span class="b"><span class="press" style="color:var(--red)">Livro</span> aparafusado</span></h1>
+  <p class="tese">O Akmon é um manifesto de oficina em tipografia de madeira: cada skill, uma palavra batida na bigorna.</p>
+  <p class="meta small">Board de decisão do Akmon, direção C de três. Papel cru, tinta de tipo de madeira, um único vermelho-laranja para a palavra sob pressão, dois parafusos de alumínio prendendo a página (olhe a borda esquerda: eles ficam fixos em todo o board).</p>
+  <ul class="toc">
+    <li><a href="#marca">Marca</a></li><li><a href="#paleta">Paleta</a></li><li><a href="#tipografia">Tipografia</a></li><li><a href="#movimento">Forma e movimento</a></li><li><a href="#componentes">Componentes</a></li><li><a href="#landing-frames">Landing</a></li><li><a href="#riscos">Riscos</a></li>
+  </ul>
+</header>
+
+<!-- 2. Marca -->
+<section class="sec" id="marca" aria-labelledby="h-marca2">
+  <h2 class="sec-h" id="h-marca2">Marca: bigorna sob impacto</h2>
+  <div class="lockups">
+    <div class="lock"><div class="wordmark d"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><use href="#anvil"/></svg><span>Akmon</span></div></div>
+    <div class="lock inv on-ink"><div class="wordmark d"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><use href="#anvil"/></svg><span>Akmon</span></div></div>
+  </div>
+  <div class="cols c32" style="margin-top:34px">
+    <div>
+      <p class="prose">O símbolo é uma bigorna de perfil com três arcos de choque impressos sobre a face: o instante da martelada. A mesma geometria que a landing repete, em escala grande, ao redor da palavra pressionada. Os arcos são o único uso do vermelho-laranja na marca.</p>
+      <div class="fav-row">
+        <figure><img src="favicon.svg" width="64" height="64" alt="Favicon do Akmon em 64 pixels"><figcaption>favicon.svg · 64</figcaption></figure>
+        <figure><img src="favicon.svg" width="32" height="32" alt="Favicon do Akmon em 32 pixels"><figcaption>32</figcaption></figure>
+        <figure><img src="favicon.svg" width="16" height="16" alt="Favicon do Akmon em 16 pixels"><figcaption>16</figcaption></figure>
+        <figure><div class="lock sym" style="padding:0;width:96px"><svg viewBox="0 0 64 64" aria-label="Símbolo isolado sobre papel" role="img" style="color:var(--ink)"><use href="#anvil"/></svg></div><figcaption>símbolo, tinta</figcaption></figure>
+        <figure><div class="lock sym inv" style="padding:12px;width:96px"><svg viewBox="0 0 64 64" aria-label="Símbolo isolado sobre tinta" role="img" style="color:var(--paper)"><use href="#anvil"/></svg></div><figcaption>símbolo, papel</figcaption></figure>
+      </div>
+    </div>
+    <ul class="rules">
+      <li><b>Wordmark:</b> Holtwood One SC em caixa alta, tinta sobre papel ou papel sobre tinta. A grafia no texto corrido é sempre “Akmon”.</li>
+      <li><b>Área livre:</b> a altura do “A” em volta; nada encosta no símbolo.</li>
+      <li><b>Tamanho mínimo:</b> símbolo a 16 px segue legível (favicon acima); wordmark abaixo de 20 px de altura perde as serifas e deve ser trocado pelo símbolo.</li>
+      <li><b>Proibido:</b> gradiente, sombra, contorno vermelho no wordmark, rotação do símbolo.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 3. Paleta -->
+<section class="sec" id="paleta" aria-labelledby="h-paleta">
+  <h2 class="sec-h" id="h-paleta">Paleta: cinco tintas e um metal</h2>
+  <div class="paleta-grid" id="swatches">
+    <div class="sw paper" data-var="--paper"><div><b>Papel cru</b><p>Fundo da página e da landing. Off-white morno, nunca branco puro.</p></div><span class="hx"></span></div>
+    <div class="sw ink" data-var="--ink"><div><b>Tinta de tipo</b><p>Texto, wordmark, linhas de 2 px, botão primário.</p></div><span class="hx"></span></div>
+    <div class="sw red" data-var="--red"><div><b>Vermelho-laranja</b><p>Só a palavra sob pressão e o estado de hover.</p></div><span class="hx"></span></div>
+    <div class="sw paper2" data-var="--paper-2"><div><b>Papel velho</b><p>Faixas, espinha, hover.</p></div><span class="hx"></span></div>
+    <div class="sw muted" data-var="--muted"><div><b>Tinta apagada</b><p>Texto secundário e legendas.</p></div><span class="hx"></span></div>
+    <div class="sw alu" data-var="--alu"><div><b>Alumínio</b><p>Só nos parafusos. Nunca como cor de texto.</p></div><span class="hx"></span></div>
+  </div>
+  <div class="ctable-wrap" role="region" aria-label="Tabela de contraste" tabindex="0">
+    <table class="ct" id="contrast">
+      <thead><tr><th scope="col">Par (texto sobre fundo)</th><th scope="col">Amostra</th><th scope="col">Razão</th><th scope="col">Veredito</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="small" style="margin-top:14px;max-width:80ch">Razões calculadas em JavaScript neste board, a partir dos hex lidos das variáveis CSS (luminância relativa WCAG 2.x). Texto normal exige 4,5:1; texto grande (24 px, ou 19 px em negrito) e componentes gráficos, 3:1. O vermelho-laranja sobre papel velho não chega a 4,5:1: ele nunca é usado em texto pequeno sobre papel velho.</p>
+</section>
+
+<!-- 4. Tipografia -->
+<section class="sec" id="tipografia" aria-labelledby="h-tipo">
+  <h2 class="sec-h" id="h-tipo">Tipografia: madeira, grotesca, código</h2>
+  <div class="cols c2">
+    <div>
+      <p class="d" style="font-size:clamp(2.4rem,5.4vw,5rem);margin-bottom:14px">Holtwood</p>
+      <p class="prose"><b>Holtwood One SC</b> é o tipo de madeira do Akmon: quadrado, pesado, de serifas retas. Titula, assina a marca e bate as onomatopeias. Sempre em caixa alta, nunca abaixo de 20 px, nunca em corrido.</p>
+    </div>
+    <div>
+      <p style="font:900 clamp(2.4rem,5.4vw,5rem)/.95 var(--text);text-transform:uppercase;margin-bottom:14px">Archivo</p>
+      <p class="prose"><b>Archivo</b> faz o texto e os rótulos: peso 400 para o corrido, 800–900 em caixa alta para legendas e botões. <b style="font-family:var(--code)">JetBrains Mono</b> aparece só onde há código, comando ou caminho de pasta.</p>
+    </div>
+  </div>
+  <div class="spec" style="margin-top:34px">
+    <div class="row"><span class="k">Display / 6rem</span><span class="v d" style="font-size:clamp(2rem,6.2vw,6rem)">Akmon</span></div>
+    <div class="row"><span class="k">Título / 3.5rem</span><span class="v d" style="font-size:clamp(1.6rem,3.6vw,3.5rem)">Instalar é apontar</span></div>
+    <div class="row"><span class="k">Frase / 2rem · Archivo 900</span><span class="v t" style="font-size:clamp(1.25rem,2.4vw,2rem)">Skills forjadas para o seu harness</span></div>
+    <div class="row"><span class="k">Lead / 1.3125rem · 400</span><span class="v lead">Biblioteca curada de Agent Skills: pastas com SKILL.md que você pluga em Claude Code, Codex, Google Antigravity, OpenClaw ou Hermes.</span></div>
+    <div class="row"><span class="k">Corpo / 1.0625rem · 400</span><span class="v prose">Cada skill nasceu de um trabalho feito de verdade e foi saneada antes de entrar aqui. Medida de leitura entre 60 e 70 caracteres por linha.</span></div>
+    <div class="row"><span class="k">Legenda / 0.875rem · 400</span><span class="v small">As skills citadas são exemplos de cada pasta; a contagem total está em revisão.</span></div>
+    <div class="row"><span class="k">Código / 0.8125rem · mono</span><span class="v mono" style="font-size:.8125rem">ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder</span></div>
+  </div>
+  <div class="lic">
+    <span>Licença das três famílias: <b>SIL Open Font License 1.1</b>, hospedadas aqui em <code>fonts/</code> (subconjunto latino, WOFF2; origem: repositório google/fonts).</span>
+    <a href="fonts/OFL-holtwoodonesc.txt">OFL Holtwood One SC</a>
+    <a href="fonts/OFL-archivo.txt">OFL Archivo</a>
+    <a href="fonts/OFL-jetbrainsmono.txt">OFL JetBrains Mono</a>
+  </div>
+</section>
+
+<!-- 5. Forma e movimento -->
+<section class="sec" id="movimento" aria-labelledby="h-mov">
+  <h2 class="sec-h" id="h-mov">Forma e movimento: a martelada</h2>
+  <div class="cols c32" style="margin-bottom:28px">
+    <p class="prose"><b>Forma.</b> Cantos retos, linhas de 2 px em tinta, composições a 15–45° da horizontal; o texto que se lê (descrição, comando) fica na horizontal. Sem sombra, sem gradiente em texto, sem raio de borda.</p>
+    <p class="prose"><b>Movimento, um só momento.</b> A palavra pressionada bate maior dentro de um anel de choque impresso, junto com a martelada do ferreiro ASCII. São três marteladas, TANG, TANG, KLANG, cada uma mais forte que a anterior.</p>
+  </div>
+  <div class="demo stage" id="demo-stage">
+    <div>
+      <p class="word d"><span class="press">forjadas</span></p>
+      <div class="demo-ctl">
+        <button class="btn" type="button" id="replay"><svg aria-hidden="true"><use href="#i-copy"/></svg>Repetir martelada</button>
+        <label><input type="checkbox" id="sim-rm"> Simular movimento reduzido</label>
+      </div>
+      <p class="small" id="rm-note" style="margin-top:10px;min-height:1.5em"></p>
+    </div>
+    <div class="fig" role="img" aria-label="Ferreiro ASCII martelando; as onomatopeias TANG e KLANG marcam as marteladas.">
+      <div class="smith" data-clone="ascii"></div>
+      <span class="onoma o1 n1" aria-hidden="true">tang</span>
+      <span class="onoma o2 n2" aria-hidden="true">TANG</span>
+      <span class="onoma o3 n3" aria-hidden="true">KLANG</span>
+    </div>
+  </div>
+  <ol class="timeline">
+    <li><b>0 ms</b>O ferreiro ASCII ergue o martelo (sobe 1,6% e inclina 1,2°).</li>
+    <li><b>220 ms</b>Impacto: a palavra salta para 1,10 / 1,18 / 1,32 vezes o tamanho.</li>
+    <li><b>220–980 ms</b>Anel de choque vermelho-laranja expande e some; as faíscas piscam; a onomatopeia acende em tinta.</li>
+    <li><b>900 ms</b>Tudo assenta no estado de repouso, que já traz o anel impresso em tinta.</li>
+  </ol>
+  <p class="small" style="margin-top:14px;max-width:80ch"><code>prefers-reduced-motion: reduce</code> remove toda animação e transição: a cena fica no repouso (anel impresso, onomatopeias em contorno, faíscas vermelhas). O botão “Repetir” fica desativado nesse modo.</p>
+</section>
+
+<!-- 6. Componentes -->
+<section class="sec" id="componentes" aria-labelledby="h-comp">
+  <h2 class="sec-h" id="h-comp">Componentes e estados</h2>
+
+  <div class="comp-block" style="margin-top:0;border-top:0;padding-top:0">
+    <h3>Botão</h3>
+    <p class="small">Os quatro estados forçados à esquerda; o último botão da fila é interativo de verdade (passe o mouse, use Tab).</p>
+    <div class="states">
+      <figure><button class="btn" type="button">Instalar</button><figcaption>normal</figcaption></figure>
+      <figure><button class="btn is-hover" type="button">Instalar</button><figcaption>hover (a palavra sob pressão)</figcaption></figure>
+      <figure><button class="btn is-focus" type="button">Instalar</button><figcaption>foco (anel de 3 px)</figcaption></figure>
+      <figure><button class="btn" type="button" disabled>Instalar</button><figcaption>desabilitado</figcaption></figure>
+      <figure><button class="btn ghost" type="button">Ver no GitHub</button><figcaption>secundário</figcaption></figure>
+    </div>
+  </div>
+
+  <div class="comp-block">
+    <h3>Comando de instalação copiável</h3>
+    <p class="small">Copiar, copiado, falha. O estado “copiado” troca ícone e rótulo e volta ao normal em 2,5 s. A falha nomeia o problema e a saída: selecionar e copiar à mão.</p>
+    <div class="cmd-states">
+      <figure><div class="cmd" data-state="idle"><code>ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder</code><button class="btn" type="button" tabindex="-1"><svg aria-hidden="true"><use href="#i-copy"/></svg><span class="lbl">Copiar</span></button><p class="msg">Claude Code, exemplo com n8n-flow-builder.</p></div><figcaption>não copiado</figcaption></figure>
+      <figure><div class="cmd" data-state="copiado"><code>ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder</code><button class="btn" type="button" tabindex="-1"><svg aria-hidden="true"><use href="#i-check"/></svg><span class="lbl">Copiado</span></button><p class="msg">Copiado para a área de transferência.</p></div><figcaption>copiado</figcaption></figure>
+      <figure><div class="cmd" data-state="falha"><code>ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder</code><button class="btn" type="button" tabindex="-1"><svg aria-hidden="true"><use href="#i-x"/></svg><span class="lbl">Falhou</span></button><p class="msg">O navegador bloqueou a cópia. Selecione o comando e use Ctrl+C.</p></div><figcaption>falha</figcaption></figure>
+    </div>
+    <div style="margin-top:22px;max-width:60rem">
+      <div class="cmd" data-state="idle" data-copy-root>
+        <code id="cmd-live">git clone https://github.com/RafaelMKn/skills-library &amp;&amp; cd skills-library</code>
+        <button class="btn" type="button" data-copy="#cmd-live"><svg aria-hidden="true"><use href="#i-copy"/></svg><span class="lbl">Copiar</span></button>
+        <p class="msg" role="status" aria-live="polite">Versão interativa: clique em Copiar.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="comp-block">
+    <h3>Item de skill</h3>
+    <p class="small">Nome em mono (é identificador), descrição, pasta real costurada logo abaixo e o comando da própria skill.</p>
+    <div class="skills">
+      <figure>
+        <article class="skill"><span class="sn">n8n-flow-builder</span><p class="sd">Protocolo de construção de fluxos n8n do zero ao ativo.</p><span class="sp">01-automacao-n8n-make/n8n-flow-builder/</span>
+          <div class="cmd" data-state="idle" data-copy-root><code id="cmd-skill">ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder</code><button class="btn" type="button" data-copy="#cmd-skill"><svg aria-hidden="true"><use href="#i-copy"/></svg><span class="lbl">Copiar</span></button><p class="msg" role="status" aria-live="polite">Claude Code.</p></div>
+        </article><figcaption>normal</figcaption>
+      </figure>
+      <figure>
+        <article class="skill is-hover"><span class="sn">ascii-video</span><p class="sd">Converte vídeo e áudio em MP4/GIF ASCII colorido.</p><span class="sp">02-design-ui-motion-3d/ascii-video/</span></article><figcaption>hover</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="comp-block">
+    <h3>Item de categoria</h3>
+    <p class="small">Normal, selecionada (tinta cheia, papel por cima) e vazia (borda tracejada, sem skill no filtro). Estados do componente: a landing estática lista as seis pastas e ainda não filtra.</p>
+    <div class="cat-states">
+      <figure><button class="cat" type="button"><span class="no" aria-hidden="true">04</span><span class="nm">APIs, Backend &amp; Banco de Dados</span><span class="pa">04-backend-apis-banco/</span></button><figcaption>normal (passe o mouse: papel velho)</figcaption></figure>
+      <figure><button class="cat is-selected" type="button" aria-pressed="true"><span class="no" aria-hidden="true">01</span><span class="nm">Automação de Processos &amp; n8n / Make</span><span class="pa">01-automacao-n8n-make/</span></button><figcaption>selecionada</figcaption></figure>
+      <figure><button class="cat is-empty" type="button" aria-disabled="true"><span class="no" aria-hidden="true">06</span><span class="nm">Produtividade, Pesquisa, Documentos &amp; Mídia</span><span class="pa">Nenhuma skill neste filtro. Limpe a busca.</span></button><figcaption>vazia (estado de exemplo)</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 7. Landing em moldura -->
+<section class="sec" id="landing-frames" aria-labelledby="h-land">
+  <h2 class="sec-h" id="h-land">Landing: 1440 e 390</h2>
+  <div class="frames">
+    <div>
+      <div class="frame-cap"><h3>Desktop 1440</h3><span id="d-scale"></span><a href="?frame=landing-desktop">abrir em tamanho real</a></div>
+      <div class="frame-box" id="box-d"><iframe id="if-d" title="Landing do Akmon em 1440 de largura" src="?frame=landing-desktop" width="1440" height="2200" loading="eager"></iframe></div>
+    </div>
+    <div>
+      <div class="frame-cap"><h3>Mobile 390</h3><span id="m-scale"></span><a href="?frame=landing-mobile">abrir em tamanho real</a></div>
+      <div class="frame-box" id="box-m" style="max-width:390px"><iframe id="if-m" title="Landing do Akmon em 390 de largura" src="?frame=landing-mobile" width="390" height="2600" loading="eager"></iframe></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. Riscos -->
+<section class="sec" id="riscos" aria-labelledby="h-risco">
+  <h2 class="sec-h" id="h-risco">Riscos</h2>
+  <ul class="risk">
+    <li><b>Ruído esconde a oferta</b><span>A colisão de tipos e o herói inclinado competem com a descrição e o comando. Mitigação: descrição, comando e botões ficam na horizontal, em tinta cheia, antes do herói na ordem de leitura. Medir em teste com gente nova: em quantos segundos acham o comando?</span></li>
+    <li><b>Texto girado no celular</b><span>A inclinação cai para 5° e a frase é montada por tamanho (empuxo vertical). Em larguras abaixo de 360 px a palavra “forjadas” ainda não foi testada.</span></li>
+    <li><b>Leitura de tipo largo</b><span>Holtwood é muito larga e sem minúsculas reais: só serve em títulos curtos. Nomes longos de categoria usam Archivo.</span></li>
+    <li><b>Herói ASCII em corpo pequeno</b><span>A 440 px de largura o caractere tem cerca de 8 px; no celular, cerca de 6 px. É gravura, não texto, mas leitores de tela precisam do <code>aria-label</code> do contêiner (já presente).</span></li>
+    <li><b>Vermelho-laranja com papel velho</b><span>Não passa em 4,5:1 para texto pequeno sobre papel velho. Regra: só sobre papel cru, ou em tamanho grande.</span></li>
+    <li><b>Movimento</b><span>Três marteladas seguidas podem cansar. Roda uma vez por visita; com <code>prefers-reduced-motion</code> não roda.</span></li>
+    <li><b>Nome e contagem</b><span>Conflito de nome Akmon (GitHub, npm, domínio) ainda não foi checado. Contagem de skills fica fora até reconciliar: o README e o disco divergem.</span></li>
+    <li><b>Fontes</b><span>Self-host em WOFF2 latino: sem rede, mas acentos fora do latino básico caem no fallback.</span></li>
+  </ul>
+</section>
+
+<footer class="site-foot small">Akmon · identidade C · board estático, sem build. Fontes sob SIL OFL 1.1 (ver <a href="fonts/OFL-archivo.txt">licenças</a>).</footer>
+</div><!-- /board -->
+</div><!-- /sheet -->
+
+<script>
+(function(){
+  'use strict';
+  var root=document.documentElement;
+  var frame=root.getAttribute('data-frame');
+  var mqRM=window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* ---------- contraste WCAG (calculado, nunca digitado) ---------- */
+  function cssHex(name){return getComputedStyle(root).getPropertyValue(name).trim().toUpperCase();}
+  function lum(hex){var c=[1,3,5].map(function(i){var v=parseInt(hex.slice(i,i+2),16)/255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);});return 0.2126*c[0]+0.7152*c[1]+0.0722*c[2];}
+  function ratio(a,b){var x=lum(a),y=lum(b);return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05);}
+  function verdict(r){
+    if(r>=7)return{cls:'ok',txt:'AAA',note:'Texto de qualquer tamanho'};
+    if(r>=4.5)return{cls:'ok',txt:'AA',note:'Texto de qualquer tamanho'};
+    if(r>=3)return{cls:'big',txt:'AA grande',note:'Só texto grande (24 px, ou 19 px em negrito) e gráficos'};
+    return{cls:'no',txt:'Falha',note:'Não usar para texto'};
+  }
+  window.__contrast={};
+  document.querySelectorAll('#swatches .sw').forEach(function(sw){
+    var h=cssHex(sw.getAttribute('data-var'));sw.querySelector('.hx').textContent=h;
+  });
+  var pairs=[
+    ['Tinta sobre papel cru','--ink','--paper'],
+    ['Tinta apagada sobre papel cru','--muted','--paper'],
+    ['Tinta apagada sobre papel velho','--muted','--paper-2'],
+    ['Vermelho-laranja sobre papel cru (palavra sob pressão)','--red','--paper'],
+    ['Papel cru sobre vermelho-laranja (botão em hover)','--paper','--red'],
+    ['Papel cru sobre tinta (faixa, comando)','--paper','--ink'],
+    ['Vermelho-laranja sobre tinta (faixa, só título grande)','--red','--ink'],
+    ['Vermelho-laranja sobre papel velho','--red','--paper-2'],
+    ['Tinta sobre alumínio','--ink','--alu'],
+    ['Papel cru sobre tinta apagada','--paper','--muted']
+  ];
+  var tb=document.querySelector('#contrast tbody');
+  if(tb){pairs.forEach(function(p){
+    var fg=cssHex(p[1]),bg=cssHex(p[2]),r=ratio(fg,bg),v=verdict(r);
+    window.__contrast[p[1]+' on '+p[2]]={fg:fg,bg:bg,ratio:Math.round(r*100)/100,verdict:v.txt};
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td></td><td><span class="demo-pair">Skills forjadas</span></td><td class="n"></td><td><span class="chip '+v.cls+'"></span><span class="note"></span></td>';
+    tr.children[0].textContent=p[0]+' · '+fg+' / '+bg;
+    var d=tr.querySelector('.demo-pair');d.style.color=fg;d.style.background=bg;
+    tr.children[2].textContent=r.toFixed(2).replace('.',',')+':1';
+    tr.querySelector('.chip').textContent=v.txt;
+    tr.querySelector('.note').textContent=v.note;
+    tb.appendChild(tr);
+  });}
+
+  /* ---------- copiar comando ---------- */
+  document.querySelectorAll('[data-copy-root]').forEach(function(box){
+    var btn=box.querySelector('[data-copy]');if(!btn)return;
+    var code=box.querySelector(btn.getAttribute('data-copy'));
+    var lbl=btn.querySelector('.lbl'),use=btn.querySelector('use'),msg=box.querySelector('.msg');
+    var idleMsg=msg.textContent,t;
+    function set(state,label,icon,m){box.setAttribute('data-state',state);lbl.textContent=label;use.setAttribute('href',icon);msg.textContent=m;}
+    function reset(){set('idle','Copiar','#i-copy',idleMsg);}
+    function fallback(){
+      var r=document.createRange();r.selectNodeContents(code);var s=getSelection();s.removeAllRanges();s.addRange(r);
+      var ok=false;try{ok=document.execCommand('copy');}catch(e){}
+      return ok;
+    }
+    btn.addEventListener('click',function(){
+      clearTimeout(t);
+      var text=code.textContent;
+      var done=function(ok){
+        if(ok)set('copiado','Copiado','#i-check','Copiado para a área de transferência.');
+        else set('falha','Falhou','#i-x','O navegador bloqueou a cópia. Selecione o comando e use Ctrl+C.');
+        t=setTimeout(reset,ok?2500:6000);
+      };
+      if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(function(){done(true);},function(){done(fallback());});}
+      else done(fallback());
+    });
+  });
+
+  /* ---------- a martelada ---------- */
+  var timers=new WeakMap();
+  function strike(stage,n){
+    stage.classList.remove('hit-1','hit-2','hit-3');
+    void stage.offsetWidth;
+    stage.classList.add('hit-'+n);
+  }
+  function play(stage){
+    if(mqRM.matches||stage.classList.contains('static'))return;
+    (timers.get(stage)||[]).forEach(clearTimeout);
+    var ts=[0,1300,2600].map(function(ms,i){return setTimeout(function(){strike(stage,i+1);},ms);});
+    timers.set(stage,ts);
+  }
+  var heroStage=document.querySelector('.hero.stage');
+  var demo=document.getElementById('demo-stage');
+  var asciiPre=document.querySelector('.hero .figure pre');
+  if(demo&&asciiPre){
+    var holder=demo.querySelector('[data-clone="ascii"]');
+    var cl=asciiPre.cloneNode(true);holder.appendChild(cl);
+  }
+  var replay=document.getElementById('replay'),sim=document.getElementById('sim-rm'),note=document.getElementById('rm-note');
+  function syncRM(){
+    var rm=mqRM.matches||(sim&&sim.checked);
+    if(demo)demo.classList.toggle('static',!!rm);
+    if(replay){replay.disabled=!!rm;}
+    if(note)note.textContent=rm?'Movimento reduzido: a cena fica estática, no estado de repouso.':'';
+    if(rm&&demo){demo.classList.remove('hit-1','hit-2','hit-3');(timers.get(demo)||[]).forEach(clearTimeout);}
+  }
+  if(sim)sim.addEventListener('change',syncRM);
+  mqRM.addEventListener&&mqRM.addEventListener('change',syncRM);
+  syncRM();
+  if(replay)replay.addEventListener('click',function(){play(demo);});
+  if(demo&&'IntersectionObserver' in window){
+    var played=false;
+    new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&!played){played=true;setTimeout(function(){play(demo);},300);}});},{threshold:.6}).observe(demo);
+  }
+  /* a landing real roda uma vez ao carregar; frames de captura ficam estáticos (determinísticos) */
+  if(heroStage&&frame&&frame.indexOf('landing')===0){
+    var q=new URLSearchParams(location.search);
+    if(window.top!==window||q.get('static')==='1')heroStage.classList.add('static');
+    else setTimeout(function(){play(heroStage);},400);
+  }
+
+  /* ---------- molduras da landing dentro do board ---------- */
+  function fit(boxId,ifId,w,labelId,maxScale){
+    var box=document.getElementById(boxId),f=document.getElementById(ifId);if(!box||!f)return;
+    function size(){
+      var cw=box.parentElement.clientWidth;
+      var s=Math.min(maxScale||1,cw/w);
+      var h=parseInt(f.getAttribute('height'),10);
+      try{var d=f.contentDocument;if(d&&d.documentElement)h=Math.max(h,d.documentElement.scrollHeight);}catch(e){}
+      f.style.height=h+'px';f.style.width=w+'px';
+      f.style.transform='scale('+s+')';
+      box.style.width=(w*s)+'px';box.style.height=(h*s)+'px';
+      var l=document.getElementById(labelId);if(l)l.textContent='escala '+Math.round(s*100)+'%';
+    }
+    f.addEventListener('load',function(){size();setTimeout(size,400);});
+    window.addEventListener('resize',size);
+    size();
+  }
+  fit('box-d','if-d',1440,'d-scale',1);
+  fit('box-m','if-m',390,'m-scale',1);
+})();
+</script>
+</body>
+</html>

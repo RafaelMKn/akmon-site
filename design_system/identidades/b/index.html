@@ -1,0 +1,1024 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Akmon · identidade B · BBS da Forja</title>
+<meta name="description" content="Board da identidade B do Akmon: BBS de madrugada, grade de caracteres, brasa sobre preto de terminal.">
+<meta name="theme-color" content="#0B0907">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preload" href="fonts/unscii-16.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+/* roteamento de frames antes da pintura: ?frame=landing-desktop|landing-mobile|marca|paleta */
+(function(){var f=new URLSearchParams(location.search).get('frame');if(f)document.documentElement.setAttribute('data-frame',f);}());
+</script>
+<style>
+@font-face{font-family:"Unscii16";src:url("fonts/unscii-16.woff2") format("woff2");font-weight:400;font-style:normal;font-display:block}
+
+:root{
+  /* paleta ANSI traduzida para a marca (hex únicos: o board lê daqui) */
+  --tela:#0B0907;
+  --painel:#1A1410;
+  --grade:#75675A;
+  --fosforo:#A89F8E;
+  --papel:#EDE6D6;
+  --faisca:#FFA24A;
+  --brasa:#F2501E;
+  --brasa-funda:#8F3314;
+
+  --mono:"Unscii16",ui-monospace,"DejaVu Sans Mono",monospace;
+  --fill:var(--tela);
+  --bc:var(--grade);
+
+  /* caracteres das molduras (conteúdo gerado, escondido de leitores de tela por aria-hidden) */
+  --h2:"════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════"; --v2:"║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A║\A";
+  --h1:"────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────"; --v1:"│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A│\A";
+  --tl:"╔"; --tr:"╗"; --bl:"╚"; --br:"╝";
+  --h:var(--h2); --v:var(--v2);
+
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--tela);color:var(--papel);font:400 16px/1 var(--mono);font-synthesis:none;font-kerning:none;font-variant-ligatures:none;text-rendering:optimizeSpeed;-webkit-text-size-adjust:100%;caret-color:var(--faisca);scrollbar-color:var(--brasa) var(--painel);tab-size:4}
+body{margin:0;min-height:100vh;background:var(--tela);overflow-x:hidden}
+::selection{background:var(--brasa);color:var(--tela)}
+::-webkit-scrollbar{width:16px;height:16px}
+::-webkit-scrollbar-track{background:var(--painel)}
+::-webkit-scrollbar-thumb{background:var(--brasa);border:4px solid var(--painel)}
+:focus-visible{outline:2px solid var(--papel);outline-offset:2px}
+h1,h2,h3,h4,p,ul,ol,dl,dd,figure,pre,table{margin:0;padding:0;font:inherit}
+ul,ol{list-style:none}
+a{color:var(--faisca);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+a:hover{background:var(--faisca);color:var(--tela);text-decoration:none}
+code,kbd,samp{font:inherit}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;text-align:left}
+img,svg{display:block}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.dim{color:var(--fosforo)} .hot{color:var(--faisca)} .ember{color:var(--brasa)} .paper{color:var(--papel)}
+.pre{white-space:pre-wrap;overflow-wrap:anywhere}
+.t2{font-size:32px}
+.t3{font-size:48px}
+.t4{font-size:64px}
+.rv{background:var(--papel);color:var(--tela)}
+.rvb{background:var(--brasa);color:var(--tela)}
+p{max-width:72ch}
+.stack>*+*{margin-top:1em}
+.stack2>*+*{margin-top:2em}
+
+/* ───── grade ───── */
+.screen{width:round(down,min(100%,var(--max,148ch)),1ch);margin-inline:auto;padding-block:2em 3em}
+@supports not (width:round(down,10px,1px)){.screen{width:min(100%,var(--max,148ch))}}
+
+/* moldura box-drawing: quatro bordas feitas de caracteres reais */
+.box{position:relative;padding:2em 2ch;background:var(--fill)}
+.box.s{--h:var(--h1);--v:var(--v1);--tl:"┌";--tr:"┐";--bl:"└";--br:"┘"}
+.box.hot-b{--bc:var(--brasa-funda)}
+.box>.eT,.box>.eB,.box>.eL,.box>.eR{position:absolute;overflow:hidden;white-space:pre;color:var(--bc);pointer-events:none;line-height:1;font-size:16px}
+.box>.eT{top:0;left:0;right:1ch;height:1em}
+.box>.eB{bottom:0;left:0;right:1ch;height:1em}
+.box>.eL{left:0;top:1em;bottom:1em;width:1ch}
+.box>.eR{right:0;top:0;bottom:0;width:1ch}
+.box>.eT::before{content:var(--tl) var(--h)}
+.box>.eB::before{content:var(--bl) var(--h)}
+.box>.eL::before{content:var(--v)}
+.box>.eR::before{content:var(--tr) "\A" var(--v)}
+.box>.eR::after{content:var(--br);position:absolute;right:0;bottom:0;background:var(--fill)}
+.box>.ttl{position:absolute;top:0;left:2ch;z-index:1;background:var(--fill);color:var(--faisca);padding-inline:1ch;white-space:nowrap;max-width:calc(100% - 6ch);overflow:hidden;text-overflow:clip;line-height:1;font-size:16px}
+.box>.ttl::before{content:"[ ";color:var(--grade)} .box>.ttl::after{content:" ]";color:var(--grade)}
+.box.p0{padding-inline:0} .box.pa{padding-block:2em}
+.box.alt{--fill:var(--painel)}
+
+/* réguas de bloco ░▒▓█ */
+.rule{overflow:hidden;white-space:nowrap;color:var(--brasa-funda);height:1em;line-height:1}
+.rule::before{content:"░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░"}
+.line{overflow:hidden;white-space:nowrap;color:var(--grade);height:1em;line-height:1}
+.line::before{content:var(--h1)}
+
+/* letreiro AKMON em blocos quadrados */
+.lt{color:var(--brasa);line-height:1;white-space:pre}
+.lt .ln{display:block;min-height:1em}
+.lt.sm{display:none;font-size:24px}
+@media (max-width:719px){.lt.lg{display:none}.lt.sm{display:block}}
+
+/* ferreiro ASCII */
+.artwrap{container-type:inline-size}
+.art{font-size:min(12px,calc(100cqw / 46.5));line-height:1;white-space:pre;color:var(--fosforo)}
+.art .ln{display:block;min-height:1em}
+.art .c1{color:var(--papel)} .art .c2{color:var(--faisca)} .art .c3{color:var(--brasa)} .art .c4{color:var(--fosforo)}
+
+/* abertura: linha a linha */
+.booting .ln:not(.on){visibility:hidden}
+.ln.cur::after{content:"█";color:var(--faisca)}
+@media (prefers-reduced-motion:no-preference){.ln.cur::after{animation:pisca 0.8s steps(2,jump-none) infinite}}
+@keyframes pisca{50%{opacity:0}}
+
+/* botões */
+.btn{display:inline-block;padding:0 1ch;background:var(--painel);color:var(--papel);box-shadow:inset 0 0 0 1px var(--grade);line-height:16px;height:16px;white-space:nowrap}
+.btn::before{content:"[ ";color:var(--faisca)} .btn::after{content:" ]";color:var(--faisca)}
+.btn:hover,.btn.is-hover{background:var(--faisca);color:var(--tela);box-shadow:none}
+.btn:hover::before,.btn:hover::after,.btn.is-hover::before,.btn.is-hover::after{color:var(--tela)}
+.btn:active,.btn.is-active{background:var(--brasa);color:var(--tela);box-shadow:none}
+.btn.is-focus{outline:2px solid var(--papel);outline-offset:2px}
+.btn:disabled,.btn[aria-disabled=true]{background:transparent;color:var(--grade);box-shadow:inset 0 0 0 1px var(--brasa-funda);cursor:not-allowed}
+.btn:disabled::before,.btn:disabled::after,.btn[aria-disabled=true]::before,.btn[aria-disabled=true]::after{color:var(--brasa-funda)}
+.btn.pri{background:var(--brasa);color:var(--tela);box-shadow:none}
+.btn.pri::before,.btn.pri::after{color:var(--tela)}
+.btn.pri:hover,.btn.pri.is-hover{background:var(--faisca)}
+
+/* comando copiável */
+.cmd{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 2ch;align-items:start;background:var(--painel);padding:1em 2ch;box-shadow:inset 0 0 0 1px var(--grade)}
+.cmd code{display:block;color:var(--papel);white-space:pre-wrap;overflow-wrap:anywhere;min-width:0}
+.cmd code::before{content:"$ ";color:var(--brasa)}
+.cmd.path code::before{content:"> "}
+.cmd .st{grid-column:1 / -1;color:var(--fosforo);min-height:0}
+.cmd .st:empty{display:none}
+.cmd .st{margin-top:1em}
+.cmd[data-state=ok]{box-shadow:inset 0 0 0 1px var(--faisca)}
+.cmd[data-state=ok] .btn{background:var(--faisca);color:var(--tela);box-shadow:none}
+.cmd[data-state=ok] .btn::before,.cmd[data-state=ok] .btn::after{color:var(--tela)}
+.cmd[data-state=ok] .st{color:var(--faisca)}
+.cmd[data-state=fail]{box-shadow:inset 0 0 0 1px var(--brasa)}
+.cmd[data-state=fail] .btn{background:var(--brasa);color:var(--tela);box-shadow:none}
+.cmd[data-state=fail] .btn::before,.cmd[data-state=fail] .btn::after{color:var(--tela)}
+.cmd[data-state=fail] .st{color:var(--brasa)}
+.cmd[data-state=fail] .st::before{content:"ERRO ";background:var(--brasa);color:var(--tela);padding-inline:1ch;margin-right:1ch}
+@media (max-width:719px){.cmd{grid-template-columns:minmax(0,1fr)}.cmd .btn{justify-self:start;margin-top:1em}}
+
+/* item de menu / categoria */
+.mi{display:grid;grid-template-columns:5ch minmax(0,1fr);width:100%;padding:0 1ch;box-sizing:border-box;color:var(--papel);text-decoration:none}
+.mi .k{color:var(--faisca)}
+.mi .f{grid-column:2;color:var(--fosforo)}
+.mi:hover,.mi.is-hover{background:var(--painel)}
+.mi:hover .t,.mi.is-hover .t{color:var(--faisca)}
+.mi[aria-pressed=true],.mi[aria-current=true],.mi.is-sel{background:var(--brasa);color:var(--tela)}
+.mi[aria-pressed=true] .k,.mi[aria-pressed=true] .f,.mi[aria-current=true] .k,.mi[aria-current=true] .f,.mi.is-sel .k,.mi.is-sel .f{color:var(--tela)}
+.mi[aria-pressed=true] .t,.mi.is-sel .t{color:var(--tela)}
+.mi.is-focus{outline:2px solid var(--papel);outline-offset:2px}
+.mi.is-empty,.mi[aria-disabled=true]{color:var(--grade);cursor:not-allowed}
+.mi.is-empty .k,.mi.is-empty .f{color:var(--grade)}
+.mi.is-empty:hover{background:transparent}
+.mi.is-empty:hover .t{color:var(--grade)}
+a.mi:hover{color:var(--papel);text-decoration:none}
+a.mi:hover .t{color:var(--faisca)}
+a.mi:hover .k{color:var(--faisca)}
+.menu li+li{margin-top:1em}
+.menu li.sep{margin-top:1em}
+
+/* linha de categoria (seção) */
+.cr{display:grid;grid-template-columns:5ch 30ch minmax(0,1fr) 22ch;width:100%;color:var(--papel);padding:0}
+.cr .k{color:var(--faisca)} .cr .n{color:var(--fosforo)} .cr .c{color:var(--fosforo);text-align:right}
+.cr:hover,.cr.is-hover{background:var(--painel)}
+.cr:hover .nm,.cr.is-hover .nm{color:var(--faisca)}
+.cr[aria-pressed=true],.cr.is-sel{background:var(--brasa);color:var(--tela)}
+.cr[aria-pressed=true] *,.cr.is-sel *{color:var(--tela)}
+.cr.is-focus{outline:2px solid var(--papel);outline-offset:2px}
+.cr.is-empty{color:var(--grade);cursor:not-allowed}
+.cr.is-empty *{color:var(--grade)}
+@media (max-width:1099px){.cr{grid-template-columns:5ch minmax(0,1fr)}.cr .n,.cr .nm,.cr .c{grid-column:2;text-align:left}}
+
+/* item de skill */
+.sk{display:grid;grid-template-columns:2ch minmax(0,1fr);padding:0 1ch;width:100%;color:var(--papel)}
+.sk::before{content:"►";color:var(--grade)}
+.sk .d{grid-column:2;color:var(--fosforo)}
+.sk .p{grid-column:2;color:var(--fosforo)}
+.sk:hover,.sk.is-hover{background:var(--painel)}
+.sk:hover::before,.sk.is-hover::before{color:var(--faisca)}
+.sk:hover .nm,.sk.is-hover .nm{color:var(--faisca)}
+.sk.is-focus{outline:2px solid var(--papel);outline-offset:2px}
+
+/* ───── board ───── */
+.sec{margin-top:2em}
+.sec>.cols{display:grid;gap:2em 4ch}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.gA{grid-template-columns:minmax(0,1fr) 40ch}
+@media (max-width:1099px){.g3{grid-template-columns:minmax(0,1fr)}.g2,.gA{grid-template-columns:minmax(0,1fr)}}
+.sub{color:var(--faisca)}
+.sub+*{margin-top:1em}
+.navlist{display:flex;flex-wrap:wrap;gap:0 3ch}
+.navlist a{text-decoration:none}
+.navlist a::before{content:"["attr(data-k)"] ";color:var(--grade)}
+.navlist a:hover::before{color:var(--tela)}
+.sw{height:32px;width:100%;box-shadow:inset 0 0 0 1px var(--grade)}
+table{border-collapse:collapse;width:100%}
+th{color:var(--fosforo);text-align:left;font-weight:400;padding:0 2ch 1em 0;white-space:nowrap}
+td{padding:0 2ch 0 0;vertical-align:top;height:32px;white-space:nowrap}
+td.wrap{white-space:normal}
+.tbl{overflow-x:auto}
+.ok{color:var(--faisca)} .no{color:var(--brasa)}
+.badge{background:var(--papel);color:var(--tela);padding-inline:1ch}
+.badge.no{background:var(--brasa);color:var(--tela)}
+.badge.mid{background:var(--faisca);color:var(--tela)}
+.ansi{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:1em 2ch}
+@media (max-width:719px){.ansi{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.ansi .cell .sw{height:48px}
+.ansi .cell.off .sw{box-shadow:inset 0 0 0 1px var(--grade);display:flex;align-items:center;justify-content:center;color:var(--grade);overflow:hidden;white-space:nowrap}
+.ansi .cell.off .sw::before{content:"░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░"}
+.ansi small{display:block;font-size:16px}
+.glyphs{color:var(--papel);overflow-wrap:anywhere;white-space:pre-wrap;line-height:1}
+.state-row{display:flex;flex-wrap:wrap;gap:2em 3ch;align-items:flex-start}
+.state-row>div{display:flex;flex-direction:column;gap:1em;align-items:flex-start}
+.state-row .lbl{color:var(--fosforo)}
+.state-row.wide>div{align-items:stretch;flex:1 1 40ch;min-width:0}
+.sym{image-rendering:pixelated;shape-rendering:crispEdges}
+.frame-wrap{position:relative;background:var(--painel);overflow:hidden;box-shadow:inset 0 0 0 1px var(--grade)}
+.frame-wrap iframe{border:0;display:block;transform-origin:0 0;background:var(--tela)}
+.demo-ctrl{display:flex;flex-wrap:wrap;gap:1em 2ch;align-items:center}
+.risk li{display:grid;grid-template-columns:3ch minmax(0,1fr)}
+.risk li::before{content:"!!";color:var(--brasa)}
+.risk li+li{margin-top:1em}
+.risk b{font-weight:400;color:var(--faisca)}
+
+/* ───── landing ───── */
+#landing{display:none;--max:160ch}
+.hero{display:grid;grid-template-columns:minmax(0,1fr);gap:1em 0}
+.hero>.left>*+*{margin-top:1em}
+.hero h1,.hero .h1{font-size:32px;line-height:1;color:var(--papel);text-wrap:balance;max-width:20em}
+.hero .lede{max-width:56ch;color:var(--papel)}
+.hero .keys{color:var(--fosforo)}
+.hero .keys kbd{color:var(--faisca)}
+.hero .art-box .ttl{color:var(--faisca)}
+.status{display:flex;flex-wrap:wrap;gap:0 2ch;background:var(--fosforo);color:var(--tela);padding:1px 1ch;min-height:1em;align-items:baseline}
+.status .sp{flex:1}
+.status button{color:var(--tela);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.status button:hover{background:var(--tela);color:var(--fosforo);text-decoration:none}
+.status button:disabled{cursor:not-allowed;text-decoration:line-through}
+.status button:focus-visible{outline-color:var(--tela)}
+.lsec{margin-top:2em}
+.lsec h2{font-size:32px;line-height:1;color:var(--papel);text-wrap:balance;max-width:24em}
+.lsec h2+*{margin-top:1em}
+.lcols{display:grid;gap:2em 2ch;grid-template-columns:minmax(0,1fr)}
+@media (min-width:1100px){
+  .hero{grid-template-columns:minmax(0,1fr) 74ch;column-gap:2ch}
+  .lcols{grid-template-columns:minmax(0,1fr) 62ch}
+}
+.harn{display:grid;gap:1em}
+.harn h3{color:var(--faisca)}
+.harn p{color:var(--papel)}
+.step{display:grid;grid-template-columns:minmax(0,1fr)}
+.foot{margin-top:2em}
+.foot .row{display:flex;flex-wrap:wrap;gap:1em 3ch;justify-content:space-between}
+
+/* ───── frames ───── */
+html[data-frame] #board{display:none}
+html[data-frame^=landing] #landing{display:block}
+html:not([data-frame]) #landing{display:none}
+html[data-frame=marca] #board,html[data-frame=paleta] #board{display:block}
+html[data-frame=marca] #board .screen>:not(#marca),html[data-frame=paleta] #board .screen>:not(#paleta){display:none}
+html[data-frame=marca] #marca,html[data-frame=paleta] #paleta{margin-top:0}
+html[data-frame] .screen{padding-block:0}
+html[data-frame=marca] .screen,html[data-frame=paleta] .screen{padding-block:2em}
+html[data-frame=landing-desktop] body{width:1440px}
+html[data-frame=landing-mobile] body{width:390px}
+html[data-frame^=landing] .screen{padding-block:0 0}
+html[data-frame^=landing] #landing .screen{padding-top:0}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<!-- ═════════════════════════ BOARD ═════════════════════════ -->
+<div id="board">
+<div class="screen">
+
+<!-- 1. Abertura + tese -->
+<section class="box sec" id="abertura" aria-labelledby="h-abertura" style="margin-top:0">
+  <i class="eT" aria-hidden="true"></i><i class="eB" aria-hidden="true"></i><i class="eL" aria-hidden="true"></i><i class="eR" aria-hidden="true"></i>
+  <span class="ttl">Akmon · identidade B</span>
+  <div class="stack2">
+    <div role="img" aria-label="Letreiro AKMON em blocos quadrados">
+      <pre class="lt lg" aria-hidden="true">██████████  ██      ██  ██      ██  ██████████  ██      ██
+██      ██  ██    ██    ████  ████  ██      ██  ████    ██
+██      ██  ██  ██      ██  ██  ██  ██      ██  ██  ██  ██
+██████████  ████        ██  ██  ██  ██      ██  ██  ██  ██
+██      ██  ██  ██      ██      ██  ██      ██  ██    ████
+██      ██  ██    ██    ██      ██  ██      ██  ██      ██
+██      ██  ██      ██  ██      ██  ██████████  ██      ██</pre>
+      <pre class="lt sm" aria-hidden="true">█▀▀▀█ █  ▄▀ █▄ ▄█ █▀▀▀█ █▄  █
+█▄▄▄█ █▄▀   █ █ █ █   █ █ █ █
+█   █ █ ▀▄  █   █ █   █ █  ▀█
+▀   ▀ ▀   ▀ ▀   ▀ ▀▀▀▀▀ ▀   ▀</pre>
+    </div>
+    <h1 class="t2 paper" id="h-abertura" style="max-width:36em;text-wrap:balance">O Akmon é um BBS de madrugada: tela de texto, menu numerado, e quem conectou é dono da noite.</h1>
+    <p class="dim">BBS da Forja. Direção B de três, board de escolha de 28/10/2026. Nada aqui está aplicado ainda no README, na landing real ou no DESIGN.md. Tudo o que você vê está desenhado na célula de 8×16 px da fonte, e nada fica fora da grade.</p>
+    <nav aria-label="Seções do board">
+      <ul class="navlist">
+        <li><a href="#marca" data-k="M">marca</a></li>
+        <li><a href="#paleta" data-k="P">paleta</a></li>
+        <li><a href="#tipografia" data-k="T">tipografia</a></li>
+        <li><a href="#movimento" data-k="F">forma e movimento</a></li>
+        <li><a href="#componentes" data-k="C">componentes</a></li>
+        <li><a href="#landing-frames" data-k="L">landing</a></li>
+        <li><a href="#riscos" data-k="R">riscos</a></li>
+      </ul>
+    </nav>
+    <p class="dim">Frames em tamanho real: <a href="?frame=landing-desktop">landing-desktop</a> · <a href="?frame=landing-mobile">landing-mobile</a> · <a href="?frame=marca">marca</a> · <a href="?frame=paleta">paleta</a></p>
+  </div>
+</section>
+
+<!-- 2. Marca -->
+<section class="box sec" id="marca" aria-labelledby="h-marca">
+  <i class="eT" aria-hidden="true"></i><i class="eB" aria-hidden="true"></i><i class="eL" aria-hidden="true"></i><i class="eR" aria-hidden="true"></i>
+  <h2 class="ttl" id="h-marca">Marca</h2>
+  <div class="stack2">
+    <div class="cols g2" style="display:grid;gap:2em 4ch">
+      <div class="stack">
+        <h3 class="sub">Letreiro</h3>
+        <div role="img" aria-label="Letreiro AKMON em blocos quadrados">
+          <pre class="lt lg" aria-hidden="true">██████████  ██      ██  ██      ██  ██████████  ██      ██
+██      ██  ██    ██    ████  ████  ██      ██  ████    ██
+██      ██  ██  ██      ██  ██  ██  ██      ██  ██  ██  ██
+██████████  ████        ██  ██  ██  ██      ██  ██  ██  ██
+██      ██  ██  ██      ██      ██  ██      ██  ██    ████
+██      ██  ██    ██    ██      ██  ██      ██  ██      ██
+██      ██  ██      ██  ██      ██  ██████████  ██      ██</pre>
+          <pre class="lt sm" aria-hidden="true">█▀▀▀█ █  ▄▀ █▄ ▄█ █▀▀▀█ █▄  █
+█▄▄▄█ █▄▀   █ █ █ █   █ █ █ █
+█   █ █ ▀▄  █   █ █   █ █  ▀█
+▀   ▀ ▀   ▀ ▀   ▀ ▀▀▀▀▀ ▀   ▀</pre>
+        </div>
+        <p class="dim">Cada pixel do letreiro é um quadrado de 16×16 px (2 colunas × 1 linha da grade). Na versão pequena, meio bloco ▀▄ faz o pixel de 8×8 px, e a mesma letra cabe em 29 colunas, no celular.</p>
+        <div class="lt" aria-hidden="true" style="font-size:16px;white-space:pre">█▀▀▀█ █  ▄▀ █▄ ▄█ █▀▀▀█ █▄  █
+█▄▄▄█ █▄▀   █ █ █ █   █ █ █ █
+█   █ █ ▀▄  █   █ █   █ █  ▀█
+▀   ▀ ▀   ▀ ▀   ▀ ▀▀▀▀▀ ▀   ▀</div>
+      </div>
+      <div class="stack">
+        <h3 class="sub">Wordmark</h3>
+        <p class="t4 paper" style="line-height:1">Akmon</p>
+        <p class="dim">Em texto corrido a grafia é sempre Akmon. AKMON em caixa-alta existe só no letreiro de blocos. Do grego ákmōn, bigorna.</p>
+        <p class="t2 hot">Akmon <span class="dim">/</span> <span class="paper">skills</span></p>
+      </div>
+    </div>
+    <div class="cols g2" style="display:grid;gap:2em 4ch">
+      <div class="stack">
+        <h3 class="sub">Símbolo</h3>
+        <div style="display:flex;gap:4ch;align-items:flex-end;flex-wrap:wrap">
+          <svg class="sym" width="128" height="128" viewBox="0 0 16 16" role="img" aria-label="Bigorna em pixels, com duas faíscas">
+            <rect width="16" height="16" fill="#0B0907"/>
+            <path fill="#F2501E" d="M1 4h12v1h-12zM0 5h14v1h-14zM1 6h12v1h-12zM3 7h8v1h-8zM4 8h6v1h-6zM4 9h6v1h-6zM4 10h6v1h-6zM3 11h8v1h-8zM2 12h10v1h-10zM2 13h10v1h-10z"/>
+            <path fill="#FFA24A" d="M14 1h1v1h-1zM6 2h1v1h-1z"/>
+          </svg>
+          <svg class="sym" width="64" height="64" viewBox="0 0 16 16" aria-hidden="true"><rect width="16" height="16" fill="#0B0907"/><path fill="#F2501E" d="M1 4h12v1h-12zM0 5h14v1h-14zM1 6h12v1h-12zM3 7h8v1h-8zM4 8h6v1h-6zM4 9h6v1h-6zM4 10h6v1h-6zM3 11h8v1h-8zM2 12h10v1h-10zM2 13h10v1h-10z"/><path fill="#FFA24A" d="M14 1h1v1h-1zM6 2h1v1h-1z"/></svg>
+          <svg class="sym" width="32" height="32" viewBox="0 0 16 16" aria-hidden="true"><rect width="16" height="16" fill="#0B0907"/><path fill="#F2501E" d="M1 4h12v1h-12zM0 5h14v1h-14zM1 6h12v1h-12zM3 7h8v1h-8zM4 8h6v1h-6zM4 9h6v1h-6zM4 10h6v1h-6zM3 11h8v1h-8zM2 12h10v1h-10zM2 13h10v1h-10z"/><path fill="#FFA24A" d="M14 1h1v1h-1zM6 2h1v1h-1z"/></svg>
+          <svg class="sym" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect width="16" height="16" fill="#0B0907"/><path fill="#F2501E" d="M1 4h12v1h-12zM0 5h14v1h-14zM1 6h12v1h-12zM3 7h8v1h-8zM4 8h6v1h-6zM4 9h6v1h-6zM4 10h6v1h-6zM3 11h8v1h-8zM2 12h10v1h-10zM2 13h10v1h-10z"/><path fill="#FFA24A" d="M14 1h1v1h-1zM6 2h1v1h-1z"/></svg>
+        </div>
+        <p class="dim">Bigorna desenhada em grade de 16×16 pixels, uma só cor de brasa e duas faíscas em laranja claro. Um <code class="hot">&lt;path&gt;</code> por cor, sem curva e sem gradiente.</p>
+      </div>
+      <div class="stack">
+        <h3 class="sub">Favicon</h3>
+        <div style="display:flex;gap:4ch;align-items:flex-end">
+          <img class="sym" src="favicon.svg" width="48" height="48" alt="Favicon do Akmon: bigorna em pixels">
+          <img class="sym" src="favicon.svg" width="32" height="32" alt="">
+          <img class="sym" src="favicon.svg" width="16" height="16" alt="">
+        </div>
+        <p class="dim">Arquivo <code class="hot">favicon.svg</code>, o mesmo símbolo sobre preto de terminal. Legível em 16 px porque cada pixel do desenho cai num pixel da tela.</p>
+      </div>
+    </div>
+    <div class="stack">
+      <h3 class="sub">Regras de uso</h3>
+      <ul class="stack">
+        <li><span class="ember">+</span> O letreiro vive sobre preto de terminal ou painel; a cor é brasa, uma só.</li>
+        <li><span class="ember">+</span> Respiro mínimo: 1 linha e 2 colunas da grade ao redor.</li>
+        <li><span class="ember">-</span> Sem gradiente, sem sombra, sem contorno, sem recolorir por letra.</li>
+        <li><span class="ember">-</span> Não esticar nem escalar fora de múltiplos da célula.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 3. Paleta -->
+<section class="box sec" id="paleta" aria-labelledby="h-paleta">
+  <i class="eT" aria-hidden="true"></i><i class="eB" aria-hidden="true"></i><i class="eL" aria-hidden="true"></i><i class="eR" aria-hidden="true"></i>
+  <h2 class="ttl" id="h-paleta">Paleta</h2>
+  <div class="stack2">
+    <p>A paleta ANSI de 16 cores traduzida para a marca. Brasa e faísca fazem o trabalho do vermelho e do amarelo vivos; verde, azul, magenta e ciano ficam de fora.</p>
+    <div>
+      <h3 class="sub">Cores</h3>
+      <div class="tbl"><table id="tbl-tokens"><thead><tr><th scope="col" style="width:12ch">amostra</th><th scope="col">nome</th><th scope="col">hex</th><th scope="col">uso</th></tr></thead><tbody></tbody></table></div>
+    </div>
+    <div>
+      <h3 class="sub">Contraste WCAG, calculado agora no navegador</h3>
+      <p class="dim" style="margin-bottom:1em">Luminância relativa sRGB e razão (L1+0,05)/(L2+0,05), lida das variáveis CSS desta página. Nenhum número abaixo foi digitado.</p>
+      <div class="tbl"><table id="tbl-contrast"><thead><tr><th scope="col">amostra</th><th scope="col">texto</th><th scope="col">fundo</th><th scope="col">razão</th><th scope="col">nível</th><th scope="col">onde</th></tr></thead><tbody></tbody></table></div>
+    </div>
+    <div>
+      <h3 class="sub">Mapa das 16 posições ANSI</h3>
+      <div class="ansi" id="ansi"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. Tipografia -->
+<section class="box sec" id="tipografia" aria-labelledby="h-tipografia">
+  <i class="eT" aria-hidden="true"></i><i class="eB" aria-hidden="true"></i><i class="eL" aria-hidden="true"></i><i class="eR" aria-hidden="true"></i>
+  <h2 class="ttl" id="h-tipografia">Tipografia</h2>
+  <div class="stack2">
+    <div class="cols g2" style="display:grid;gap:2em 4ch">
+      <div class="stack">
+        <h3 class="sub">Família</h3>
+        <p><span class="t2 paper">Unscii 16</span></p>
+        <p>Fonte de grade bitmap de Viznut, 8×16 px por célula, quadrada de nascença. Serve ao título, ao corpo, ao código e à moldura: uma família só.</p>
+        <p class="dim">Licença: domínio público (variante <code>unscii-16</code>; a variante <code>-full</code>, com GNU Unifont, é GPL e não é usada). Fonte: viznut.fi/unscii. Self-host em <code>fonts/unscii-16.woff2</code>, subconjunto de 605 glifos (latim, pontuação, setas, box-drawing, blocos, formas) sem alterar os glifos. Texto em <code>fonts/LICENSE-unscii.txt</code>.</p>
+        <p class="dim">Sem negrito nem itálico: a ênfase vem de cor (faísca), vídeo reverso e tamanho em múltiplos inteiros.</p>
+      </div>
+      <div class="stack">
+        <h3 class="sub">Escala (múltiplos da célula)</h3>
+        <p class="paper" style="font-size:64px;line-height:1;white-space:nowrap;overflow:hidden">64 px 4×</p>
+        <p class="paper" style="font-size:48px;line-height:1;white-space:nowrap;overflow:hidden">48 px 3×</p>
+        <p class="paper" style="font-size:32px;line-height:1">32 px 2×: título de seção</p>
+        <p class="paper">16 px 1×: corpo, código, moldura. Medida de leitura até 72 colunas.</p>
+        <p class="dim">Entrelinha 1 (uma linha de terminal). Entre blocos, sempre uma linha inteira em branco.</p>
+      </div>
+    </div>
+    <div class="stack">
+      <h3 class="sub">Exemplo com texto real</h3>
+      <div class="box s alt" style="--fill:var(--painel)">
+        <i class="eT" aria-hidden="true"></i><i class="eB" aria-hidden="true"></i><i class="eL" aria-hidden="true"></i><i class="eR" aria-hidden="true"></i>
+        <div class="stack">
+          <p class="t2 paper" style="text-wrap:balance;max-width:24em">Skills de agentes, forjadas em operação real.</p>
+          <p style="max-width:60ch">Pastas com SKILL.md para Claude Code, Codex, Google Antigravity, OpenClaw e Hermes. Uma pasta, vários harnesses.</p>
+          <p class="pre dim">ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder</p>
+        </div>
+      </div>
+    </div>
+    <div class="stack">
+      <h3 class="sub">Glifos da grade em uso</h3>
+      <p class="glyphs" aria-hidden="true">╔═╗║╚╝ ┌─┐│└┘ ├┤┬┴┼ ░▒▓█ ▀▄▌▐ ■□▲▼►◄ ●○ → ← ↑ ↓ ç ã õ é ê á í ó ú à â · — … º</p>
+      <p class="dim">Molduras e blocos não são decoração solta: são a forma de todo contêiner da página.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5. Forma e movimento -->
+<section class="box sec" id="movimento" aria-labelledby="h-movimento">
+  <i class="eT" aria-hidden="true"></i><i class="eB" aria-hidden="true"></i><i class="eL" aria-hidden="true"></i><i class="eR" aria-hidden="true"></i>
+  <h2 class="ttl" id="h-movimento">Forma e movimento</h2>
+  <div class="stack2">
+    <div class="cols g2" style="display:grid;gap:2em 4ch">
+      <div class="stack">
+        <h3 class="sub">Forma</h3>
+        <p>Uma só geometria: a célula de 8×16 px. Moldura dupla ╔═╗ para telas e seções, simples ┌─┐ para componentes. Seleção é vídeo reverso, como num menu de BBS. Sem raio, sem sombra, sem gradiente.</p>
+        <p class="dim">No celular a grade reflui: 48 colunas em 390 px, com o letreiro em meio bloco e o ferreiro escalado pela largura do contêiner, sem cortar e sem rolagem horizontal.</p>
+      </div>
+      <div class="stack">
+        <h3 class="sub">Momento-assinatura</h3>
+        <p>A tela de abertura chega linha a linha, em velocidade de modem, com o ferreiro escorrendo de cima para baixo. Uma vez, na chegada, e não se repete sozinha.</p>
+        <p class="dim">Com <code>prefers-reduced-motion: reduce</code> a tela inteira aparece de uma vez e o botão repetir fica desligado.</p>
+      </div>
+    </div>
+    <div class="demo-ctrl">
+      <button type="button" class="btn pri" id="demo-repetir">repetir abertura</button>
+      <button type="button" class="btn" id="demo-rm" aria-pressed="false">simular movimento reduzido: desligado</button>
+      <span class="dim" id="demo-estado" role="status" aria-live="polite"></span>
+    </div>
+    <div class="box s" id="demo-box" aria-label="Demonstração da abertura" style="padding-inline:2ch">
+      <i class="eT" aria-hidden="true"></i><i class="eB" aria-hidden="true"></i><i class="eL" aria-hidden="true"></i><i class="eR" aria-hidden="true"></i>
+      <h3 class="ttl">abertura ao vivo</h3>
+      <div id="demo-host"></div>
+    </div>
+    <p class="dim">Cadência: o texto chega a uma linha a cada ~70 ms, o ferreiro a uma a cada ~30 ms (70 linhas), com uma pausa maior a cada nove linhas, como num modem. Um cursor de bloco marca a linha em curso. Curva linear; é teletipo, não animação.</p>
+  </div>
+</section>
+
+<!-- 6. Componentes -->
+<section class="box sec" id="componentes" aria-labelledby="h-componentes">
+  <i class="eT" aria-hidden="true"></i><i class="eB" aria-hidden="true"></i><i class="eL" aria-hidden="true"></i><i class="eR" aria-hidden="true"></i>
+  <h2 class="ttl" id="h-componentes">Componentes</h2>
+  <div class="stack2">
+    <div class="stack">
+      <h3 class="sub">Botão</h3>
+      <div class="state-row">
+        <div><span class="lbl">normal</span><button type="button" class="btn">instalar</button></div>
+        <div><span class="lbl">hover</span><button type="button" class="btn is-hover">instalar</button></div>
+        <div><span class="lbl">foco</span><button type="button" class="btn is-focus">instalar</button></div>
+        <div><span class="lbl">pressionado</span><button type="button" class="btn is-active">instalar</button></div>
+        <div><span class="lbl">desabilitado</span><button type="button" class="btn" disabled>instalar</button></div>
+        <div><span class="lbl">primário</span><button type="button" class="btn pri">instalar</button></div>
+      </div>
+      <p class="dim">Os quatro estados reais respondem ao mouse e ao teclado: passe o mouse, use Tab nos botões acima.</p>
+    </div>
+    <div class="stack">
+      <h3 class="sub">Comando de instalação copiável</h3>
+      <div class="state-row wide">
+        <div><span class="lbl">pronto para copiar (funciona)</span>
+          <div class="cmd" data-state="idle"><code>ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder</code><button type="button" class="btn copy" data-copy='ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder'>copiar</button><span class="st" role="status" aria-live="polite"></span></div>
+        </div>
+        <div><span class="lbl">copiado</span>
+          <div class="cmd" data-state="ok"><code>ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder</code><button type="button" class="btn" tabindex="-1">copiado</button><span class="st">Comando na área de transferência. Cole no terminal, na pasta do repositório.</span></div>
+        </div>
+        <div><span class="lbl">falha</span>
+          <div class="cmd" data-state="fail"><code>ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder</code><button type="button" class="btn" tabindex="-1">tentar de novo</button><span class="st">O navegador bloqueou a cópia. Selecione o comando e use Ctrl+C.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="stack">
+      <h3 class="sub">Item de skill</h3>
+      <div class="state-row wide">
+        <div><span class="lbl">normal</span><div class="sk"><span class="nm hot">n8n-flow-builder/</span><span class="p">01-automacao-n8n-make/</span><span class="d">Protocolo de construção de fluxos n8n do zero ao ativo.</span></div></div>
+        <div><span class="lbl">hover</span><div class="sk is-hover"><span class="nm hot">ascii-video/</span><span class="p">02-design-ui-motion-3d/</span><span class="d">Converte vídeo e áudio em MP4/GIF de ASCII colorido.</span></div></div>
+        <div><span class="lbl">foco</span><div class="sk is-focus" tabindex="-1"><span class="nm hot">airtable/</span><span class="p">04-backend-apis-banco/</span><span class="d">API REST do Airtable via curl: registros, filtros, upserts.</span></div></div>
+      </div>
+    </div>
+    <div class="stack">
+      <h3 class="sub">Item de categoria</h3>
+      <div class="state-row wide">
+        <div><span class="lbl">normal</span><div class="menu"><div class="mi"><span class="k">[2]</span><span class="t">Design, UI Motion, 3D Web, Vídeo &amp; Criativos</span><span class="f">02-design-ui-motion-3d/</span></div></div></div>
+        <div><span class="lbl">selecionada</span><div class="menu"><div class="mi is-sel"><span class="k">[1]</span><span class="t">Automação de Processos &amp; n8n / Make</span><span class="f">01-automacao-n8n-make/</span></div></div></div>
+        <div><span class="lbl">vazia (estado de projeto)</span><div class="menu"><div class="mi is-empty" aria-disabled="true"><span class="k">[ ]</span><span class="t">Categoria sem skills ainda</span><span class="f">nenhuma pasta hoje: sempre desabilitada</span></div></div></div>
+      </div>
+      <p class="dim">Hoje as seis pastas têm skills; a categoria vazia existe como regra de projeto, para não esconder uma pasta quando ela surgir sem conteúdo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7. Landing -->
+<section class="box sec" id="landing-frames" aria-labelledby="h-landing">
+  <i class="eT" aria-hidden="true"></i><i class="eB" aria-hidden="true"></i><i class="eL" aria-hidden="true"></i><i class="eR" aria-hidden="true"></i>
+  <h2 class="ttl" id="h-landing">Landing</h2>
+  <div class="stack2">
+    <p>Primeira dobra completa, seção de categorias, instalação e rodapé. Os dois quadros abaixo são a página real em iframe, com a abertura já concluída. Teclas 1–6 e I funcionam dentro deles depois de um clique.</p>
+    <div class="stack">
+      <h3 class="sub">Desktop 1440, em escala <span class="dim" id="scale-d"></span></h3>
+      <div class="frame-wrap" id="fw-d" style="height:600px"><iframe id="if-d" title="Landing do Akmon em 1440 px de largura" src="?frame=landing-desktop" width="1440" height="2400" loading="lazy"></iframe></div>
+      <p class="dim"><a href="?frame=landing-desktop">abrir em tamanho real</a></p>
+    </div>
+    <div class="stack">
+      <h3 class="sub">Celular 390</h3>
+      <div class="frame-wrap" id="fw-m" style="height:900px;width:390px;max-width:100%"><iframe id="if-m" title="Landing do Akmon em 390 px de largura" src="?frame=landing-mobile" width="390" height="2400" loading="lazy"></iframe></div>
+      <p class="dim"><a href="?frame=landing-mobile">abrir em tamanho real</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- 8. Riscos -->
+<section class="box sec" id="riscos" aria-labelledby="h-riscos">
+  <i class="eT" aria-hidden="true"></i><i class="eB" aria-hidden="true"></i><i class="eL" aria-hidden="true"></i><i class="eR" aria-hidden="true"></i>
+  <h2 class="ttl" id="h-riscos">Riscos</h2>
+  <ul class="risk">
+    <li><span><b>Nostalgia vira fantasia.</b> BBS, brasa e bloco ░▒▓ podem soar como "retrô" decorativo para quem chega por um post. Defesa: o BBS aqui é a interface de fato (menu numerado, teclado, instalação), não um filtro.</span></li>
+    <li><span><b>Legibilidade da fonte bitmap.</b> Unscii a 16 px é bonita em frases curtas e cansativa em parágrafo longo; por isso a medida é curta e não há texto corrido além de ~3 linhas. No celular a grade fica em 48 colunas e o ferreiro, com ~4 px por caractere, perde o detalhe fino (a silhueta se mantém).</span></li>
+    <li><span><b>Atalhos de uma tecla.</b> 1–6, I e R podem colidir com leitores de tela e ditado (WCAG 2.1.4). Mitigação: ligam só fora de campos de texto, sem modificadores, e a tecla K desliga todos; tudo também funciona por Tab e clique.</span></li>
+    <li><span><b>Abertura atrasa a leitura.</b> Cerca de 3,5 s até a tela completa. Mitigação: o conteúdo já está no HTML (nada é buscado), reduced-motion mostra tudo de uma vez, e o botão repetir só aparece depois de concluída.</span></li>
+    <li><span><b>Contagem não reconciliada.</b> README diz 136; o disco tem 174 SKILL.md (somados das seis pastas). Os números por categoria aparecem como "contagem em revisão" e devem sair da landing até a reconciliação.</span></li>
+    <li><span><b>Fonte de glifos limitada.</b> O subconjunto de 605 glifos cobre português, setas, molduras e blocos; qualquer caractere fora cai em fonte monoespaçada do sistema e desalinha a grade. Sem negrito nem itálico.</span></li>
+    <li><span><b>Compatibilidade.</b> A grade usa <code>round()</code>, container queries (<code>cqw</code>) e <code>@property</code>-free CSS moderno: navegador de 2023 em diante. Não foi testado em Firefox e Safari neste board.</span></li>
+    <li><span><b>Nome e domínio.</b> Conflito de nome Akmon (GitHub, npm, domínio) não checado; a landing não cita domínio, pacote nem contagem de uso.</span></li>
+  </ul>
+</section>
+
+</div>
+</div>
+
+<!-- ═════════════════════════ LANDING ═════════════════════════ -->
+<div id="landing">
+<div class="screen">
+
+<div class="status ln-status" aria-label="Barra de estado">
+  <span>AKMON</span>
+  <span>você é o único conectado</span>
+  <span class="sp"></span>
+  <button type="button" id="l-repetir" class="rep">[R] repetir abertura</button>
+  <button type="button" id="l-atalhos" class="atl" aria-pressed="true">[K] atalhos: ligados</button>
+</div>
+
+<div class="hero booting-root" id="hero" style="margin-top:1em">
+  <div class="left">
+    <div class="ln-wrap" role="img" aria-label="Letreiro AKMON em blocos quadrados">
+      <pre class="lt lg" aria-hidden="true"><span class="ln">██████████  ██      ██  ██      ██  ██████████  ██      ██</span><span class="ln">██      ██  ██    ██    ████  ████  ██      ██  ████    ██</span><span class="ln">██      ██  ██  ██      ██  ██  ██  ██      ██  ██  ██  ██</span><span class="ln">██████████  ████        ██  ██  ██  ██      ██  ██  ██  ██</span><span class="ln">██      ██  ██  ██      ██      ██  ██      ██  ██    ████</span><span class="ln">██      ██  ██    ██    ██      ██  ██      ██  ██      ██</span><span class="ln">██      ██  ██      ██  ██      ██  ██████████  ██      ██</span></pre>
+      <pre class="lt sm" aria-hidden="true"><span class="ln">█▀▀▀█ █  ▄▀ █▄ ▄█ █▀▀▀█ █▄  █</span><span class="ln">█▄▄▄█ █▄▀   █ █ █ █   █ █ █ █</span><span class="ln">█   █ █ ▀▄  █   █ █   █ █  ▀█</span><span class="ln">▀   ▀ ▀   ▀ ▀   ▀ ▀▀▀▀▀ ▀   ▀</span></pre>
+    </div>
+    <h1 class="ln">Skills de agentes, forjadas em operação real.</h1>
+    <p class="lede ln">Pastas com SKILL.md para Claude Code, Codex, Google Antigravity, OpenClaw e Hermes. Uma pasta, vários harnesses.</p>
+    <p class="keys ln">Tecle <kbd>1</kbd> a <kbd>6</kbd> para abrir uma categoria, <kbd>I</kbd> para instalar. Ou clique.</p>
+    <nav class="box s" aria-labelledby="h-menu">
+      <i class="eT" aria-hidden="true"></i><i class="eB" aria-hidden="true"></i><i class="eL" aria-hidden="true"></i><i class="eR" aria-hidden="true"></i>
+      <h2 class="ttl" id="h-menu">Menu principal</h2>
+      <ul class="menu" id="menu">
+        <li class="ln"><button type="button" class="mi" data-cat="1" aria-pressed="true"><span class="k">[1]</span><span class="t">Automação de Processos &amp; n8n / Make</span><span class="f">01-automacao-n8n-make/</span></button></li>
+        <li class="ln"><button type="button" class="mi" data-cat="2" aria-pressed="false"><span class="k">[2]</span><span class="t">Design, UI Motion, 3D Web, Vídeo &amp; Criativos</span><span class="f">02-design-ui-motion-3d/</span></button></li>
+        <li class="ln"><button type="button" class="mi" data-cat="3" aria-pressed="false"><span class="k">[3]</span><span class="t">Agentes Autônomos &amp; Engenharia de Prompt</span><span class="f">03-agentes-ia-prompts/</span></button></li>
+        <li class="ln"><button type="button" class="mi" data-cat="4" aria-pressed="false"><span class="k">[4]</span><span class="t">APIs, Backend &amp; Banco de Dados</span><span class="f">04-backend-apis-banco/</span></button></li>
+        <li class="ln"><button type="button" class="mi" data-cat="5" aria-pressed="false"><span class="k">[5]</span><span class="t">Ferramental de Desenvolvimento, CLI &amp; Harness</span><span class="f">05-dev-harness-cli/</span></button></li>
+        <li class="ln"><button type="button" class="mi" data-cat="6" aria-pressed="false"><span class="k">[6]</span><span class="t">Produtividade, Pesquisa, Documentos &amp; Mídia</span><span class="f">06-produtividade-pesquisa-docs/</span></button></li>
+        <li class="sep ln"><div class="line" aria-hidden="true"></div></li>
+        <li class="ln"><a class="mi" href="#instalar" id="mi-i"><span class="k">[I]</span><span class="t">Instalar no seu harness</span><span class="f">Claude Code, Codex, Google Antigravity, OpenClaw, Hermes</span></a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="right">
+    <div class="box art-box">
+      <i class="eT" aria-hidden="true"></i><i class="eB" aria-hidden="true"></i><i class="eL" aria-hidden="true"></i><i class="eR" aria-hidden="true"></i>
+      <span class="ttl" aria-hidden="true">ferreiro.txt</span>
+      <div class="artwrap" role="img" aria-label="Ferreiro martelando uma lâmina sobre a bigorna, desenhado em caracteres ASCII">
+<pre class="art" id="art-src" aria-hidden="true">                                               *
+                                            ####%%%
+                                          %@@@###%+
+                                        %@@@%@@@.
+                                      @@%#%@@%+
+                                  %%@@%%#*@%
+                               :%%@@@@@@%
+                              +%%@@@@@@@%
+                             #@%##%%*:%:
+                           %#%++%%-
+                        =%%###*=                       .%@%%%%
+                      %%%#####--                     .%@@@@@@@@%
+                     %%%#%####                      ####@@@@@@@@%
+                    %@@@@%##--                     #%%#%@@@@%@%%+
+                   #@@@@@@@@%                   ##%#%%%%@@@@%%%:
+                  *%@@@@@@@@@%@%+=            =%####+%%%@@@%%%#%
+                  +@@@@@@@@@@@@@@@@*-#%%%=....   #%##=%%@@%%%%#
+                 :*%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@###*=%%%%%@% #
+                    *=%@@@@@@@@@@@@@@@@@@@@@@@@@@*# %.%+=%%%#+++
+                       ==-%@%@@@@@@@@@%@@@@@@@@@@+#*%%#-%%#*=+%%%
+                              .:-----#@%%@@@@@@@@@%.%%* %#*-=#%%@%%%@%
+                                  -%@@%*@@@@@@@@@@@%@@%.%:%%#%%@%@@%@%%%
+                                   :@@@%*%@@@@@@@%@%%@%%%%%%%%%%%%%%%%%%*
+                                   :%%@@%**%@@@@@%%%%%%%%%%%%%%%%###%%%%#
+                                    .%%@%@@%+**++++*#%%%%%%%%%%%%#%%%%%%%%-
+                                      :@@@@@@@@@@%%%%%%%.=%%%%%.#%%%%%%%%@@:
+                                        =%@@@@@@@%%%%%%%%%%%%%%%%#%%%%%%%%%.:
+                                         =%@@@@@@%%%%%%%%%%#%%%%%+%%%%%%%@%:%
+                                          %@@@@@@@@@%%%%%%%%%@**  =@@%%%@%%=%
+                                          #@@@@@%%@@%%%###%%%%+     -+%%%%%%%
+                                           %@@@@@@@@%%%%@%%@%:       #%%@@@@@+
+                                          -%@@%@@@%%@%@@%%@@%.%     :%@%@@@@@%
+                                         =%%%%%#*##%%%%#%%%%%%%     -%%@@@@@%-
+                                         .%%%###%%*%%%*#%%%%#%@     -+###%%@%
+                                         .%@%%%###**+***###%%%%%     *####%%%:
+                                        %.@@@@@@@@@@@@@@@@@%%%%%%    ####%%%%
+                                      :@%#@@@@@@@@@@@@@@@@%%%%%%%%= -####%%%
+                                     +%@@%@@@@@@@@@@@@@@@%%@%%%%%%%%+##*#%%
+                                    @@@@.%@@@@@@@@@@@@@@@@@%%%%%%%% :*%#%%
+                                   %%@@%.%@@@@@@@@@@@@@@@@@@%%%%%%##%%%@@%@%
+                           =    : %%@@%%:@@@@@@@@@@@@@@@@%%%%#%@@%**##%@@%#
+                             *   %%%%%@@%%%@@@@@@@@%%#--====+#*+=+*##%%%%
+                    .   .   + : #%%@@@@=%@%@+ ...:::::----#%%##++++@@@%%
+                    ..   -: :. +#%%*        ......-%%@@@@@@@@@%%%%%%%%%%%
+            . - -: -.. +++*.               +++++*%@@%@%@@@@@@@%%%@@%%%%%
+             .**  *.               .*+++++**#+++++++++####%%@@%%%@@@@@@@%
+    :*++++++++=             -++++++=:++++++=++############%@@%%%%@@@@@@@@:
+   %%@@@@%%%#@%%%%%%%=+++++++=++*++=++####################%@%%%%%@@@@@@@@%
+   %@@@@@@@@@@%@%%%.%@ %%:%%*@%%@%####*###################%@@@%%%%@@@@@@@@%
+   %%@%@%@%%%%%%%*%%% %#%%%%%%%%@%########################%@@%%%%%*%@%#%@@%%
+   %%%%%@%%%%%@%%%%@%%%%%%%%@%%%%%#####################%%@@@%@@%%% +%%%%##%@%.
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%##############%@@@@@@@@@@@@%@%%% +%@@@@@@@@%
+       *%@@@%%%%%%%%%%%%%%%%%%%%%%#######%@@@@@@@@@@@@@@@@@@@@%%%% =%@@@@@@@@@%
+          %@@@@@@@@@@@@@@@@@@@@@%%%%@%@@@@@%@@%@@@@@@@@@@@@@@@@@%%# =%@@@@@@@@@%
+           -@@@@@@@@@@@@@@@%@@@%@%@@@@@%%%%%%@%%%@@@@@@@@@@%@@%%%%%  =@@@@@@@@@@@
+            =@@@@@@@@@@@@@@@@%%%%%@@%%%%%%%%%%%%%@@@@@@@@@@@@@%%%%%   =+%@@@@%%%%%
+             %@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%@@@@@@@@@@@@%%@%%%     -+ %@%%%%%
+             %@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%@@@@@@@@@@@@%%%%%:     ..+%%@@%%
+             %@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%%@@@@@@@@@@@@@%%%%       :*%%%%%@
+            %@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%#%@@@@@@@@@@%%%#         :%=%@@%
+          %@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%%##                       -%@@@%
+        %%%%%%%@@@@@@@@@@@@@@@@@@%%%%%%%%%%%#%%%%%%%%%%###                    -**#%%
+    *%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%###%%###%#######%%%%%%%-                    +*%%%%
+   #@@@@@@@@@@@@@%%%%%%%%%%%%%%#%%#########%%%%%%%%%%%%%%%-                     %@##*#
+   =@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%%%%%%%-                    %:%%%%@%**%
+   :%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%%%%%%=                    %@%%%@@%#%%*%
+    %@@@@@@@@@@@@@@@@@@@%@@@@@@@@@%%%%%%%%%%%%%%%%%%%%%%%%                       :#%@%%%%%#+%
+    %%%@@@@@@@@@@@@@@%@%%%@@@%%%%%%%%%%%%%%%%%%%%#
+                 .*%%%%%%%%%%%%%%%%%%%%%%#
+                                  :</pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="lsec" id="categorias" aria-labelledby="h-cat">
+  <h2 id="h-cat">Seis categorias, seis pastas.</h2>
+  <p class="dim">Os números 01–06 são o nome real de cada pasta no repositório. Contagens: <code>find &lt;pasta&gt; -name SKILL.md | wc -l</code> em 28/10/2026, contagem em revisão (o README ainda diz outro total).</p>
+  <div class="lcols">
+    <div class="box s p0 pa" style="padding-inline:0">
+      <i class="eT" aria-hidden="true"></i><i class="eB" aria-hidden="true"></i><i class="eL" aria-hidden="true"></i><i class="eR" aria-hidden="true"></i>
+      <div class="ttl" aria-hidden="true">categorias</div>
+      <ul class="menu" id="catlist" style="padding-inline:2ch">
+        <li><button type="button" class="cr" data-cat="1" aria-pressed="true"><span class="k">[1]</span><span class="n">01-automacao-n8n-make/</span><span class="nm">Automação de Processos &amp; n8n / Make</span><span class="c">23 SKILL.md</span></button></li>
+        <li><button type="button" class="cr" data-cat="2" aria-pressed="false"><span class="k">[2]</span><span class="n">02-design-ui-motion-3d/</span><span class="nm">Design, UI Motion, 3D Web, Vídeo &amp; Criativos</span><span class="c">31 SKILL.md</span></button></li>
+        <li><button type="button" class="cr" data-cat="3" aria-pressed="false"><span class="k">[3]</span><span class="n">03-agentes-ia-prompts/</span><span class="nm">Agentes Autônomos &amp; Engenharia de Prompt</span><span class="c">10 SKILL.md</span></button></li>
+        <li><button type="button" class="cr" data-cat="4" aria-pressed="false"><span class="k">[4]</span><span class="n">04-backend-apis-banco/</span><span class="nm">APIs, Backend &amp; Banco de Dados</span><span class="c">13 SKILL.md</span></button></li>
+        <li><button type="button" class="cr" data-cat="5" aria-pressed="false"><span class="k">[5]</span><span class="n">05-dev-harness-cli/</span><span class="nm">Ferramental de Desenvolvimento, CLI &amp; Harness</span><span class="c">60 SKILL.md</span></button></li>
+        <li><button type="button" class="cr" data-cat="6" aria-pressed="false"><span class="k">[6]</span><span class="n">06-produtividade-pesquisa-docs/</span><span class="nm">Produtividade, Pesquisa, Documentos &amp; Mídia</span><span class="c">37 SKILL.md</span></button></li>
+      </ul>
+    </div>
+    <div class="box s alt" id="detail-box">
+      <i class="eT" aria-hidden="true"></i><i class="eB" aria-hidden="true"></i><i class="eL" aria-hidden="true"></i><i class="eR" aria-hidden="true"></i>
+      <div class="ttl" id="detail-ttl" aria-hidden="true">01-automacao-n8n-make/</div>
+      <div id="detail" class="stack" aria-live="polite">
+        <p class="paper" id="d-nome">Automação de Processos &amp; n8n / Make</p>
+        <p class="dim" id="d-cont">23 SKILL.md no disco · contagem em revisão</p>
+        <ul class="stack" id="d-skills"></ul>
+        <p class="dim">Alguns exemplos reais da pasta, não a lista inteira.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="lsec" id="instalar" aria-labelledby="h-inst">
+  <h2 id="h-inst">Instalar no seu harness.</h2>
+  <p class="dim">Nenhum harness vale mais que outro: cada um aponta para a mesma pasta de skill. Primeiro clone o repositório e entre nele.</p>
+  <div class="cmd" data-state="idle"><code>git clone https://github.com/RafaelMKn/skills-library &amp;&amp; cd skills-library</code><button type="button" class="btn copy" data-copy="git clone https://github.com/RafaelMKn/skills-library &amp;&amp; cd skills-library">copiar</button><span class="st" role="status" aria-live="polite"></span></div>
+  <div class="harn" style="margin-top:2em">
+    <h3>Claude Code</h3>
+    <p class="dim">Link simbólico para <code>~/.claude/skills/</code>. Exemplo com a skill n8n-flow-builder, rodado dentro do repositório:</p>
+    <div class="cmd" data-state="idle"><code>ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder</code><button type="button" class="btn copy pri" data-copy='ln -s "$(pwd)/01-automacao-n8n-make/n8n-flow-builder" ~/.claude/skills/n8n-flow-builder'>copiar</button><span class="st" role="status" aria-live="polite"></span></div>
+  </div>
+  <div class="harn" style="margin-top:2em">
+    <h3>Google Antigravity e Codex</h3>
+    <p class="dim">Aponte a skill por <code>.agents/skills/</code>, ou importe no arquivo de configuração do projeto.</p>
+    <div class="cmd path" data-state="idle"><code>.agents/skills/</code><button type="button" class="btn copy" data-copy=".agents/skills/">copiar caminho</button><span class="st" role="status" aria-live="polite"></span></div>
+  </div>
+  <div class="harn" style="margin-top:2em">
+    <h3>OpenClaw e Hermes</h3>
+    <p class="dim">Copie ou aponte as skills desejadas para a pasta do harness, por categoria.</p>
+    <div class="cmd path" data-state="idle"><code>~/.hermes/skills/&lt;categoria&gt;/&lt;skill&gt;/</code><button type="button" class="btn copy" data-copy="~/.hermes/skills/&lt;categoria&gt;/&lt;skill&gt;/">copiar caminho</button><span class="st" role="status" aria-live="polite"></span></div>
+  </div>
+</section>
+
+<footer class="lsec foot">
+  <div class="rule" aria-hidden="true"></div>
+  <div class="row" style="margin-top:1em">
+    <p>Akmon, do grego ákmōn: bigorna. Forjado em operação real.</p>
+    <p><a href="https://github.com/RafaelMKn/skills-library">github.com/RafaelMKn/skills-library</a></p>
+  </div>
+  <p class="dim" style="margin-top:1em">[1]–[6] categoria · [I] instalar · [R] repetir abertura · [K] liga e desliga os atalhos</p>
+</footer>
+
+</div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var root=document.documentElement;
+var frame=root.getAttribute('data-frame')||'';
+var forcedRM=false;
+var mq=window.matchMedia('(prefers-reduced-motion: reduce)');
+function reduced(){return forcedRM||mq.matches}
+
+/* ─── ferreiro: colorização por densidade do caractere ─── */
+var CLS={'@':'c1','%':'c2','#':'c3','*':'c3','+':'c3','=':'c4','-':'c4',':':'c4','.':'c4'};
+function colorizeArt(pre){
+  var txt=pre.getAttribute('data-raw')||pre.textContent;
+  pre.setAttribute('data-raw',txt);
+  var lines=txt.replace(/\n+$/,'').split('\n'),frag=document.createDocumentFragment();
+  lines.forEach(function(line){
+    var row=document.createElement('span');row.className='ln';
+    var cur=null,buf='',runs=[];
+    for(var i=0;i<line.length;i++){
+      var ch=line.charAt(i),c=CLS[ch]||null;
+      if(c!==cur){if(buf)runs.push([cur,buf]);cur=c;buf=''}
+      buf+=ch;
+    }
+    if(buf)runs.push([cur,buf]);
+    runs.forEach(function(r){if(r[0]){var s=document.createElement('span');s.className=r[0];s.textContent=r[1];row.appendChild(s)}else row.appendChild(document.createTextNode(r[1]))});
+    frag.appendChild(row);
+  });
+  pre.textContent='';pre.appendChild(frag);
+}
+var artSrc=$('#art-src');
+var rawArt=artSrc?artSrc.textContent:'';
+if(artSrc)colorizeArt(artSrc);
+
+/* ─── abertura linha a linha ─── */
+function Boot(hero,onProg){
+  var timers=[],items=[],total=0,seen=0;
+  function collect(){
+    var all=$$('.ln',hero).filter(function(e){return e.offsetParent!==null});
+    var b=all.filter(function(e){return e.closest('.art')});
+    var a=all.filter(function(e){return !e.closest('.art')&&!e.closest('.status')});
+    return [a,b];
+  }
+  function clear(){timers.forEach(clearTimeout);timers=[];$$('.cur',hero).forEach(function(e){e.classList.remove('cur')})}
+  function showAll(){clear();hero.classList.remove('booting');$$('.ln',hero).forEach(function(e){e.classList.add('on')});report(true)}
+  function report(done){if(onProg)onProg({n:seen,total:total,done:!!done})}
+  this.show=showAll;
+  this.play=function(){
+    clear();
+    if(reduced()){showAll();return}
+    var s=collect();total=s[0].length+s[1].length;seen=0;
+    $$('.ln',hero).forEach(function(e){e.classList.remove('on')});
+    hero.classList.add('booting');report(false);
+    var pending=2;
+    function finish(){if(--pending===0){clear();hero.classList.remove('booting');$$('.ln',hero).forEach(function(e){e.classList.add('on')});report(true)}}
+    function run(list,base,gap,stall){
+      var t=250,last=null;
+      list.forEach(function(el,i){
+        t+=base+(i%9===8?stall:0);
+        timers.push(setTimeout(function(){
+          if(last)last.classList.remove('cur');
+          el.classList.add('on','cur');last=el;seen++;report(false);
+        },t));
+      });
+      timers.push(setTimeout(function(){if(last)last.classList.remove('cur');finish()},t+gap));
+    }
+    run(s[0],70,200,220);
+    run(s[1],30,200,150);
+  };
+}
+
+/* ─── categorias ─── */
+var CATS=[
+ {n:1,pasta:'01-automacao-n8n-make',nome:'Automação de Processos & n8n / Make',c:23,ex:['make-manager','n8n-agents','n8n-binary-and-data','n8n-code-javascript','n8n-error-handling','n8n-flow-builder']},
+ {n:2,pasta:'02-design-ui-motion-3d',nome:'Design, UI Motion, 3D Web, Vídeo & Criativos',c:31,ex:['ad-creative','architecture-diagram','ascii-video','baoyu-infographic','claude-design']},
+ {n:3,pasta:'03-agentes-ia-prompts',nome:'Agentes Autônomos & Engenharia de Prompt',c:10,ex:['auditoria-trabalho-de-agente','computer-use','create-subagent','eval-set-agentes','humanizer']},
+ {n:4,pasta:'04-backend-apis-banco',nome:'APIs, Backend & Banco de Dados',c:13,ex:['airtable','clickup-api','composio','fastify-best-practices','notion','oauth']},
+ {n:5,pasta:'05-dev-harness-cli',nome:'Ferramental de Desenvolvimento, CLI & Harness',c:60,ex:['agent-session-handoff','blocked-page-recovery','chromium-print-regression','claude-code','systematic-debugging']},
+ {n:6,pasta:'06-produtividade-pesquisa-docs',nome:'Produtividade, Pesquisa, Documentos & Mídia',c:37,ex:['arxiv','box','competitor-news-monitor','curriculo-blindado','documentos-dados-publicos']}
+];
+var sel=1;
+function paintCat(){
+  $$('[data-cat]').forEach(function(b){b.setAttribute('aria-pressed',String(+b.getAttribute('data-cat')===sel))});
+  var c=CATS[sel-1];
+  var t=$('#detail-ttl');if(!t)return;
+  t.textContent=c.pasta+'/';
+  $('#d-nome').textContent=c.nome;
+  $('#d-cont').textContent=c.c+' SKILL.md no disco · contagem em revisão';
+  var ul=$('#d-skills');ul.textContent='';
+  c.ex.forEach(function(s){
+    var li=document.createElement('li');li.className='sk';
+    var a=document.createElement('span');a.className='nm hot';a.textContent=s+'/';
+    var p=document.createElement('span');p.className='p';p.textContent=c.pasta+'/'+s+'/SKILL.md';
+    li.appendChild(a);li.appendChild(p);ul.appendChild(li);
+  });
+}
+function pick(n,scroll){
+  sel=n;paintCat();
+  if(scroll){var d=$('#detail-box');if(d&&d.offsetParent)d.scrollIntoView({block:'nearest',behavior:reduced()?'auto':'smooth'})}
+}
+paintCat();
+$$('#landing [data-cat]').forEach(function(b){b.addEventListener('click',function(){pick(+b.getAttribute('data-cat'),b.closest('#menu')!==null)})});
+
+/* ─── atalhos ─── */
+var shortcuts=true;
+function setShortcuts(on){
+  shortcuts=on;
+  var b=$('#l-atalhos');if(b){b.setAttribute('aria-pressed',String(on));b.textContent='[K] atalhos: '+(on?'ligados':'desligados')}
+}
+function goInstall(){
+  var s=$('#instalar');if(!s)return;
+  s.scrollIntoView({block:'start',behavior:reduced()?'auto':'smooth'});
+  var f=$('.copy',s);if(f)f.focus({preventScroll:true});
+}
+var landing=$('#landing'),hero=$('#hero'),boot=hero?new Boot(hero):null;
+function replay(){if(boot){boot.play()}}
+document.addEventListener('keydown',function(e){
+  if(e.ctrlKey||e.metaKey||e.altKey||e.defaultPrevented||!landing||landing.offsetParent===null)return;
+  var t=e.target;
+  if(t&&(/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||t.isContentEditable))return;
+  var k=(e.key||'').toLowerCase();
+  if(k==='k'){setShortcuts(!shortcuts);e.preventDefault();return}
+  if(!shortcuts)return;
+  if(/^[1-6]$/.test(k)){pick(+k,true);var b=$('#menu [data-cat="'+k+'"]');if(b)b.focus({preventScroll:true});e.preventDefault()}
+  else if(k==='i'){goInstall();e.preventDefault()}
+  else if(k==='r'){replay();e.preventDefault()}
+});
+var kb=$('#l-atalhos');if(kb)kb.addEventListener('click',function(){setShortcuts(!shortcuts)});
+var rb=$('#l-repetir');
+function syncRep(){if(rb){rb.disabled=reduced();rb.title=reduced()?'Desligado: preferência de movimento reduzido ativa':''}}
+if(rb){rb.addEventListener('click',replay);syncRep();mq.addEventListener&&mq.addEventListener('change',syncRep)}
+var mi=$('#mi-i');if(mi)mi.addEventListener('click',function(e){e.preventDefault();goInstall()});
+
+/* ─── cópia ─── */
+function setState(box,state,msg,label){
+  box.setAttribute('data-state',state);
+  var st=$('.st',box),bt=$('.copy',box);
+  if(st)st.textContent=msg||'';
+  if(bt)bt.textContent=label;
+}
+function unesc(s){var d=document.createElement('textarea');d.innerHTML=s;return d.value}
+$$('.copy').forEach(function(bt){
+  var box=bt.closest('.cmd'),idle=bt.textContent,timer;
+  bt.addEventListener('click',function(){
+    var txt=bt.getAttribute('data-copy');
+    clearTimeout(timer);
+    var ok=function(){setState(box,'ok','Copiado para a área de transferência.','copiado');timer=setTimeout(function(){setState(box,'idle','',idle)},2600)};
+    var fail=function(){setState(box,'fail','O navegador bloqueou a cópia. Selecione o comando e use Ctrl+C.','tentar de novo')};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,fail)}
+    else{
+      try{var ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();var r=document.execCommand('copy');document.body.removeChild(ta);r?ok():fail()}catch(err){fail()}
+    }
+  });
+});
+
+/* ─── contraste WCAG (calculado, nunca digitado) ─── */
+function cssv(n){return getComputedStyle(root).getPropertyValue('--'+n).trim()}
+function rgb(h){h=h.replace('#','');return [0,2,4].map(function(i){return parseInt(h.substr(i,2),16)})}
+function lum(h){var c=rgb(h).map(function(v){v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4)});return 0.2126*c[0]+0.7152*c[1]+0.0722*c[2]}
+function ratio(a,b){var A=lum(a),B=lum(b),hi=Math.max(A,B),lo=Math.min(A,B);return (hi+0.05)/(lo+0.05)}
+function level(r){return r>=7?['AAA','']:r>=4.5?['AA','']:r>=3?['AA grande / UI','mid']:['abaixo de 3','no']}
+var TOK=[
+ ['tela','Preto de terminal','fundo de tudo'],
+ ['painel','Painel','fundo de campo, comando e detalhe'],
+ ['grade','Cinza de moldura','linhas ╔═╗ e bordas; não carrega texto'],
+ ['fosforo','Fósforo apagado','texto secundário, rótulos, barra de estado'],
+ ['papel','Off-white','texto principal'],
+ ['faisca','Laranja de faísca','títulos, foco, hover, links'],
+ ['brasa','Vermelho-laranja de brasa','letreiro, seleção, ação primária'],
+ ['brasa-funda','Brasa funda','molduras quentes e réguas ░▒▓; só decoração']
+];
+var PAIRS=[
+ ['papel','tela','texto principal'],['fosforo','tela','texto secundário'],['faisca','tela','títulos, links, foco'],
+ ['brasa','tela','letreiro, prompt $ e marcas'],['tela','brasa','vídeo reverso: categoria selecionada'],
+ ['tela','faisca','vídeo reverso: hover e copiado'],['tela','papel','vídeo reverso: ênfase'],['tela','fosforo','barra de estado'],
+ ['papel','painel','texto sobre painel'],['fosforo','painel','secundário sobre painel'],['faisca','painel','título sobre painel'],
+ ['grade','tela','moldura e borda de botão (componente UI)'],['brasa-funda','tela','moldura quente; só decoração'],['brasa','painel','letreiro e marcas sobre painel']
+];
+function drawPalette(){
+  var tb=$('#tbl-tokens tbody');if(!tb)return;
+  tb.textContent='';
+  TOK.forEach(function(t){
+    var tr=document.createElement('tr'),h=cssv(t[0]).toUpperCase();
+    tr.innerHTML='<td><div class="sw" style="background:var(--'+t[0]+')"></div></td><td class="paper">'+t[1]+'</td><td class="hot">'+h+'</td><td class="wrap dim">'+t[2]+'</td>';
+    tb.appendChild(tr);
+  });
+  var cb=$('#tbl-contrast tbody');cb.textContent='';
+  PAIRS.forEach(function(p){
+    var r=ratio(cssv(p[0]),cssv(p[1])),l=level(r),tr=document.createElement('tr');
+    tr.innerHTML='<td><span style="background:var(--'+p[1]+');color:var(--'+p[0]+');padding:0 1ch;box-shadow:inset 0 0 0 1px var(--grade)">Akmon ░▒▓█</span></td><td class="dim">'+p[0]+' '+cssv(p[0]).toUpperCase()+'</td><td class="dim">'+p[1]+' '+cssv(p[1]).toUpperCase()+'</td><td class="hot">'+r.toFixed(2).replace('.',',')+':1</td><td><span class="badge '+l[1]+'">'+l[0]+'</span></td><td class="wrap dim">'+p[2]+'</td>';
+    cb.appendChild(tr);
+  });
+  var N=['preto','vermelho','verde','amarelo','azul','magenta','ciano','cinza claro','cinza escuro','vermelho vivo','verde vivo','amarelo vivo','azul vivo','magenta vivo','ciano vivo','branco'];
+  var MAP={0:'tela',1:'brasa-funda',7:'fosforo',8:'grade',9:'brasa',11:'faisca',15:'papel'};
+  var an=$('#ansi');an.textContent='';
+  for(var i=0;i<16;i++){
+    var d=document.createElement('div'),m=MAP[i];d.className='cell'+(m?'':' off');
+    d.innerHTML='<div class="sw"'+(m?' style="background:var(--'+m+')"':'')+'></div><small class="dim">'+i+' '+N[i]+'</small><small class="'+(m?'hot':'dim')+'">'+(m?cssv(m).toUpperCase():'sem uso')+'</small>';
+    an.appendChild(d);
+  }
+}
+drawPalette();
+
+/* ─── frames de landing em iframe: altura e escala ─── */
+function sizeFrames(){
+  var fw=$('#fw-d'),fi=$('#if-d');
+  if(fw&&fi){
+    var s=Math.min(1,fw.clientWidth/1440);
+    fi.style.transform='scale('+s+')';
+    fw.style.height=Math.round(fi.getAttribute('height')*s)+'px';
+    var o=$('#scale-d');if(o)o.textContent='('+Math.round(s*100)+'%)';
+  }
+  var fm=$('#fw-m'),im=$('#if-m');
+  if(fm&&im){
+    var s2=Math.min(1,fm.clientWidth/390);
+    im.style.transform='scale('+s2+')';
+    fm.style.height=Math.round(im.getAttribute('height')*s2)+'px';
+  }
+}
+window.addEventListener('message',function(e){
+  if(!e.data||e.data.type!=='akmon-height')return;
+  [['#if-d'],['#if-m']].forEach(function(p){var f=$(p[0]);if(f&&f.contentWindow===e.source){f.setAttribute('height',e.data.h);sizeFrames()}});
+});
+window.addEventListener('resize',sizeFrames);sizeFrames();
+if(frame.indexOf('landing')===0&&window.parent!==window){
+  var send=function(){window.parent.postMessage({type:'akmon-height',h:Math.ceil(document.documentElement.getBoundingClientRect().height)},'*')};
+  window.addEventListener('load',send);
+  if(window.ResizeObserver)new ResizeObserver(send).observe(document.body);
+  if(document.fonts)document.fonts.ready.then(send);
+}
+
+/* ─── demo da abertura no board ─── */
+var host=$('#demo-host');
+if(host&&hero){
+  var clone=hero.cloneNode(true);
+  clone.removeAttribute('id');
+  $$('[id]',clone).forEach(function(e){e.removeAttribute('id')});
+  $$('[data-cat]',clone).forEach(function(b){b.removeAttribute('data-cat')});
+  var cpre=$('.art',clone);if(cpre){cpre.removeAttribute('id');}
+  host.appendChild(clone);
+  clone.style.display='grid';
+  clone.classList.add('demo-hero');
+}
+var demo=host?new Boot($('.demo-hero',host),function(p){
+  var el=$('#demo-estado');if(!el)return;
+  el.textContent=p.done?'recebido: '+p.total+' de '+p.total+' linhas':'recebendo: '+p.n+' de '+p.total+' linhas';
+}):null;
+var dr=$('#demo-repetir');if(dr)dr.addEventListener('click',function(){demo&&demo.play()});
+var dm=$('#demo-rm');
+function setRM(v){forcedRM=v;if(dm){dm.setAttribute('aria-pressed',String(v));dm.textContent='simular movimento reduzido: '+(v?'ligado':'desligado')}if(v){demo&&demo.show();hero&&boot&&boot.show()}}
+if(dm)dm.addEventListener('click',function(){setRM(!forcedRM);if(!forcedRM&&demo)demo.play()});
+
+/* ─── início ─── */
+var inFrame=!!frame;
+var autoAnim=new URLSearchParams(location.search).get('anim')==='1';
+if(frame.indexOf('landing')===0){ if(autoAnim&&boot)boot.play(); else if(boot)boot.show(); }
+else if(!frame){
+  if(demo){
+    var started=false;
+    var go=function(){if(started)return;started=true;demo.play()};
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(en,ob){en.forEach(function(x){if(x.isIntersecting){go();ob.disconnect()}})},{threshold:0.25}).observe($('#demo-box'));
+    } else go();
+  }
+}
+if(mq.addEventListener)mq.addEventListener('change',function(){if(mq.matches){demo&&demo.show();boot&&boot.show()}});
+if(document.documentElement.getAttribute('data-frame')){document.title='Akmon · '+frame}
+})();
+</script>
+</body>
+</html>

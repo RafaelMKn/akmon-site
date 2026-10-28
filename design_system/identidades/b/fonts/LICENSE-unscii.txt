@@ -1,0 +1,5 @@
+Unscii (unscii-16), por Viznut. http://viznut.fi/unscii/
+A página oficial declara: a variante "-full" (com GNU Unifont) é GPL; as demais variantes,
+incluindo unscii-16 usada aqui, estão em domínio público.
+Este arquivo é um subconjunto WOFF2 (Latin, pontuação, setas, box-drawing, blocos, formas
+geométricas) do unscii-16.ttf, sem alteração de glifos.

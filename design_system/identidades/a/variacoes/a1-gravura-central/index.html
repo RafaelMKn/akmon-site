@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Akmon · A1 Gravura central</title>
+<meta name="description" content="Akmon: biblioteca curada de Agent Skills para Claude Code, Codex, Google Antigravity, OpenClaw e Hermes.">
+<meta name="theme-color" content="#F3F0E8">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="stylesheet" href="../shared/base.css">
+<style>
+.folha-cab{display:flex;gap:20px;align-items:flex-start;margin-bottom:20px}
+.folha-cod{font:800 88px/.8 var(--f-marca);color:var(--marca);margin:0}
+.folha-cab h3{font:800 28px/1 var(--f-titulo);text-transform:uppercase;margin:0 0 6px}
+.folha-pasta{margin:0;color:var(--texto-2)}
+.folha-n{margin:4px 0 0;font-size:14px;color:var(--texto-2)}
+.folha-nota{font-size:13px;color:var(--texto-2);margin:12px 0 0}
+body{background:var(--papel-2) repeating-linear-gradient(135deg,transparent 0 9px,rgba(122,119,105,.18) 9px 10px)}
+.moldura{max-width:1280px;margin:0 auto;background:var(--papel);border-left:1px solid var(--aco);border-right:1px solid var(--aco);position:relative}
+.cantos{position:relative}
+.cantos::before,.cantos::after{content:"";position:absolute;width:14px;height:14px;pointer-events:none;z-index:3}
+.cantos::before{left:-8px;top:-8px;border-left:1px solid var(--tinta);border-top:1px solid var(--tinta)}
+.cantos::after{right:-8px;top:-8px;border-right:1px solid var(--tinta);border-top:1px solid var(--tinta)}
+.top{background:var(--papel)}
+
+/* herói central */
+.heroi{position:relative;text-align:center;padding:40px 24px 0;border-bottom:1px solid var(--aco)}
+.harn{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:0 0 26px;padding:0;list-style:none}
+.harn li{font:600 11px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;padding:7px 10px;border:1px solid var(--aco);background:var(--papel-2);color:var(--tinta-2)}
+.palco{position:relative}
+.wm-big{position:absolute;left:0;right:0;top:clamp(26px,4.2vw,64px);margin:0;display:grid;justify-items:center;line-height:.8;text-transform:uppercase;user-select:none}
+.wm-big .l1{font:800 clamp(112px,21vw,300px)/.8 var(--f-marca);letter-spacing:.01em;color:var(--tinta)}
+.wm-big .l2{font:800 clamp(112px,21vw,300px)/.8 var(--f-titulo);letter-spacing:.01em;color:transparent;-webkit-text-stroke:2px var(--tinta);margin-top:.04em}
+/* a gravura fica no fluxo e define a altura do palco; corpo em "difference": tinta sobre o papel, papel sobre as letras */
+.palco .art{position:relative;width:max-content;margin:0 auto;--fs:clamp(4.6px,.78vw,11.2px);--lh:1.1}
+.palco .art pre{position:relative}
+.palco .art .corpo{color:var(--papel);mix-blend-mode:difference}
+.palco .art .faisca{position:absolute;inset:0;color:var(--brasa-viva)}
+.cota{position:absolute;font:600 10px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-2);white-space:nowrap}
+.cota.c1{left:0;top:0}.cota.c2{right:0;top:0}
+/* bancada: a bigorna pousa na borda superior da placa */
+.placa-wrap{position:relative;max-width:820px;margin:0 auto;padding:0 0 56px}
+.bancada{height:10px;background:var(--tinta);margin:0 -40px}
+.placa{background:var(--papel);border:1px solid var(--tinta);border-top:0;padding:32px clamp(18px,4vw,44px) 34px}
+.placa h1{font:800 clamp(40px,5.6vw,72px)/.9 var(--f-titulo);text-transform:uppercase;margin:0 0 16px;letter-spacing:-.005em}
+.placa .lead{max-width:56ch;margin:0 auto 28px;color:var(--tinta-2)}
+.placa .mont{text-align:left}
+.placa .acoes{display:flex;justify-content:center;gap:10px;margin-top:22px;flex-wrap:wrap}
+
+/* seções numeradas */
+.sec{padding:64px clamp(18px,4vw,56px);border-bottom:1px solid var(--aco);position:relative}
+.sec-num{position:absolute;top:0;left:50%;transform:translate(-50%,-50%);background:var(--papel);padding:4px 12px;border:1px solid var(--aco);font:600 11px/1 var(--f-mono);letter-spacing:.14em;color:var(--tinta-2)}
+.sec .t-sec,.sec .p-sec{text-align:center;margin-left:auto;margin-right:auto}
+.tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border:1px solid var(--tinta);margin-bottom:28px}
+.tab{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-rows:auto 1fr auto;gap:8px;padding:14px 12px 0;min-height:150px;border-right:1px solid var(--tinta);position:relative;background:var(--papel)}
+.tab:last-child{border-right:0}
+.tab-num{font:800 34px/.8 var(--f-marca);color:var(--aco)}
+.tab-nome{font:700 15px/1.05 var(--f-titulo);text-transform:uppercase;letter-spacing:.03em}
+.tab-nome-l,.tab-pasta{display:none}
+.tab-n{display:block;height:calc(6px + var(--r)*46px);background:var(--papel-2);border-top:1px solid var(--aco);margin:0 -12px;padding:4px 12px 0;font-size:11px;color:var(--tinta-2)}
+.tab:hover .tab-num{color:var(--brasa)}
+.tab[aria-selected="true"]{background:var(--tinta);color:var(--papel)}
+.tab[aria-selected="true"] .tab-num{color:var(--brasa-viva)}
+.tab[aria-selected="true"] .tab-n{background:var(--brasa-viva);border-color:var(--brasa-viva);color:var(--tinta)}
+.tab:focus-visible{outline:2px solid var(--brasa);outline-offset:-4px}
+#folha{max-width:980px;margin:0 auto}
+.tbl-w{max-width:980px;margin:0 auto}
+.tbl-w .btn{margin-top:24px}
+
+@media (max-width:820px){
+  .tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tab:nth-child(3){border-right:0}.tab:nth-child(-n+3){border-bottom:1px solid var(--tinta)}
+  .tab{min-height:120px}
+}
+@media (max-width:1300px){.cantos::before{left:0}.cantos::after{right:0}}
+@media (max-width:640px){
+  .heroi{padding-top:24px}
+  .harn{margin-bottom:18px}
+  .wm-big .l2{-webkit-text-stroke:1.2px var(--tinta)}
+  .cota{display:none}
+  .bancada{margin:0 -12px}
+  .placa-wrap{padding-bottom:40px}
+  .tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tab{border-bottom:1px solid var(--tinta)}
+  .tab:nth-child(3){border-right:1px solid var(--tinta)}
+  .tab:nth-child(2n){border-right:0}.tab:nth-child(n+5){border-bottom:0}
+  .folha-cod{font-size:60px}
+}
+
+</style>
+</head>
+<body>
+<div class="moldura">
+<header class="top">
+  <a class="brand" href="#" aria-label="Akmon, início"><svg class="sym" aria-hidden="true"><use href="#sym-akmon"/></svg><span class="wm">Akmon</span></a>
+  <span class="cod">Catálogo de Ferramentaria · Nº 01</span>
+  <nav aria-label="Principal"><a class="n-sec" href="#categorias">Categorias</a><a class="n-sec" href="#instalar">Instalar</a><a href="https://github.com/RafaelMKn/skills-library">GitHub<svg class="ic" aria-hidden="true"><use href="#i-out"/></svg></a></nav>
+</header>
+<main>
+<section class="heroi cantos" aria-labelledby="h1">
+  <ul class="harn" aria-label="Harnesses compatíveis"><li>Claude Code</li><li>Codex</li><li>Google Antigravity</li><li>OpenClaw</li><li>Hermes</li></ul>
+  <div class="palco">
+    <span class="cota c1" aria-hidden="true">Fig. 1 · Hefesto na forja</span>
+    <span class="cota c2" aria-hidden="true">93 col × 70 lin</span>
+    <p class="wm-big" aria-hidden="true"><span class="l1">Akmon</span><span class="l2">Skills</span></p>
+    <figure class="art" data-art role="img" aria-label="Gravura em ASCII de Hefesto, o ferreiro, com o martelo erguido sobre uma lâmina em brasa apoiada na bigorna"></figure>
+  </div>
+  <div class="placa-wrap">
+    <div class="bancada" aria-hidden="true"></div>
+    <div class="placa">
+      <h1 id="h1">Skills para agentes, catalogadas como <em class="m">ferramentas</em>.</h1>
+      <p class="lead">Akmon é uma biblioteca curada de <b>Agent Skills</b>: pastas com SKILL.md que funcionam em Claude Code, Codex, Google Antigravity, OpenClaw e Hermes. Cada peça veio de operação real e tem pasta, código e instrução de montagem.</p>
+      <div class="mont" id="montagem" aria-labelledby="h-mont">
+  <h2 id="h-mont">Instrução de montagem</h2>
+  <div class="seg" role="radiogroup" aria-label="Harness">
+    <button type="button" role="radio" aria-checked="true" data-h="claude" tabindex="0">Claude Code</button>
+    <button type="button" role="radio" aria-checked="false" data-h="agents" tabindex="-1">Antigravity · Codex</button>
+    <button type="button" role="radio" aria-checked="false" data-h="hermes" tabindex="-1">Hermes · OpenClaw</button>
+  </div>
+  <p class="m-peca">Peça: <b data-m-peca></b>. <a href="#categorias">Trocar peça</a></p>
+  <div class="cmd">
+    <div class="cmd-bar"><span data-m-rot></span><button class="copy" type="button"></button></div>
+    <pre data-m-pre tabindex="0" aria-label="Comando de instalação"></pre>
+    <p class="cmd-msg" role="status" aria-live="polite"></p>
+  </div>
+  <p class="m-dest" data-m-dest></p>
+</div>
+      <div class="acoes"><a class="btn alt" href="#categorias">Ver as seis pastas<svg class="ic" aria-hidden="true"><use href="#i-down"/></svg></a></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec cantos" id="categorias" aria-labelledby="h-cats">
+  <span class="sec-num" aria-hidden="true">§ 01</span>
+  <h2 class="t-sec" id="h-cats">Seis folhas, seis pastas</h2>
+  <p class="p-sec">Cada categoria é uma pasta numerada do repositório. A barra embaixo de cada aba mostra o volume de SKILL.md na pasta. Escolha uma peça e o comando lá em cima muda para ela.</p>
+  <div class="tabs" data-tabs="#folha" aria-label="Categorias de skills"></div>
+  <div id="folha"></div>
+</section>
+
+<section class="sec cantos" id="instalar" aria-labelledby="h-inst">
+  <span class="sec-num" aria-hidden="true">§ 02</span>
+  <h2 class="t-sec" id="h-inst">Onde cada harness lê as skills</h2>
+  <p class="p-sec">Uma pasta, vários harnesses. O que muda de um para outro é só o destino.</p>
+  <div class="tbl-w"><table class="tbl">
+  <caption class="sr-only">Destino das skills por harness</caption>
+  <thead><tr><th scope="col">Harness</th><th scope="col">Destino das skills</th><th scope="col" class="hide-s">Como</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Claude Code</th><td class="mono">~/.claude/skills/</td><td class="hide-s">Symlink da pasta da skill</td></tr>
+    <tr><th scope="row">Google Antigravity</th><td class="mono">.agents/skills/</td><td class="hide-s">Apontar a pasta</td></tr>
+    <tr><th scope="row">Codex</th><td class="mono">.agents/skills/</td><td class="hide-s">Apontar a pasta</td></tr>
+    <tr><th scope="row">OpenClaw</th><td class="mono">~/.hermes/skills/&lt;categoria&gt;/&lt;skill&gt;/</td><td class="hide-s">Copiar ou apontar</td></tr>
+    <tr><th scope="row">Hermes</th><td class="mono">~/.hermes/skills/&lt;categoria&gt;/&lt;skill&gt;/</td><td class="hide-s">Copiar ou apontar</td></tr>
+  </tbody>
+</table><p style="text-align:center"><a class="btn" href="#montagem">Voltar à instrução de montagem</a></p></div>
+</section>
+</main>
+<footer class="foot">
+  <div style="display:grid;gap:12px"><div class="f-marca"><svg class="sym" aria-hidden="true"><use href="#sym-akmon"/></svg><span class="wm">Akmon</span></div>
+  <p>Do grego <b>ákmōn</b>, “bigorna”. Biblioteca curada de Agent Skills, forjada em operação real.</p></div>
+  <div style="display:grid;gap:10px;align-content:start"><p><a href="https://github.com/RafaelMKn/skills-library">Repositório no GitHub</a></p><p>Contagem de skills em revisão: README e disco ainda divergem.</p></div>
+  <p class="f-fim">Tipografia: Big Shoulders Display, Big Shoulders Stencil Display, Barlow e JetBrains Mono, todas sob a SIL Open Font License 1.1.</p>
+</footer>
+</div>
+<script src="../shared/dados.js"></script>
+<script src="../shared/base.js"></script>
+</body>
+</html>
