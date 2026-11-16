@@ -15,7 +15,10 @@ export function executar(env: NodeJS.ProcessEnv, escrever: (linha: string) => vo
   try {
     const skillsDir = env.SKILLS_DIR?.trim()
     if (!skillsDir) throw new ErroCatalogo('skills-dir', 'SKILLS_DIR não definido')
-    if (!statSync(skillsDir, { throwIfNoEntry: false })?.isDirectory()) throw new ErroCatalogo('skills-dir', 'SKILLS_DIR não é um diretório')
+    let ehDir = false
+    try { ehDir = statSync(skillsDir, { throwIfNoEntry: false })?.isDirectory() ?? false }
+    catch (e) { throw new ErroCatalogo('skills-dir', `SKILLS_DIR ilegível (${(e as NodeJS.ErrnoException).code ?? 'desconhecido'})`) }
+    if (!ehDir) throw new ErroCatalogo('skills-dir', 'SKILLS_DIR não é um diretório')
     const shaBruto = env.SKILLS_SHA?.trim()
     const sha = shaBruto && /^[0-9a-f]{7,40}$/i.test(shaBruto) ? shaBruto.toLowerCase() : 'local'
     if (shaBruto && sha === 'local') avisosExtras.push('SKILLS_SHA ignorado: não é um SHA hexadecimal de 7 a 40 caracteres')
