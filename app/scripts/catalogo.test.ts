@@ -1,7 +1,7 @@
 // Testes do gerador do Catálogo. Fixtures em diretório temporário próprio (não dependem de TMPDIR exportado).
 import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
+import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { after, describe, test } from 'node:test'
@@ -29,7 +29,7 @@ const gerar = (raiz: string, curadoria: Curadoria = VAZIA, commitFonte?: string)
   gerarCatalogo({ skillsDir: raiz, curadoria, commitFonte, agora: new Date('2026-11-16T12:00:00Z') })
 const slugs = (c: Catalogo, pasta: string) => c.categorias.find((x) => x.pasta === pasta)!.skills.map((s) => s.slug)
 
-describe('lerFrontmatter', () => {
+describe('lerFrontmatter (YAML 1.2 via lib yaml)', () => {
   const campos = (t: string) => { const r = lerFrontmatter(t); assert.ok(r.ok, JSON.stringify(r)); return r.campos }
 
   test('escalar plano, aspas duplas e simples', () => {
@@ -42,7 +42,7 @@ describe('lerFrontmatter', () => {
   test('description em bloco `>-` (dobrado, sem \\n final)', () => {
     const c = campos(`---\nname: n\ndescription: >-\n  Primeira linha da frase.\n  Segunda linha continua.\n\n  Outro parágrafo.\nversion: 1\n---\n`)
     assert.equal(c.description, 'Primeira linha da frase. Segunda linha continua.\nOutro parágrafo.')
-    assert.equal(c.version, '1')
+    assert.equal(c.version, 1) // YAML real: número, não texto
   })
 
   test('blocos `>` (clip), `|` (literal) e indicador de recuo', () => {
@@ -59,21 +59,30 @@ describe('lerFrontmatter', () => {
     assert.equal(c.c, 'texto')
   })
 
-  test('mapas e listas aninhados viram vazio e não vazam chaves', () => {
+  test('mapas e listas aninhados chegam como estrutura e não vazam chaves', () => {
     const c = campos(`---\nname: n\nmetadata:\n  hermes:\n    tags: [a, b]\n  description: não é a do topo\ntags:\n  - x\n  - y\ndescription: real\n---\n`)
-    assert.equal(c.metadata, '')
-    assert.equal(c.tags, '')
+    assert.deepEqual(c.metadata, { hermes: { tags: ['a', 'b'] }, description: 'não é a do topo' })
+    assert.deepEqual(c.tags, ['x', 'y'])
     assert.equal(c.description, 'real')
   })
 
-  test('CRLF e BOM', () => {
-    assert.deepEqual(campos('﻿---\r\nname: a\r\ndescription: b\r\n---\r\ncorpo'), { name: 'a', description: 'b' })
+  test('CRLF, BOM e fechamento com `...`', () => {
+    assert.deepEqual(campos('\uFEFF---\r\nname: a\r\ndescription: b\r\n---\r\ncorpo'), { name: 'a', description: 'b' })
+    assert.deepEqual(campos('---\nname: a\n...\ncorpo'), { name: 'a' })
   })
 
-  test('ausente e sem fechamento', () => {
-    assert.deepEqual(lerFrontmatter('# só markdown\n'), { ok: false, motivo: 'ausente' })
-    assert.deepEqual(lerFrontmatter(''), { ok: false, motivo: 'ausente' })
-    assert.deepEqual(lerFrontmatter('---\nname: a\ndescription: b\n'), { ok: false, motivo: 'sem-fechamento' })
+  test('ausente, sem fechamento e acima do limite de leitura', () => {
+    assert.deepEqual(lerFrontmatter('# só markdown\n'), { ok: false, motivo: 'frontmatter ausente' })
+    assert.deepEqual(lerFrontmatter(''), { ok: false, motivo: 'frontmatter ausente' })
+    assert.deepEqual(lerFrontmatter('---\nname: a\ndescription: b\n'), { ok: false, motivo: 'frontmatter sem fechamento' })
+    assert.deepEqual(lerFrontmatter('---\nname: a\n', { truncado: true }), { ok: false, motivo: 'frontmatter acima de 64 KB' })
+    assert.equal(lerFrontmatter('---\nname: a\n---\n', { truncado: true }).ok, true) // fechou dentro do limite
+  })
+
+  test('YAML inválido traz linha do arquivo (conta a linha de abertura) e motivo em uma linha', () => {
+    const r = lerFrontmatter('---\nname: a\ndescription: Use when: x\n---\n')
+    assert.ok(!r.ok)
+    assert.match(r.motivo, /^frontmatter YAML inválido \(linha 3\): /)
   })
 })
 
@@ -259,6 +268,194 @@ describe('validarCuradoria', () => {
   })
 })
 
+// ---------------------------------------------------------------- achados do QA (fase 1)
+const raizRoot = process.getuid?.() === 0 // root ignora chmod: casos de EACCES não são reproduzíveis
+const comTrava = (alvo: string, corpo: () => void) => { chmodSync(alvo, 0o000); try { corpo() } finally { chmodSync(alvo, 0o755) } }
+
+describe('QA #1: profundidade ilimitada', () => {
+  test('SKILL.md em qualquer profundidade (12 e 40 níveis) conta como Skill, sem avisos', () => {
+    const raiz = novoDir()
+    const fundo = (n: number) => Array.from({ length: n }, (_, i) => `n${i}`).join('/')
+    skill(raiz, '07-teste', 'p8', fm('p8', 'Nível 8.'), `${fundo(8)}/SKILL.md`)
+    skill(raiz, '07-teste', 'p12', fm('p12', 'Nível 12.'), `${fundo(12)}/SKILL.md`)
+    skill(raiz, '07-teste', 'p40', fm('p40', 'Nível 40.'), `${fundo(40)}/SKILL.md`)
+    const { catalogo, avisos } = gerar(raiz)
+    assert.deepEqual(slugs(catalogo, '07-teste'), ['p12', 'p40', 'p8'])
+    assert.deepEqual(catalogo.rejeitadas, [])
+    assert.deepEqual(avisos, [])
+  })
+})
+
+describe('QA #2: erro de I/O não derruba o job', () => {
+  test('pasta de Skill ilegível → rejeitada com o código do erro; as demais seguem', (t) => {
+    if (raizRoot) return t.skip('root ignora chmod')
+    const raiz = novoDir()
+    skill(raiz, '01-a', 'boa', fm('boa', 'Boa.'))
+    skill(raiz, '01-a', 'trancada', fm('t', 'Trancada.'))
+    comTrava(join(raiz, '01-a', 'trancada'), () => {
+      const { catalogo } = gerar(raiz)
+      assert.deepEqual(slugs(catalogo, '01-a'), ['boa'])
+      assert.deepEqual(catalogo.rejeitadas, [{ caminho: '01-a/trancada', motivo: 'erro de leitura (EACCES)' }])
+    })
+  })
+
+  test('SKILL.md ilegível → rejeitada com o código; raiz da Categoria ilegível → aviso e total 0', (t) => {
+    if (raizRoot) return t.skip('root ignora chmod')
+    const raiz = novoDir()
+    skill(raiz, '01-a', 'boa', fm('boa', 'Boa.'))
+    skill(raiz, '01-a', 'sem-leitura', fm('s', 'S.'))
+    skill(raiz, '02-b', 'x', fm('x', 'X.'))
+    chmodSync(join(raiz, '01-a', 'sem-leitura', 'SKILL.md'), 0o000)
+    try {
+      comTrava(join(raiz, '02-b'), () => {
+        const { catalogo, avisos } = gerar(raiz)
+        assert.deepEqual(catalogo.rejeitadas, [{ caminho: '01-a/sem-leitura/SKILL.md', motivo: 'arquivo ilegível (EACCES)' }])
+        assert.deepEqual(avisos, ['não foi possível listar a categoria 02-b (EACCES)'])
+        const c = catalogo.categorias.find((x) => x.pasta === '02-b')!
+        assert.deepEqual([c.total, c.skills], [0, []])
+        assert.deepEqual(slugs(catalogo, '01-a'), ['boa'])
+      })
+    } finally { chmodSync(join(raiz, '01-a', 'sem-leitura', 'SKILL.md'), 0o644) }
+  })
+
+  test('SKILLS_DIR ilegível → ErroCatalogo skills-dir (exit 2), não erro inesperado', (t) => {
+    if (raizRoot) return t.skip('root ignora chmod')
+    const raiz = novoDir()
+    skill(raiz, '01-a', 'x', fm('x', 'X.'))
+    comTrava(raiz, () => assert.throws(() => gerar(raiz), (e: unknown) => e instanceof ErroCatalogo && e.codigo === 'skills-dir' && /EACCES/.test(e.message)))
+  })
+})
+
+describe('QA #3, #6, #7: frontmatter é YAML de verdade', () => {
+  const um = (conteudo: string) => {
+    const raiz = novoDir()
+    skill(raiz, '01-a', 's', conteudo)
+    const { catalogo } = gerar(raiz)
+    return { resumo: catalogo.categorias[0].skills[0]?.resumo, rej: catalogo.rejeitadas[0] }
+  }
+
+  test('YAML inválido → rejeitada com o motivo do parser (c01, c02, c03, c06, c17, c18)', () => {
+    for (const [id, conteudo] of Object.entries({
+      c01: '---\nname: a\ndescription: Use when: o usuário pede\n---\nx',
+      c02: '---\nname: a\ndescription: @foo bar\n---\nx',
+      c03: '---\nname: a\ndescription: `code` texto\n---\nx',
+      c06: '---\nname: a\ndescription: "sem fim\n---\nx',
+      c17: '---\nname: a\ndescription:\n\tfoo\n---\nx',
+      c18: '---\nname: a\ndescription: ? x\n---\nx',
+      c04: '---\nname: a\nname: b\ndescription: d\n---\nx',
+    })) {
+      const r = um(conteudo)
+      assert.equal(r.resumo, undefined, `${id} deveria ser rejeitada`)
+      assert.match(r.rej.motivo, /^frontmatter YAML inválido \(linha \d+\): .+/, id)
+      assert.ok(!r.rej.motivo.includes('\n'), `${id}: motivo em uma linha`)
+    }
+  })
+
+  test('YAML válido é aceito (c07 comentário no ---, c08 chave entre aspas, c13 indentado, c09, c10, c15, c19, c20)', () => {
+    assert.equal(um('--- # comentario\nname: a\ndescription: d\n---\nx').resumo, 'd')
+    assert.equal(um('---\n"name": a\n"description": d\n---\nx').resumo, 'd')
+    assert.equal(um('---\n  name: a\n  description: d\n---\nx').resumo, 'd')
+    assert.equal(um('---\nname: a\ndescription: primeira linha\n\n  continua aqui\n---\nx').resumo, 'primeira linha continua aqui')
+    assert.equal(um('---\nname: a\ndescription: "\\x41BC"\n---\nx').resumo, 'ABC')
+    assert.equal(um('---\nname: a\ndescription: foo#bar\n---\nx').resumo, 'foo#bar')
+    assert.equal(um('---\nname: a\ndescription: Foo:bar\n---\nx').resumo, 'Foo:bar')
+    assert.equal(um('---\nname: a\ndescription: "Use when: x"\n---\nx').resumo, 'Use when: x')
+  })
+
+  test('alias e âncora são resolvidos pelo YAML (c11)', () => {
+    assert.equal(um('---\nname: &n a\ndescription: *n\n---\nx').resumo, 'a')
+  })
+
+  test('name/description que não são texto → rejeitada (c05 lista, c14 lista, número, booleano, mapa)', () => {
+    const motivo = (c: string) => um(c).rej?.motivo
+    assert.equal(motivo('---\nname: [a, b]\ndescription: d\n---\nx'), 'frontmatter: name deve ser texto (recebido lista)')
+    assert.equal(motivo('---\nname: a\ndescription:\n  - item um\n  - item dois\n---\nx'), 'frontmatter: description deve ser texto (recebido lista)')
+    assert.equal(motivo('---\nname: 123\ndescription: d\n---\nx'), 'frontmatter: name deve ser texto (recebido número)')
+    assert.equal(motivo('---\nname: a\ndescription: true\n---\nx'), 'frontmatter: description deve ser texto (recebido booleano)')
+    assert.equal(motivo('---\nname: a\ndescription: {x: 1}\n---\nx'), 'frontmatter: description deve ser texto (recebido mapa)')
+  })
+
+  test('frontmatter que não é mapa (lista ou texto) é rejeitado; vazio vale "sem name e sem description"', () => {
+    assert.equal(um('---\n- a\n- b\n---\nx').rej.motivo, 'frontmatter não é um mapa YAML')
+    assert.equal(um('---\nsó texto\n---\nx').rej.motivo, 'frontmatter não é um mapa YAML')
+    assert.equal(um('---\n---\nx').rej.motivo, 'frontmatter sem name e sem description')
+    assert.equal(um('---\nname:\ndescription: d\n---\nx').rej.motivo, 'frontmatter sem name')
+  })
+
+  test('bomba de aliases (billion laughs) é rejeitada sem travar', () => {
+    const niveis = ['a: &a0 [x, x, x, x, x, x, x, x, x, x]']
+    for (let i = 1; i < 9; i++) niveis.push(`b${i}: &a${i} [${Array(10).fill(`*a${i - 1}`).join(', ')}]`)
+    const inicio = Date.now()
+    const r = um(`---\nname: a\ndescription: d\n${niveis.join('\n')}\n---\nx`)
+    assert.ok(Date.now() - inicio < 2000, 'demorou demais')
+    assert.equal(r.resumo, undefined)
+    assert.match(r.rej.motivo, /^frontmatter YAML inválido/)
+  })
+})
+
+describe('QA #4: prefixo numérico repetido', () => {
+  test('07-a e 07-b: exit 0, aviso, id continua sendo o prefixo e a pasta é única', () => {
+    const raiz = novoDir()
+    skill(raiz, '07-a', 's', fm('s', 'A.'))
+    skill(raiz, '07-b', 's', fm('s', 'B.'))
+    skill(raiz, '08-c', 's', fm('s', 'C.'))
+    const { catalogo, avisos } = gerar(raiz)
+    assert.deepEqual(catalogo.categorias.map((c) => [c.id, c.pasta]), [['07', '07-a'], ['07', '07-b'], ['08', '08-c']])
+    assert.deepEqual(avisos, ['prefixo numérico repetido (id "07"): 07-a, 07-b; use a pasta como chave'])
+  })
+})
+
+describe('QA #8: limite de 64 KB do frontmatter', () => {
+  test('frontmatter acima de 64 KB → motivo correto (não "sem fechamento")', () => {
+    const raiz = novoDir()
+    skill(raiz, '01-a', 'grande', fm('g', 'x'.repeat(70 * 1024)))
+    skill(raiz, '01-a', 'sem-fecha-pequeno', '---\nname: a\ndescription: d\n')
+    const { catalogo } = gerar(raiz)
+    assert.deepEqual(catalogo.rejeitadas, [
+      { caminho: '01-a/grande/SKILL.md', motivo: 'frontmatter acima de 64 KB' },
+      { caminho: '01-a/sem-fecha-pequeno/SKILL.md', motivo: 'frontmatter sem fechamento' },
+    ])
+  })
+
+  test('arquivo grande com frontmatter pequeno é válido; frontmatter perto do limite também', () => {
+    const raiz = novoDir()
+    skill(raiz, '01-a', 'corpo-grande', `${fm('c', 'Corpo grande. Resto.')}${'linha de corpo\n'.repeat(20000)}`)
+    skill(raiz, '01-a', 'quase', fm('q', 'y'.repeat(60 * 1024)))
+    const { catalogo } = gerar(raiz)
+    assert.deepEqual(slugs(catalogo, '01-a'), ['corpo-grande', 'quase'])
+    assert.deepEqual(catalogo.rejeitadas, [])
+  })
+})
+
+describe('QA #9: links simbólicos ignorados geram aviso', () => {
+  test('pasta de Skill, SKILL.md, pasta de Categoria e subpasta (diretório) viram aviso com o caminho', () => {
+    const raiz = novoDir(), fora = novoDir()
+    skill(fora, 'ext', 'real', fm('r', 'Real.'))
+    skill(raiz, '01-a', 'ok', fm('ok', 'Ok.'))
+    symlinkSync(join(fora, 'ext', 'real'), join(raiz, '01-a', 'link-skill'), 'dir')
+    escrever(fora, 'alvo/SKILL.md', fm('x', 'X.'))
+    mkdirSync(join(raiz, '07-link', 'sk'), { recursive: true })
+    symlinkSync(join(fora, 'alvo', 'SKILL.md'), join(raiz, '07-link', 'sk', 'SKILL.md'))
+    symlinkSync(join(fora, 'ext'), join(raiz, '08-cat'), 'dir')
+    skill(raiz, '01-a', 'com-subpasta-link', fm('c', 'C.'), 'x/SKILL.md')
+    symlinkSync(join(fora, 'ext'), join(raiz, '09-d'), 'dir')
+    mkdirSync(join(raiz, '10-e', 'sk', 'sub'), { recursive: true })
+    symlinkSync(join(fora, 'ext'), join(raiz, '10-e', 'sk', 'docs'), 'dir')
+    escrever(raiz, '10-e/sk/sub/SKILL.md', fm('s', 'S.'))
+    symlinkSync(join(fora, 'alvo', 'SKILL.md'), join(raiz, '10-e', 'sk', 'LEIAME.md')) // symlink de arquivo comum: sem aviso
+    const { catalogo, avisos } = gerar(raiz)
+    assert.deepEqual(slugs(catalogo, '01-a'), ['com-subpasta-link', 'ok'])
+    assert.deepEqual(avisos, [
+      'link simbólico ignorado: 01-a/link-skill',
+      'link simbólico ignorado: 07-link/sk/SKILL.md',
+      'link simbólico ignorado: 08-cat',
+      'link simbólico ignorado: 09-d',
+      'link simbólico ignorado: 10-e/sk/docs',
+    ])
+    assert.deepEqual(catalogo.categorias.map((c) => c.pasta), ['01-a', '07-link', '10-e']) // 08-cat/09-d (links) não viram Categoria
+  })
+})
+
 describe('CLI (npm run catalogo)', () => {
   const rodar = (env: Record<string, string | undefined>) => {
     const limpo: Record<string, string> = { PATH: process.env.PATH ?? '' } // sem TMPDIR, sem GITHUB_*
@@ -318,6 +515,19 @@ describe('CLI (npm run catalogo)', () => {
     assert.match(r.stderr, /destaques\.01-a/)
     assert.equal(rodar({ SKILLS_DIR: raiz, CATALOGO_SAIDA: saida, CATALOGO_CURADORIA: join(raiz, 'nao-existe.json') }).status, 3)
     assert.equal(existsSync(saida), false)
+  })
+
+  test('pasta de Skill ilegível: exit 0, a Skill vai para rejeitadas (nunca exit 1)', (t) => {
+    if (raizRoot) return t.skip('root ignora chmod')
+    const { raiz, saida, cur } = cenario()
+    skill(raiz, '01-a', 'trancada', fm('t', 'T.'))
+    comTrava(join(raiz, '01-a', 'trancada'), () => {
+      const r = rodar({ SKILLS_DIR: raiz, CATALOGO_SAIDA: saida, CATALOGO_CURADORIA: cur })
+      assert.equal(r.status, 0, r.stderr)
+      const c = JSON.parse(readFileSync(saida, 'utf8')) as Catalogo
+      assert.ok(c.rejeitadas.some((x) => x.caminho === '01-a/trancada' && x.motivo === 'erro de leitura (EACCES)'))
+      assert.match(r.stdout, /rejeitada: 01-a\/trancada — erro de leitura \(EACCES\)/)
+    })
   })
 
   test('exit 4: zero categorias', () => {

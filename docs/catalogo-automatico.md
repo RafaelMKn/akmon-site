@@ -81,13 +81,17 @@ type Catalogo = {
 ```
 Regras:
 - Categoria = pasta na raiz do skills-library com nome `^\d{2}-`.
-- Skill válida = SKILL.md mais raso da pasta de 1º nível tem frontmatter YAML com `name` e `description` não vazios. Senão → `rejeitadas`.
+- Skill válida = SKILL.md mais raso da pasta de 1º nível (em qualquer profundidade, sem limite; empate no mesmo nível → ordem alfabética do caminho) cujo frontmatter é YAML 1.2 válido (lib `yaml`; chaves duplicadas, aliases em excesso e sintaxe inválida são rejeitados) e tem `name` e `description` como **texto não vazio**. Outro tipo (lista, número, booleano, mapa), YAML inválido, frontmatter ausente, sem fechamento ou acima de 64 KB → `rejeitadas`, com o motivo (do parser, quando for o caso).
+- Limite de leitura: só os primeiros **64 KB** de cada SKILL.md são lidos; o frontmatter tem que fechar dentro deles (corpo maior não importa). Frontmatter que não fecha nesse trecho → rejeitada com motivo "frontmatter acima de 64 KB".
+- Erro de leitura (EACCES etc.) numa pasta de Skill → essa Skill vai para `rejeitadas` com "erro de leitura (<código>)"; na raiz de uma Categoria → aviso e Categoria com `total` 0. Exit codes continuam só 0, 2, 3 e 4 (SKILLS_DIR ilegível = 2).
+- Prefixo numérico repetido (`07-a`, `07-b`): exit 0 com aviso. `id` continua sendo o prefixo; quem consome deve usar `pasta` como chave.
+- Links simbólicos (pasta de Categoria ou de Skill, subpasta, ou SKILL.md) não são seguidos: são ignorados com aviso contendo o caminho. Pastas ocultas e `node_modules` são ignoradas.
 - Resumo: Curadoria, senão 1ª frase da `description` (até `. `), truncada em 160 caracteres com `…`.
 - `akmon.json` fica só com `art` e `spark`; `cats` sai.
 
 ## Critério de pronto
 
-- Testes do gerador cobrem: skill aninhada (last30days), frontmatter ausente/inválido, `description` em bloco `>-`, categoria sem Curadoria, destaque inexistente, ordenação.
+- Testes do gerador cobrem: skill aninhada (last30days) e profundidade ilimitada, frontmatter ausente/inválido (YAML real) e de tipo errado, `description` em bloco `>-`, categoria sem Curadoria, destaque inexistente, ordenação, erro de I/O, prefixo repetido, limite de 64 KB e links simbólicos.
 - `npm run build` e `npm run lint` passam; site mostra 180 Skills (ou o total do `main` na hora) sem contagem manual.
 - Avisos "contagem em revisão" removidos do site.
 - Push de teste no skills-library → Skill visível em `rafaelmkn.github.io/akmon-site/` em ≤ ~2 min (medido por QA).
