@@ -1,4 +1,10 @@
+import { catalogo } from '../data/catalogo'
 import { Simbolo } from './Icon'
+
+const data = new Date(catalogo.geradoEm)
+const atualizadoEm = Number.isNaN(data.getTime())
+  ? null
+  : data.toLocaleString('pt-BR', { dateStyle: 'medium', timeStyle: 'short' })
 
 export function Footer() {
   return (
@@ -12,7 +18,9 @@ export function Footer() {
       </div>
       <div className="grid content-start gap-2.5">
         <p className="m-0"><a className="text-brasa-viva" href="https://github.com/RafaelMKn/skills-library">Repositório no GitHub</a></p>
-        <p className="m-0">Contagem de skills em revisão: README e disco ainda divergem.</p>
+        {atualizadoEm && (
+          <p className="m-0 text-xs text-aco-claro">Atualizado em <time dateTime={catalogo.geradoEm}>{atualizadoEm}</time></p>
+        )}
       </div>
       <p className="col-span-full m-0 border-t border-tinta-2 pt-3.5 text-xs text-aco-claro">
         Tipografia: Big Shoulders Display, Big Shoulders Stencil Display, Barlow e JetBrains Mono, todas sob a SIL Open Font License 1.1.
