@@ -39,7 +39,7 @@ export function Hero() {
               href="#categorias"
               className="inline-flex items-center gap-2 border-2 border-tinta bg-transparent px-[18px] py-[13px] font-titulo text-[15px] leading-none font-bold tracking-[.08em] text-tinta uppercase no-underline hover:border-brasa hover:bg-brasa hover:text-papel"
             >
-              Ver as seis pastas<Icon name="down" />
+              Ver as pastas<Icon name="down" />
             </a>
           </div>
         </div>
