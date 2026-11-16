@@ -30,7 +30,7 @@ Toda Skill que entrar no `main` do skills-library aparece no site em até ~2 min
 | Q10 | Frontmatter inválido | Publica sem a Skill; lista em `rejeitadas` e no resumo do job |
 | Q11 | Categoria nova | Aparece automática, nome humanizado da pasta; nome bonito opcional na Curadoria |
 | Q12 | Termo | "Skill" na UI; "peça" só em copy de marca |
-| Q13 | Gatilho | Token fine-grained (Actions: write só no akmon-site) salvo como secret no skills-library |
+| Q13 | Gatilho | Token fine-grained (Contents: write só no akmon-site — mínimo exigido por POST /dispatches) salvo como secret no skills-library |
 | Q14 | Endereço | `https://rafaelmkn.github.io/akmon-site/` |
 | Q15 | Ordem | Destaques na ordem da Curadoria; resto alfabético por slug |
 | Q16 | Link | Cada Skill linka `github.com/RafaelMKn/skills-library/tree/main/<pasta>/<slug>` |
@@ -94,5 +94,5 @@ Regras:
 
 ## Pendências do Rafael
 
-- Criar token fine-grained (Actions: read/write, só repo akmon-site) e salvar como secret `AKMON_SITE_DISPATCH_TOKEN` no skills-library.
+- Criar token fine-grained (Contents: read/write, só repo akmon-site; guia: /home/rafalmuraro/OpenBot/Shared/akmon-pages-ativacao.md) e salvar como secret `AKMON_SITE_DISPATCH_TOKEN` no skills-library.
 - Aprovar a mudança de visibilidade do akmon-site para público após o relatório de varredura de segredos.
