@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@font-face{font-family:"Big Shoulders Display";font-weight:700;font-display:swap;src:url(/fonts/bigshoulders-700.woff2) format("woff2")}
+@font-face{font-family:"Big Shoulders Display";font-weight:800;font-display:swap;src:url(/fonts/bigshoulders-800.woff2) format("woff2")}
+@font-face{font-family:"Big Shoulders Stencil Display";font-weight:800;font-display:swap;src:url(/fonts/bigshoulders-stencil-800.woff2) format("woff2")}
+@font-face{font-family:"Barlow";font-weight:400;font-display:swap;src:url(/fonts/barlow-400.woff2) format("woff2")}
+@font-face{font-family:"Barlow";font-weight:500;font-display:swap;src:url(/fonts/barlow-500.woff2) format("woff2")}
+@font-face{font-family:"Barlow";font-weight:600;font-display:swap;src:url(/fonts/barlow-600.woff2) format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-weight:400;font-display:swap;src:url(/fonts/jetbrainsmono-400.woff2) format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-weight:600;font-display:swap;src:url(/fonts/jetbrainsmono-600.woff2) format("woff2")}
+
+@theme {
+  --color-papel: #F3F0E8;
+  --color-papel-2: #E4E0D4;
+  --color-mesa: #CFCABB;
+  --color-tinta: #16140F;
+  --color-tinta-2: #4A463C;
+  --color-aco: #7A7769;
+  --color-aco-claro: #B9B5A7;
+  --color-brasa: #B8340A;
+  --color-brasa-viva: #FF5A1F;
+  --color-forja: #0E0D0A;
+  --font-titulo: "Big Shoulders Display", "Arial Narrow", sans-serif;
+  --font-marca: "Big Shoulders Stencil Display", "Big Shoulders Display", "Arial Narrow", sans-serif;
+  --font-texto: "Barlow", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .art .brasa { display: none !important; }
+  .art .faisca.impacto { filter: none !important; color: var(--color-brasa-viva) !important; }
+}
+
+body {
+  margin: 0;
+  color: var(--color-tinta);
+  font: 400 17px/1.5 var(--font-texto);
+  -webkit-font-smoothing: antialiased;
+  background: var(--color-papel-2) repeating-linear-gradient(135deg, transparent 0 9px, rgba(122,119,105,.18) 9px 10px);
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--color-brasa); outline-offset: 3px; }
+
+/* marcas de canto da moldura */
+.cantos { position: relative; }
+.cantos::before, .cantos::after { content: ""; position: absolute; width: 14px; height: 14px; pointer-events: none; z-index: 3; }
+.cantos::before { left: -8px; top: -8px; border-left: 1px solid var(--color-tinta); border-top: 1px solid var(--color-tinta); }
+.cantos::after { right: -8px; top: -8px; border-right: 1px solid var(--color-tinta); border-top: 1px solid var(--color-tinta); }
+@media (max-width: 1300px) { .cantos::before { left: 0; } .cantos::after { right: 0; } }
+
+/* gravura ASCII: corpo no fluxo, faíscas sobrepostas no mesmo grid de caracteres */
+.art { position: relative; width: max-content; margin: 0 auto; line-height: 0; --fs: clamp(4.6px, .78vw, 11.2px); --lh: 1.1; }
+.art pre { position: relative; margin: 0; font: 400 var(--fs)/var(--lh) var(--font-mono); white-space: pre; letter-spacing: 0; font-variant-ligatures: none; user-select: none; }
+.art .corpo { color: var(--color-papel); mix-blend-mode: difference; }
+.art .faisca { position: absolute; inset: 0; color: var(--color-brasa-viva); }
+.art .faisca.impacto { filter: brightness(2) drop-shadow(0 0 6px var(--color-brasa-viva)); color: #FFFFFF; }
+
+/* variação brasa: arte acende de baixo para cima */
+.art .brasa {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  color: transparent;
+  background: linear-gradient(to top, var(--color-brasa-viva) 0%, var(--color-brasa) 65%, var(--color-brasa-viva) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  clip-path: inset(100% 0 0 0);
+}
+.art .brasa.ativa {
+  opacity: 1;
+  animation: brasa-varredura 450ms steps(5, jump-none) forwards, brasa-pulso 1.2s steps(4, jump-none) 450ms infinite alternate;
+}
+@keyframes brasa-varredura {
+  0% { clip-path: inset(100% 0 0 0); }
+  25% { clip-path: inset(75% 0 0 0); }
+  50% { clip-path: inset(50% 0 0 0); }
+  75% { clip-path: inset(25% 0 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+@keyframes brasa-pulso {
+  0% { filter: drop-shadow(0 0 1px var(--color-brasa-viva)) brightness(1); }
+  50% { filter: drop-shadow(0 0 4px var(--color-brasa-viva)) brightness(1.25); }
+  100% { filter: drop-shadow(0 0 2px var(--color-brasa-viva)) brightness(1.1); }
+}
+
+/* troca de folha: 2 quadros secos */
+@keyframes troca { 0% { clip-path: inset(0 0 100% 0); } 50% { clip-path: inset(0 0 50% 0); } 100% { clip-path: inset(0); } }
+.troca { animation: troca 90ms steps(2, jump-none); }
