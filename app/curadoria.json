@@ -1,0 +1,92 @@
+{
+  "categorias": {
+    "01-automacao-n8n-make": {
+      "nome": "Automação de Processos & n8n / Make",
+      "curto": "Automação n8n / Make"
+    },
+    "02-design-ui-motion-3d": {
+      "nome": "Design, UI Motion, 3D Web, Vídeo & Criativos",
+      "curto": "Design, motion, 3D, vídeo"
+    },
+    "03-agentes-ia-prompts": {
+      "nome": "Agentes Autônomos & Engenharia de Prompt",
+      "curto": "Agentes e prompts"
+    },
+    "04-backend-apis-banco": {
+      "nome": "APIs, Backend & Banco de Dados",
+      "curto": "Backend, APIs, banco"
+    },
+    "05-dev-harness-cli": {
+      "nome": "Ferramental de Desenvolvimento, CLI & Harness",
+      "curto": "Dev, CLI & harness"
+    },
+    "06-produtividade-pesquisa-docs": {
+      "nome": "Produtividade, Pesquisa, Documentos & Mídia",
+      "curto": "Produtividade & docs"
+    }
+  },
+  "destaques": {
+    "01-automacao-n8n-make": [
+      "n8n-flow-builder",
+      "n8n-flow-debugger",
+      "make-manager",
+      "n8n-agents"
+    ],
+    "02-design-ui-motion-3d": [
+      "ascii-video",
+      "architecture-diagram",
+      "ad-creative",
+      "remotion-video"
+    ],
+    "03-agentes-ia-prompts": [
+      "auditoria-trabalho-de-agente",
+      "eval-set-agentes",
+      "create-subagent",
+      "prompt-engineering-agentes"
+    ],
+    "04-backend-apis-banco": [
+      "airtable",
+      "clickup-api",
+      "fastify-best-practices",
+      "prisma-cli"
+    ],
+    "05-dev-harness-cli": [
+      "agent-session-handoff",
+      "blocked-page-recovery",
+      "systematic-debugging",
+      "spike"
+    ],
+    "06-produtividade-pesquisa-docs": [
+      "arxiv",
+      "competitor-news-monitor",
+      "pdf",
+      "obsidian"
+    ]
+  },
+  "resumos": {
+    "01-automacao-n8n-make/n8n-flow-builder": "Constrói fluxos n8n do zero ao ativo, com protocolo para cada alteração estrutural.",
+    "01-automacao-n8n-make/n8n-flow-debugger": "Diagnostica fluxos que falham ou se comportam errado em execução.",
+    "01-automacao-n8n-make/make-manager": "Consulta, cria, edita, ativa e investiga logs de cenários do Make pela API v2.",
+    "01-automacao-n8n-make/n8n-agents": "Desenha agentes de IA no n8n do jeito certo: AI Agent, LLM chain, classificadores.",
+    "02-design-ui-motion-3d/ascii-video": "Converte vídeo ou áudio em MP4/GIF de ASCII colorido.",
+    "02-design-ui-motion-3d/architecture-diagram": "Gera diagramas de arquitetura, nuvem e infraestrutura em SVG dentro de HTML, tema escuro.",
+    "02-design-ui-motion-3d/ad-creative": "Gera, itera e escala criativos de anúncios pagos: ganchos, títulos, textos e roteiros.",
+    "02-design-ui-motion-3d/remotion-video": "Renderiza vídeo de verdade com Remotion: composições React, transições e legendas.",
+    "03-agentes-ia-prompts/auditoria-trabalho-de-agente": "Confere o que outro agente de IA fez antes de você aceitar o resultado.",
+    "03-agentes-ia-prompts/eval-set-agentes": "Mede se uma mudança em agente melhorou ou piorou: eval set versionado e comparação de rodadas.",
+    "03-agentes-ia-prompts/create-subagent": "Cria subagentes personalizados para tarefas especializadas.",
+    "03-agentes-ia-prompts/prompt-engineering-agentes": "Técnicas de prompt para agentes autônomos: system prompt, persona e instruções.",
+    "04-backend-apis-banco/airtable": "API REST do Airtable via curl: CRUD de registros, filtros e upserts.",
+    "04-backend-apis-banco/clickup-api": "Chama a API REST v2/v3 do ClickUp: tarefas, listas, comentários e webhooks.",
+    "04-backend-apis-banco/fastify-best-practices": "Guia o desenvolvimento de servidores e APIs REST com Fastify em TypeScript ou JavaScript.",
+    "04-backend-apis-banco/prisma-cli": "Referência dos comandos da CLI do Prisma: init, generate, migrate, db, studio.",
+    "05-dev-harness-cli/agent-session-handoff": "Encaminha instruções para uma sessão de agente que já está rodando.",
+    "05-dev-harness-cli/blocked-page-recovery": "Recupera o acesso quando o fetch falha: 403/429, paywall, WAF, bot wall.",
+    "05-dev-harness-cli/systematic-debugging": "Depuração em 4 fases: entender a causa raiz antes de corrigir.",
+    "05-dev-harness-cli/spike": "Experimentos descartáveis para validar uma ideia antes de construir.",
+    "06-produtividade-pesquisa-docs/arxiv": "Busca artigos no arXiv por palavra-chave, autor, categoria ou ID.",
+    "06-produtividade-pesquisa-docs/competitor-news-monitor": "Vigia empresas nomeadas e entrega resumos com fonte.",
+    "06-produtividade-pesquisa-docs/pdf": "Cria, lê, junta, preenche e edita PDFs, com OCR.",
+    "06-produtividade-pesquisa-docs/obsidian": "Lê, busca, cria e edita notas no vault do Obsidian."
+  }
+}

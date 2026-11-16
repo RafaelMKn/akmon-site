@@ -1,0 +1,1141 @@
+{
+  "geradoEm": "2026-11-16T18:50:20.814Z",
+  "commitFonte": "9b9e0b431996bedce768dc65557e8c5adefd2571",
+  "categorias": [
+    {
+      "id": "01",
+      "pasta": "01-automacao-n8n-make",
+      "nome": "Automação de Processos & n8n / Make",
+      "curto": "Automação n8n / Make",
+      "total": 23,
+      "skills": [
+        {
+          "slug": "n8n-flow-builder",
+          "resumo": "Constrói fluxos n8n do zero ao ativo, com protocolo para cada alteração estrutural.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-flow-builder"
+        },
+        {
+          "slug": "n8n-flow-debugger",
+          "resumo": "Diagnostica fluxos que falham ou se comportam errado em execução.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-flow-debugger"
+        },
+        {
+          "slug": "make-manager",
+          "resumo": "Consulta, cria, edita, ativa e investiga logs de cenários do Make pela API v2.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/make-manager"
+        },
+        {
+          "slug": "n8n-agents",
+          "resumo": "Desenha agentes de IA no n8n do jeito certo: AI Agent, LLM chain, classificadores.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-agents"
+        },
+        {
+          "slug": "n8n-binary-and-data",
+          "resumo": "Handle files and binary data in n8n correctly.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-binary-and-data"
+        },
+        {
+          "slug": "n8n-code-javascript",
+          "resumo": "Write JavaScript code in n8n Code nodes.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-code-javascript"
+        },
+        {
+          "slug": "n8n-code-python",
+          "resumo": "Write Python code in n8n Code nodes.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-code-python"
+        },
+        {
+          "slug": "n8n-code-tool",
+          "resumo": "Write JavaScript or Python for the n8n Custom Code Tool (@n8n/n8n-nodes-langchain.toolCode), the AI-agent-callable tool rather than the workflow Code node.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-code-tool"
+        },
+        {
+          "slug": "n8n-correcao-producao",
+          "resumo": "Use when changing, auditing, or extending an n8n flow in production.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-correcao-producao"
+        },
+        {
+          "slug": "n8n-error-handling",
+          "resumo": "Wire n8n error handling so failures are loud, structured, and recoverable.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-error-handling"
+        },
+        {
+          "slug": "n8n-expression-syntax",
+          "resumo": "Validate n8n expression syntax and fix common errors.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-expression-syntax"
+        },
+        {
+          "slug": "n8n-flow-reviewer",
+          "resumo": "Protocolo de revisão read-only de um fluxo n8n (JSON local ou workflow na instância).",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-flow-reviewer"
+        },
+        {
+          "slug": "n8n-manager",
+          "resumo": "Use esta skill quando precisar criar, editar, listar, recuperar, excluir, ativar/desativar fluxos ou inspecionar execuções (inclusive com erro) no n8n do usuár…",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-manager"
+        },
+        {
+          "slug": "n8n-mcp-tools-expert",
+          "resumo": "Expert guide for using n8n-mcp MCP tools effectively.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-mcp-tools-expert"
+        },
+        {
+          "slug": "n8n-multi-instance",
+          "resumo": "Use when an n8n-mcp account targets more than one n8n instance — i.e.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-multi-instance"
+        },
+        {
+          "slug": "n8n-node-configuration",
+          "resumo": "Operation-aware node configuration guidance.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-node-configuration"
+        },
+        {
+          "slug": "n8n-self-hosting",
+          "resumo": "Deploy a production self-hosted n8n end-to-end to a fresh Linux VM over SSH, using Docker Compose behind a Caddy reverse proxy with automatic HTTPS.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-self-hosting"
+        },
+        {
+          "slug": "n8n-servidor-vps",
+          "resumo": "Use when upgrading or recovering a self-hosted n8n VPS.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-servidor-vps"
+        },
+        {
+          "slug": "n8n-subworkflows",
+          "resumo": "Build reusable, composable n8n sub-workflows.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-subworkflows"
+        },
+        {
+          "slug": "n8n-validation-expert",
+          "resumo": "Interpret validation errors and guide fixing them.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-validation-expert"
+        },
+        {
+          "slug": "n8n-workflow-patterns",
+          "resumo": "Proven workflow architectural patterns from real n8n workflows.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/n8n-workflow-patterns"
+        },
+        {
+          "slug": "radar-n8n",
+          "resumo": "Varre as instancias n8n e reporta erros por causa raiz.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/radar-n8n"
+        },
+        {
+          "slug": "using-n8n-mcp-skills",
+          "resumo": "Entry point for building, editing, validating, testing, or debugging n8n workflows through n8n-mcp.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/01-automacao-n8n-make/using-n8n-mcp-skills"
+        }
+      ]
+    },
+    {
+      "id": "02",
+      "pasta": "02-design-ui-motion-3d",
+      "nome": "Design, UI Motion, 3D Web, Vídeo & Criativos",
+      "curto": "Design, motion, 3D, vídeo",
+      "total": 32,
+      "skills": [
+        {
+          "slug": "ascii-video",
+          "resumo": "Converte vídeo ou áudio em MP4/GIF de ASCII colorido.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/ascii-video"
+        },
+        {
+          "slug": "architecture-diagram",
+          "resumo": "Gera diagramas de arquitetura, nuvem e infraestrutura em SVG dentro de HTML, tema escuro.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/architecture-diagram"
+        },
+        {
+          "slug": "ad-creative",
+          "resumo": "Gera, itera e escala criativos de anúncios pagos: ganchos, títulos, textos e roteiros.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/ad-creative"
+        },
+        {
+          "slug": "remotion-video",
+          "resumo": "Renderiza vídeo de verdade com Remotion: composições React, transições e legendas.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/remotion-video"
+        },
+        {
+          "slug": "animated-component-libraries",
+          "resumo": "Pre-built animated React component collections combining Magic UI (150+ TypeScript/Tailwind/Motion components) and React Bits (90+ minimal-dependency animated…",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/animated-component-libraries"
+        },
+        {
+          "slug": "baoyu-infographic",
+          "resumo": "Infographics: 21 layouts x 21 styles (信息图, 可视化).",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/baoyu-infographic"
+        },
+        {
+          "slug": "canvas",
+          "resumo": "A Codex Canvas is a live React app that the user can open beside the chat.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/canvas"
+        },
+        {
+          "slug": "claude-design",
+          "resumo": "Design one-off HTML artifacts (landing, deck, prototype).",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/claude-design"
+        },
+        {
+          "slug": "design-dna",
+          "resumo": "Extract, define, and apply design DNA across three dimensions: design system (tokens), design style (qualitative feel), and visual effects (Canvas, WebGL, 3D,…",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/design-dna"
+        },
+        {
+          "slug": "design-md",
+          "resumo": "Author/validate/export Google's DESIGN.md token spec files.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/design-md"
+        },
+        {
+          "slug": "design-system-extraction",
+          "resumo": "Use ao extrair design system de site ou app de referência.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/design-system-extraction"
+        },
+        {
+          "slug": "editorial-html-content",
+          "resumo": "Use para portais HTML e exportação de reportagens.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/editorial-html-content"
+        },
+        {
+          "slug": "elevenlabs-motion",
+          "resumo": "Gera locuções pela API da ElevenLabs e entrega áudio com timings para sincronizar Reels, Shorts e vídeos em motion.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/elevenlabs-motion"
+        },
+        {
+          "slug": "gsap-scrolltrigger",
+          "resumo": "Comprehensive skill for GSAP (GreenSock Animation Platform) and ScrollTrigger plugin.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/gsap-scrolltrigger"
+        },
+        {
+          "slug": "lightweight-3d-effects",
+          "resumo": "Lightweight 3D effects for decorative elements and micro-interactions using Zdog, Vanta.js, and Vanilla-Tilt.js.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/lightweight-3d-effects"
+        },
+        {
+          "slug": "lottie-animations",
+          "resumo": "After Effects animation rendering for web and React applications.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/lottie-animations"
+        },
+        {
+          "slug": "manim-video",
+          "resumo": "Manim CE animations: 3Blue1Brown math/algo videos.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/manim-video"
+        },
+        {
+          "slug": "modern-web-design",
+          "resumo": "Modern web design trends, principles, and implementation patterns for 2024-2025.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/modern-web-design"
+        },
+        {
+          "slug": "motion-flux",
+          "resumo": "Conduz o pipeline editorial de vídeos em motion (Reels, Shorts, TikTok e anúncios verticais) — da pesquisa de referências, alinhamento de nicho e aprovação da…",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/motion-flux"
+        },
+        {
+          "slug": "motion-framer",
+          "resumo": "Modern animation library for React and JavaScript.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/motion-framer"
+        },
+        {
+          "slug": "motionmaxxing",
+          "resumo": "Direct and build professional motion-graphics films (launch videos, product promos, feature reveals, brand stings, kinetic-type pieces, social ads, CTAs) that…",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/motionmaxxing"
+        },
+        {
+          "slug": "naming",
+          "resumo": "Name products, SaaS, brands, open source projects, bots, and apps.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/naming"
+        },
+        {
+          "slug": "p5js",
+          "resumo": "p5.js sketches: gen art, shaders, interactive, 3D.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/p5js"
+        },
+        {
+          "slug": "popular-web-designs",
+          "resumo": "54 real design systems (Stripe, Linear, Vercel) as HTML/CSS.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/popular-web-designs"
+        },
+        {
+          "slug": "product-visual-exploration",
+          "resumo": "Use when exploring physical-product designs and mockups.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/product-visual-exploration"
+        },
+        {
+          "slug": "react-spring-physics",
+          "resumo": "Physics-based animation library combining React Spring (spring dynamics, gesture integration, 60fps animations) and Popmotion (low-level composable animation u…",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/react-spring-physics"
+        },
+        {
+          "slug": "react-three-fiber",
+          "resumo": "Build declarative 3D scenes with React Three Fiber (R3F) - a React renderer for Three.js.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/react-three-fiber"
+        },
+        {
+          "slug": "redesign-landing-page",
+          "resumo": "Use when redesigning a landing page or site brand.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/redesign-landing-page"
+        },
+        {
+          "slug": "scroll-reveal-libraries",
+          "resumo": "Simple scroll-triggered reveal animations using AOS (Animate On Scroll).",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/scroll-reveal-libraries"
+        },
+        {
+          "slug": "songwriting-and-ai-music",
+          "resumo": "Songwriting craft and Suno AI music prompts.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/songwriting-and-ai-music"
+        },
+        {
+          "slug": "threejs-webgl",
+          "resumo": "Comprehensive skill for Three.js 3D web development.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/threejs-webgl"
+        },
+        {
+          "slug": "web3d-integration-patterns",
+          "resumo": "Meta-skill for combining Three.js, GSAP ScrollTrigger, React Three Fiber, Motion, and React Spring for complex 3D web experiences.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/02-design-ui-motion-3d/web3d-integration-patterns"
+        }
+      ]
+    },
+    {
+      "id": "03",
+      "pasta": "03-agentes-ia-prompts",
+      "nome": "Agentes Autônomos & Engenharia de Prompt",
+      "curto": "Agentes e prompts",
+      "total": 10,
+      "skills": [
+        {
+          "slug": "auditoria-trabalho-de-agente",
+          "resumo": "Confere o que outro agente de IA fez antes de você aceitar o resultado.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/03-agentes-ia-prompts/auditoria-trabalho-de-agente"
+        },
+        {
+          "slug": "eval-set-agentes",
+          "resumo": "Mede se uma mudança em agente melhorou ou piorou: eval set versionado e comparação de rodadas.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/03-agentes-ia-prompts/eval-set-agentes"
+        },
+        {
+          "slug": "create-subagent",
+          "resumo": "Cria subagentes personalizados para tarefas especializadas.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/03-agentes-ia-prompts/create-subagent"
+        },
+        {
+          "slug": "prompt-engineering-agentes",
+          "resumo": "Técnicas de prompt para agentes autônomos: system prompt, persona e instruções.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/03-agentes-ia-prompts/prompt-engineering-agentes"
+        },
+        {
+          "slug": "computer-use",
+          "resumo": "Drive the desktop background-first; escalate on signal.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/03-agentes-ia-prompts/computer-use"
+        },
+        {
+          "slug": "esquadrao-agentes",
+          "resumo": "Briefings e contratos de subagentes para equipes multiagente autônomas.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/03-agentes-ia-prompts/esquadrao-agentes"
+        },
+        {
+          "slug": "generative_ui",
+          "resumo": "How to render rich interactive HTML widgets inline in the chat or as standalone artifacts.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/03-agentes-ia-prompts/generative_ui"
+        },
+        {
+          "slug": "ghl-prompt-flows",
+          "resumo": "Use ao criar ou analisar prompts e fluxos de IA no GHL.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/03-agentes-ia-prompts/ghl-prompt-flows"
+        },
+        {
+          "slug": "humanizer",
+          "resumo": "Humanize text: strip AI-isms, add voice.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/03-agentes-ia-prompts/humanizer"
+        },
+        {
+          "slug": "openclaw-agent-creator",
+          "resumo": "Expert guide for designing and building OpenClaw agents.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/03-agentes-ia-prompts/openclaw-agent-creator"
+        }
+      ]
+    },
+    {
+      "id": "04",
+      "pasta": "04-backend-apis-banco",
+      "nome": "APIs, Backend & Banco de Dados",
+      "curto": "Backend, APIs, banco",
+      "total": 14,
+      "skills": [
+        {
+          "slug": "airtable",
+          "resumo": "API REST do Airtable via curl: CRUD de registros, filtros e upserts.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/04-backend-apis-banco/airtable"
+        },
+        {
+          "slug": "clickup-api",
+          "resumo": "Chama a API REST v2/v3 do ClickUp: tarefas, listas, comentários e webhooks.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/04-backend-apis-banco/clickup-api"
+        },
+        {
+          "slug": "fastify-best-practices",
+          "resumo": "Guia o desenvolvimento de servidores e APIs REST com Fastify em TypeScript ou JavaScript.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/04-backend-apis-banco/fastify-best-practices"
+        },
+        {
+          "slug": "prisma-cli",
+          "resumo": "Referência dos comandos da CLI do Prisma: init, generate, migrate, db, studio.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/04-backend-apis-banco/prisma-cli"
+        },
+        {
+          "slug": "composio",
+          "resumo": "Route and complete Composio work across Composio For You and Composio Platform.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/04-backend-apis-banco/composio"
+        },
+        {
+          "slug": "composio-apps",
+          "resumo": "Use when a task needs a real app account.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/04-backend-apis-banco/composio-apps"
+        },
+        {
+          "slug": "evolution-podman-local",
+          "resumo": "Use when installing local Evolution API with Podman.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/04-backend-apis-banco/evolution-podman-local"
+        },
+        {
+          "slug": "integracao-api-terceiros",
+          "resumo": "Use when integrating a client's CRM/ERP API.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/04-backend-apis-banco/integracao-api-terceiros"
+        },
+        {
+          "slug": "notion",
+          "resumo": "Notion API + ntn CLI: pages, databases, markdown, Workers.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/04-backend-apis-banco/notion"
+        },
+        {
+          "slug": "oauth",
+          "resumo": "Implements OAuth 2.0/2.1 authorization flows in Fastify applications — configures authorization code with PKCE, client credentials, device flow, refresh token…",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/04-backend-apis-banco/oauth"
+        },
+        {
+          "slug": "pg-budget-reservation-ledger",
+          "resumo": "Use when implementing PostgreSQL daily API budget gates.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/04-backend-apis-banco/pg-budget-reservation-ledger"
+        },
+        {
+          "slug": "postgres-least-privilege-api-tests",
+          "resumo": "Use when testing Postgres privilege and lock boundaries.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/04-backend-apis-banco/postgres-least-privilege-api-tests"
+        },
+        {
+          "slug": "prisma-client-api",
+          "resumo": "Prisma Client API reference covering model queries, filters, operators, and client methods.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/04-backend-apis-banco/prisma-client-api"
+        },
+        {
+          "slug": "supabase-sql-permission-probes",
+          "resumo": "Use when checking Supabase SQL permissions and ACLs.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/04-backend-apis-banco/supabase-sql-permission-probes"
+        }
+      ]
+    },
+    {
+      "id": "05",
+      "pasta": "05-dev-harness-cli",
+      "nome": "Ferramental de Desenvolvimento, CLI & Harness",
+      "curto": "Dev, CLI & harness",
+      "total": 64,
+      "skills": [
+        {
+          "slug": "agent-session-handoff",
+          "resumo": "Encaminha instruções para uma sessão de agente que já está rodando.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/agent-session-handoff"
+        },
+        {
+          "slug": "blocked-page-recovery",
+          "resumo": "Recupera o acesso quando o fetch falha: 403/429, paywall, WAF, bot wall.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/blocked-page-recovery"
+        },
+        {
+          "slug": "systematic-debugging",
+          "resumo": "Depuração em 4 fases: entender a causa raiz antes de corrigir.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/systematic-debugging"
+        },
+        {
+          "slug": "spike",
+          "resumo": "Experimentos descartáveis para validar uma ideia antes de construir.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/spike"
+        },
+        {
+          "slug": "agy-customizations",
+          "resumo": "Comprehensive guide and reference for the Antigravity Customization System.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/agy-customizations"
+        },
+        {
+          "slug": "akmon",
+          "resumo": "Use em toda requisição de trabalho (skill padrão editável).",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/akmon"
+        },
+        {
+          "slug": "antigravity_guide",
+          "resumo": "Provides a comprehensive guide, quick reference, and sitemap for Google Antigravity (AGY), including the Antigravity CLI (agy), Antigravity 2.0, Antigravity ID…",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/antigravity_guide"
+        },
+        {
+          "slug": "auditoria-infra-hospedagem",
+          "resumo": "Use when auditing a hosting account: cost, waste, DNS.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/auditoria-infra-hospedagem"
+        },
+        {
+          "slug": "babysit",
+          "resumo": "Keep a PR merge-ready by triaging comments, resolving clear conflicts, and fixing CI in a loop.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/babysit"
+        },
+        {
+          "slug": "chromium-print-regression",
+          "resumo": "Use when testing CSS print with real Chromium PDFs.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/chromium-print-regression"
+        },
+        {
+          "slug": "claude-code",
+          "resumo": "Delegate coding to Claude Code CLI (features, PRs).",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/claude-code"
+        },
+        {
+          "slug": "codebase-inspection",
+          "resumo": "Inspect codebases w/ pygount: LOC, languages, ratios.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/codebase-inspection"
+        },
+        {
+          "slug": "codex",
+          "resumo": "Delegate coding to OpenAI Codex CLI (features, PRs).",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/codex"
+        },
+        {
+          "slug": "create-hook",
+          "resumo": "Create Codex hooks.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/create-hook"
+        },
+        {
+          "slug": "create-rule",
+          "resumo": "Create Codex rules for persistent AI guidance.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/create-rule"
+        },
+        {
+          "slug": "create-skill",
+          "resumo": "Create Codex Agent Skills.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/create-skill"
+        },
+        {
+          "slug": "delegated-cli-runtime",
+          "resumo": "Use when integrating a structured external agent CLI.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/delegated-cli-runtime"
+        },
+        {
+          "slug": "dogfood",
+          "resumo": "Exploratory QA of web apps: find bugs, evidence, reports.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/dogfood"
+        },
+        {
+          "slug": "doit",
+          "resumo": "Use when told /doit: implement approved doc via subagents.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/doit"
+        },
+        {
+          "slug": "domain-modeling",
+          "resumo": "Build and sharpen a project's domain model.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/domain-modeling"
+        },
+        {
+          "slug": "external-agent-runtime-integration",
+          "resumo": "Use when integrating an external agent CLI runtime.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/external-agent-runtime-integration"
+        },
+        {
+          "slug": "github",
+          "resumo": "GitHub via gh CLI: PRs, issues, reviews, repos, auth.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/github"
+        },
+        {
+          "slug": "grill-with-docs",
+          "resumo": "A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/grill-with-docs"
+        },
+        {
+          "slug": "grilling",
+          "resumo": "Grill the user relentlessly about a plan, decision, or idea.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/grilling"
+        },
+        {
+          "slug": "guia-contexto-projeto",
+          "resumo": "Use ao fazer guia de contexto, spec técnica ou tasks de v1.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/guia-contexto-projeto"
+        },
+        {
+          "slug": "hermes-agent",
+          "resumo": "Use, configure, theme, extend, and orchestrate Hermes Agent.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/hermes-agent"
+        },
+        {
+          "slug": "hermes-agent-skill-authoring",
+          "resumo": "Author in-repo SKILL.md files: frontmatter and structure.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/hermes-agent-skill-authoring"
+        },
+        {
+          "slug": "hermes-context-tuning",
+          "resumo": "Use when Hermes is slow, costly, or context-heavy.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/hermes-context-tuning"
+        },
+        {
+          "slug": "hermes-roteamento-modelos",
+          "resumo": "Use when changing Hermes models, effort or fallback.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/hermes-roteamento-modelos"
+        },
+        {
+          "slug": "hermes-voz",
+          "resumo": "Use when setting up or debugging Hermes voice and wake.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/hermes-voz"
+        },
+        {
+          "slug": "ia-quota-monitor",
+          "resumo": "Monitor, consultar e gerenciar cotas e limites de taxa de IA (Claude Code, OpenAI Codex e Google Antigravity/Gemini) no Linux e KDE Plasma.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/ia-quota-monitor"
+        },
+        {
+          "slug": "impeccable",
+          "resumo": "Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwis…",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/impeccable"
+        },
+        {
+          "slug": "incident-forensics",
+          "resumo": "Reconstrói quando, como e o tamanho real de um incidente.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/incident-forensics"
+        },
+        {
+          "slug": "infra-vps-producao",
+          "resumo": "Use when operating a production VPS: Docker, Traefik, DNS.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/infra-vps-producao"
+        },
+        {
+          "slug": "inspecting-hermes-desktop-dom",
+          "resumo": "Read the live Hermes desktop DOM/CSS over CDP.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/inspecting-hermes-desktop-dom"
+        },
+        {
+          "slug": "last30days-skill",
+          "resumo": "Research what people actually say about any topic in the last 30 days.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/last30days-skill"
+        },
+        {
+          "slug": "limpeza-workspace-dev",
+          "resumo": "Use ao limpar pasta dev: worktrees, backups, clones.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/limpeza-workspace-dev"
+        },
+        {
+          "slug": "linux-app-management",
+          "resumo": "Use ao gerenciar apps e backups no Linux.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/linux-app-management"
+        },
+        {
+          "slug": "linux-audio-pipewire",
+          "resumo": "Corrige áudio no Linux — PipeWire, mic, Bluetooth, ganho.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/linux-audio-pipewire"
+        },
+        {
+          "slug": "linux-desktop-customization",
+          "resumo": "Use when customizing Linux desktop themes and panels.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/linux-desktop-customization"
+        },
+        {
+          "slug": "linux-memory-swap-tuning",
+          "resumo": "Use when tuning Linux swap, zram, zswap or memory pressure.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/linux-memory-swap-tuning"
+        },
+        {
+          "slug": "linux-power-management",
+          "resumo": "Use when diagnosing Linux power, heat, fan, or CPU.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/linux-power-management"
+        },
+        {
+          "slug": "loop",
+          "resumo": "Run a prompt or skill on a recurring local interval using monitored background shell output.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/loop"
+        },
+        {
+          "slug": "maintaining-custom-forks",
+          "resumo": "Use when maintaining a production fork with custom code.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/maintaining-custom-forks"
+        },
+        {
+          "slug": "migrate-to-skills",
+          "resumo": "Convert 'Applied intelligently' Codex rules (.cursor/rules/*.mdc) and slash commands (.cursor/commands/*.md) to Agent Skills format (.cursor/skills/).",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/migrate-to-skills"
+        },
+        {
+          "slug": "migrate-workflows",
+          "resumo": "Automatically migrate legacy workflows to modern skills across global and workspace configurations.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/migrate-workflows"
+        },
+        {
+          "slug": "node-inspect-debugger",
+          "resumo": "Debug Node.js via --inspect + Chrome DevTools Protocol CLI.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/node-inspect-debugger"
+        },
+        {
+          "slug": "opencode",
+          "resumo": "Delegate coding to OpenCode CLI (features, PR review).",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/opencode"
+        },
+        {
+          "slug": "permissioned-github",
+          "resumo": "Guidelines for interacting with GitHub and request permissions from the user when commands fail due to restrictions in the agent environment.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/permissioned-github"
+        },
+        {
+          "slug": "previa-carregamento-regressao",
+          "resumo": "Use ao testar prévias de carregamento HTML e React.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/previa-carregamento-regressao"
+        },
+        {
+          "slug": "python-debugpy",
+          "resumo": "Debug Python: pdb REPL + debugpy remote (DAP).",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/python-debugpy"
+        },
+        {
+          "slug": "qa-chrome",
+          "resumo": "Use ao testar PRs com navegador e provas auditáveis.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/qa-chrome"
+        },
+        {
+          "slug": "requesting-code-review",
+          "resumo": "Pre-commit review: security scan, quality gates, auto-fix.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/requesting-code-review"
+        },
+        {
+          "slug": "sdk",
+          "resumo": "Guide users building apps, scripts, CI pipelines, or automations on top of the Codex TypeScript SDK (`@cursor/sdk`).",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/sdk"
+        },
+        {
+          "slug": "sdlc-review",
+          "resumo": "Review Kanban handoffs and route verified outcomes.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/sdlc-review"
+        },
+        {
+          "slug": "shell",
+          "resumo": "Runs the rest of a /shell request as a literal shell command.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/shell"
+        },
+        {
+          "slug": "simplify-code",
+          "resumo": "Parallel 4-agent cleanup of recent code changes.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/simplify-code"
+        },
+        {
+          "slug": "skill-finder",
+          "resumo": "Search, install, and manage Agent Skills locally and from GitHub, then help decide whether the task really needs a skill or another customization primitive.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/skill-finder"
+        },
+        {
+          "slug": "split-to-prs",
+          "resumo": "Split current work into small reviewable PRs.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/split-to-prs"
+        },
+        {
+          "slug": "statusline",
+          "resumo": "Configure a custom status line in the CLI.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/statusline"
+        },
+        {
+          "slug": "storage-timeout-profiling",
+          "resumo": "Use when storage-heavy tests time out.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/storage-timeout-profiling"
+        },
+        {
+          "slug": "test-driven-development",
+          "resumo": "TDD: enforce RED-GREEN-REFACTOR, tests before code.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/test-driven-development"
+        },
+        {
+          "slug": "update-cli-config",
+          "resumo": "View and modify Codex CLI configuration settings in ~/.cursor/cli-config.json.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/update-cli-config"
+        },
+        {
+          "slug": "update-cursor-settings",
+          "resumo": "Modify Codex/VSCode user settings in settings.json.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/05-dev-harness-cli/update-cursor-settings"
+        }
+      ]
+    },
+    {
+      "id": "06",
+      "pasta": "06-produtividade-pesquisa-docs",
+      "nome": "Produtividade, Pesquisa, Documentos & Mídia",
+      "curto": "Produtividade & docs",
+      "total": 37,
+      "skills": [
+        {
+          "slug": "arxiv",
+          "resumo": "Busca artigos no arXiv por palavra-chave, autor, categoria ou ID.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/arxiv"
+        },
+        {
+          "slug": "competitor-news-monitor",
+          "resumo": "Vigia empresas nomeadas e entrega resumos com fonte.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/competitor-news-monitor"
+        },
+        {
+          "slug": "pdf",
+          "resumo": "Cria, lê, junta, preenche e edita PDFs, com OCR.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/pdf"
+        },
+        {
+          "slug": "obsidian",
+          "resumo": "Lê, busca, cria e edita notas no vault do Obsidian.",
+          "destaque": true,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/obsidian"
+        },
+        {
+          "slug": "apple-notes",
+          "resumo": "Manage Apple Notes via memo CLI: create, search, edit.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/apple-notes"
+        },
+        {
+          "slug": "apple-reminders",
+          "resumo": "Apple Reminders via remindctl: add, list, complete.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/apple-reminders"
+        },
+        {
+          "slug": "box",
+          "resumo": "Box manages cloud files, sharing, search, and metadata.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/box"
+        },
+        {
+          "slug": "carreira-e-posicionamento",
+          "resumo": "Use ao revisar currículo para ATS, reescrever LinkedIn, montar plano de estudos ou roadmap de carreira em tecnologia.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/carreira-e-posicionamento"
+        },
+        {
+          "slug": "curriculo-blindado",
+          "resumo": "Use ao submeter curriculo a banca de 7 avaliadores.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/curriculo-blindado"
+        },
+        {
+          "slug": "document-to-action-items",
+          "resumo": "Extract cited obligations, deadlines, tasks from documents.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/document-to-action-items"
+        },
+        {
+          "slug": "documentos-dados-publicos",
+          "resumo": "Use ao coletar documentos e bases oficiais em lote.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/documentos-dados-publicos"
+        },
+        {
+          "slug": "docx",
+          "resumo": "Create, read, edit, template, and review Word .docx files.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/docx"
+        },
+        {
+          "slug": "email-inbox-triage",
+          "resumo": "Triage an inbox: prioritize threads, draft replies safely.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/email-inbox-triage"
+        },
+        {
+          "slug": "findmy",
+          "resumo": "Track Apple devices/AirTags via FindMy.app on macOS.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/findmy"
+        },
+        {
+          "slug": "gif-search",
+          "resumo": "Search/download GIFs from Tenor via curl + jq.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/gif-search"
+        },
+        {
+          "slug": "google-workspace",
+          "resumo": "Gmail, Calendar, Drive, Docs, Sheets via gws CLI or Python.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/google-workspace"
+        },
+        {
+          "slug": "grounded-citations",
+          "resumo": "Ground answers and documents in cited, verifiable sources.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/grounded-citations"
+        },
+        {
+          "slug": "himalaya",
+          "resumo": "Himalaya CLI: IMAP/SMTP email from terminal.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/himalaya"
+        },
+        {
+          "slug": "imessage",
+          "resumo": "Send and receive iMessages/SMS via the imsg CLI on macOS.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/imessage"
+        },
+        {
+          "slug": "llm-wiki",
+          "resumo": "Karpathy's LLM Wiki: build/query interlinked markdown KB.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/llm-wiki"
+        },
+        {
+          "slug": "maps",
+          "resumo": "Geocode, POIs, routes, timezones via OpenStreetMap/OSRM.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/maps"
+        },
+        {
+          "slug": "meeting-action-items",
+          "resumo": "Turn meeting notes into cited decisions, owners, tickets.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/meeting-action-items"
+        },
+        {
+          "slug": "notion-publico-raspagem",
+          "resumo": "Use ao raspar página pública do Notion sem login.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/notion-publico-raspagem"
+        },
+        {
+          "slug": "notion-reestruturacao-workspace",
+          "resumo": "Use when restructuring a Notion workspace safely.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/notion-reestruturacao-workspace"
+        },
+        {
+          "slug": "notion-view-presentation",
+          "resumo": "Use when slimming Notion tables without changing data.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/notion-view-presentation"
+        },
+        {
+          "slug": "pauta-definicao-cliente",
+          "resumo": "Monta pauta de reunião para destravar decisão de cliente.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/pauta-definicao-cliente"
+        },
+        {
+          "slug": "powerpoint",
+          "resumo": "Create, read, edit .pptx decks with python-pptx.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/powerpoint"
+        },
+        {
+          "slug": "product-price-monitor",
+          "resumo": "Watch product, flight, or listing prices; alert on target.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/product-price-monitor"
+        },
+        {
+          "slug": "relatorio-resultados-cliente",
+          "resumo": "Use when building a client results/metrics report.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/relatorio-resultados-cliente"
+        },
+        {
+          "slug": "shark-tank",
+          "resumo": "Avalia e estressa uma ideia de negócio ou projeto como se fosse a banca do Shark Tank.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/shark-tank"
+        },
+        {
+          "slug": "songsee",
+          "resumo": "Audio spectrograms/features (mel, chroma, MFCC) via CLI.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/songsee"
+        },
+        {
+          "slug": "teams-meeting-pipeline",
+          "resumo": "Teams meeting summaries, job replay, Graph subscriptions.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/teams-meeting-pipeline"
+        },
+        {
+          "slug": "weekly-review-planning",
+          "resumo": "Weekly reset: commitments, stalled work, next-week plan.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/weekly-review-planning"
+        },
+        {
+          "slug": "whatsapp-baileys-local",
+          "resumo": "Use when sending WhatsApp via the local Baileys bench.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/whatsapp-baileys-local"
+        },
+        {
+          "slug": "xlsx",
+          "resumo": "Create, read, edit Excel .xlsx workbooks and CSVs.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/xlsx"
+        },
+        {
+          "slug": "xurl",
+          "resumo": "X/Twitter via xurl CLI: raw post search, posting, DM, media.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/xurl"
+        },
+        {
+          "slug": "youtube-content",
+          "resumo": "YouTube transcripts to summaries, threads, blogs.",
+          "destaque": false,
+          "url": "https://github.com/RafaelMKn/skills-library/tree/main/06-produtividade-pesquisa-docs/youtube-content"
+        }
+      ]
+    }
+  ],
+  "rejeitadas": []
+}
