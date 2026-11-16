@@ -1,0 +1,109 @@
+name: Publicar site Akmon
+
+on:
+  repository_dispatch:
+    types: [skills-updated]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: akmon-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Gerar catálogo e construir site
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - name: Checkout do site
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      # Fonte pública, sem PAT nem GITHUB_TOKEN no clone. O payload do dispatch
+      # não escolhe código: sempre main, com o SHA efetivo registrado no catálogo.
+      - name: Checkout público do skills-library em main
+        env:
+          SKILLS_DIR: ${{ runner.temp }}/skills-library
+          GIT_TERMINAL_PROMPT: '0'
+        run: |
+          git -c credential.helper= clone --depth 1 --single-branch --branch main \
+            https://github.com/RafaelMKn/skills-library.git "$SKILLS_DIR"
+          printf 'SKILLS_DIR=%s\n' "$SKILLS_DIR" >> "$GITHUB_ENV"
+          printf 'SKILLS_SHA=%s\n' "$(git -C "$SKILLS_DIR" rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      # A integração declara engines.node >=22.18; Node 24 também atende ao Vite 8.
+      - name: Configurar Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Instalar dependências fixadas
+        working-directory: app
+        run: npm ci
+
+      - name: Gerar catálogo a partir do checkout público
+        working-directory: app
+        run: npm run catalogo
+
+      - name: Registrar Skills rejeitadas no resumo
+        if: ${{ success() }}
+        working-directory: app
+        run: |
+          node --input-type=module <<'NODE'
+          import { appendFileSync, existsSync, readFileSync } from 'node:fs';
+          const arquivo = 'src/data/catalogo.json';
+          if (!existsSync(arquivo)) {
+            appendFileSync(process.env.GITHUB_STEP_SUMMARY, '## Catálogo\n\nCatálogo ausente: confira o passo de geração.\n');
+            process.exit(0);
+          }
+          const catalogo = JSON.parse(readFileSync(arquivo, 'utf8'));
+          if (!Array.isArray(catalogo.rejeitadas)) throw new Error('rejeitadas deve ser um array');
+          const seguro = valor => String(valor).replace(/[\r\n]+/g, ' ').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('|', '&#124;').replaceAll('`', '&#96;');
+          const linhas = ['## Catálogo', '', `Commit fonte: ${seguro(catalogo.commitFonte)}`, '', `Skills rejeitadas: ${catalogo.rejeitadas.length}`, ''];
+          if (catalogo.rejeitadas.length) {
+            linhas.push('| Caminho | Motivo |', '|---|---|');
+            for (const item of catalogo.rejeitadas) linhas.push(`| ${seguro(item.caminho)} | ${seguro(item.motivo)} |`);
+          } else linhas.push('Nenhuma Skill rejeitada.');
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY, linhas.join('\n') + '\n');
+          NODE
+
+      - name: Construir site com base do GitHub Pages
+        working-directory: app
+        run: npm run build -- --base=/akmon-site/
+
+      - name: Consultar configuração do Pages
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+        with:
+          enablement: false
+
+      - name: Enviar artefato estático
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
+        with:
+          path: app/dist
+
+  deploy:
+    name: Publicar no GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.publicacao.outputs.page_url }}
+    steps:
+      - name: Publicar artefato
+        id: publicacao
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
