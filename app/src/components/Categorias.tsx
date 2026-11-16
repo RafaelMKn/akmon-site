@@ -33,13 +33,17 @@ export function Categorias() {
   const lista = destaquesPrimeiro(c.skills)
   const nDestaques = c.skills.filter((s) => s.destaque).length
 
+  // `pasta` é única; `id` (prefixo numérico) pode repetir entre categorias.
   function teclado(e: React.KeyboardEvent, idx: number) {
-    const k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0
-    if (!k) return
+    let j: number
+    if (e.key === 'ArrowRight') j = (idx + 1) % cats.length
+    else if (e.key === 'ArrowLeft') j = (idx - 1 + cats.length) % cats.length
+    else if (e.key === 'Home') j = 0
+    else if (e.key === 'End') j = cats.length - 1
+    else return
     e.preventDefault()
-    const j = (idx + k + cats.length) % cats.length
     setI(j)
-    document.getElementById(`tab-${cats[j].id}`)?.focus()
+    document.getElementById(`tab-${cats[j].pasta}`)?.focus()
   }
 
   return (
@@ -49,13 +53,13 @@ export function Categorias() {
         className="mb-7 flex flex-wrap gap-px border border-tinta bg-tinta">
         {cats.map((t, idx) => (
           <button
-            key={t.id}
-            id={`tab-${t.id}`}
+            key={t.pasta}
+            id={`tab-${t.pasta}`}
             type="button"
             role="tab"
             aria-selected={idx === i}
             aria-controls="folha"
-            aria-label={`${t.id} ${t.nome}, ${t.total} skills`}
+            aria-label={`${t.id} ${t.curto}, ${t.total} skills`}
             tabIndex={idx === i ? 0 : -1}
             onClick={() => setI(idx)}
             onKeyDown={(e) => teclado(e, idx)}
@@ -73,7 +77,7 @@ export function Categorias() {
         ))}
       </div>
 
-      <div id="folha" role="tabpanel" aria-labelledby={`tab-${c.id}`} tabIndex={0} key={c.id} className="troca mx-auto max-w-[980px]">
+      <div id="folha" role="tabpanel" aria-labelledby={`tab-${c.pasta}`} tabIndex={0} key={c.pasta} className="troca mx-auto max-w-[980px]">
         <div className="mb-5 flex items-start gap-5">
           <p aria-hidden="true" className="m-0 font-marca text-[88px] leading-[.8] font-extrabold text-brasa max-[640px]:text-[60px]">{c.id}</p>
           <div className="min-w-0">
