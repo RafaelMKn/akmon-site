@@ -1,45 +1,39 @@
-import snapshot from '../data/pastasRepositorio.json'
+import { catalogo } from '../data/catalogo'
+import type { CatalogoSkill } from '../data/catalogo-types'
 import { TreeView, type TreeNode } from './ui/animated-tree-view'
 
-const github = 'https://github.com/RafaelMKn/skills-library'
-
-function montarArvore(arquivos: string[]): TreeNode[] {
-  const filhosRaiz: TreeNode[] = []
-  const pastas = new Map<string, TreeNode[]>([['', filhosRaiz]])
-  const url = `${github}/blob/${snapshot.revisao}`
-
-  for (const arquivo of arquivos) {
-    const segmentos = arquivo.split('/')
-    const nome = segmentos.pop() ?? arquivo
-    let caminho = ''
-    let filhos = filhosRaiz
-
-    for (const pasta of segmentos) {
-      caminho = caminho ? `${caminho}/${pasta}` : pasta
-      let proximos = pastas.get(caminho)
-      if (!proximos) {
-        proximos = []
-        pastas.set(caminho, proximos)
-        filhos.push({ id: caminho, name: pasta, children: proximos })
-      }
-      filhos = proximos
-    }
-
-    const path = arquivo.split('/').map(encodeURIComponent).join('/')
-    filhos.push({ id: arquivo, name: nome, href: `${url}/${path}` })
+function noDaSkill(pasta: string, skill: CatalogoSkill): TreeNode {
+  return {
+    id: `${pasta}/${skill.slug}`,
+    name: skill.slug,
+    content: (
+      <div className="px-3 pt-2 pb-3 font-texto text-base sm:px-4">
+        <p className="mb-1.5 break-words text-papel">{skill.resumo}</p>
+        <a href={skill.url} target="_blank" rel="noopener noreferrer"
+          className="inline-block rounded-sm text-sm font-semibold text-brasa-viva underline underline-offset-4 focus-visible:outline-brasa-viva">
+          Abrir no GitHub
+          <span className="sr-only"> · {skill.slug} (nova aba)</span>
+        </a>
+      </div>
+    ),
   }
-
-  for (const filhos of pastas.values()) {
-    filhos.sort((a, b) =>
-      Number(Boolean(b.children)) - Number(Boolean(a.children)) || a.name.localeCompare(b.name, 'pt-BR'),
-    )
-  }
-
-  return [{ id: '', name: 'skills-library', children: filhosRaiz }]
 }
 
-const arvore = montarArvore(snapshot.arquivos)
+const arvore: TreeNode[] = [{
+  id: 'skills-library',
+  name: 'skills-library',
+  children: catalogo.categorias.map((categoria) => ({
+    id: categoria.pasta,
+    name: categoria.pasta,
+    children: categoria.skills.filter((skill) => skill.destaque).map((skill) => noDaSkill(categoria.pasta, skill)),
+    moreChildren: categoria.skills.filter((skill) => !skill.destaque).map((skill) => noDaSkill(categoria.pasta, skill)),
+  })),
+}]
 
 export default function ArvoreRepositorio() {
-  return <TreeView data={arvore} defaultExpandedIds={['']} />
+  if (catalogo.categorias.length === 0) {
+    return <p className="px-2 py-2">O catálogo de skills ainda não foi gerado.</p>
+  }
+
+  return <TreeView data={arvore} defaultExpandedIds={['skills-library']} />
 }

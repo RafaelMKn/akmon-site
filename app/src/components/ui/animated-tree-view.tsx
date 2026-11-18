@@ -1,11 +1,14 @@
-import { ChevronRight, File, Folder, FolderOpen } from 'lucide-react'
+import { ChevronRight, Folder, FolderOpen } from 'lucide-react'
 import { AnimatePresence, motion, useIsPresent, useReducedMotion, type Variants } from 'motion/react'
 import { useId, useState, type ReactNode } from 'react'
 
 export type TreeNode = {
   id: string
   name: string
-} & ({ children: TreeNode[]; href?: never } | { href: string; children?: never })
+} & (
+  | { children: TreeNode[]; moreChildren?: TreeNode[]; content?: never }
+  | { content: ReactNode; children?: never; moreChildren?: never }
+)
 
 type TreeViewProps = {
   data: TreeNode[]
@@ -38,7 +41,7 @@ export function TreeView({ data, defaultExpandedIds = [] }: TreeViewProps) {
   }
 
   return (
-    <ul aria-label="Pastas e arquivos" className="m-0 list-none p-0 font-mono text-xs sm:text-sm">
+    <ul aria-label="Categorias e skills" className="m-0 list-none p-0 font-mono text-xs sm:text-sm">
       {data.map((node) => (
         <TreeItem key={node.id} node={node} expandedIds={expandedIds} toggle={toggle} reduced={Boolean(reduced)} />
       ))}
@@ -49,10 +52,10 @@ export function TreeView({ data, defaultExpandedIds = [] }: TreeViewProps) {
 function AnimatedChildren({ children }: { children: ReactNode }) {
   const present = useIsPresent()
   return (
-    <motion.ul variants={variants} initial="hidden" animate="visible" exit="exit"
-      inert={!present} className="m-0 list-none overflow-hidden p-0">
+    <motion.div variants={variants} initial="hidden" animate="visible" exit="exit"
+      inert={!present} className="overflow-hidden">
       {children}
-    </motion.ul>
+    </motion.div>
   )
 }
 
@@ -65,23 +68,26 @@ type TreeItemProps = {
 
 function TreeItem({ node, expandedIds, toggle, reduced }: TreeItemProps) {
   const groupId = useId()
-
-  if (!node.children) {
-    return (
-      <li>
-        <a href={node.href} className={`${row} pl-5 text-aco-claro hover:text-papel sm:pl-6`}>
-          <File size={14} aria-hidden="true" className="shrink-0" />
-          <span className={`${label} underline-offset-4 hover:underline`}>{node.name}</span>
-        </a>
-      </li>
-    )
-  }
-
+  const [showMore, setShowMore] = useState(false)
   const expanded = expandedIds.has(node.id)
   const IconePasta = expanded ? FolderOpen : Folder
-  const filhos = expanded && node.children.map((child) => (
+  const renderChild = (child: TreeNode) => (
     <TreeItem key={child.id} node={child} expandedIds={expandedIds} toggle={toggle} reduced={reduced} />
-  ))
+  )
+  const content = expanded && (node.children ? (
+    <ul className="m-0 list-none p-0">
+      {node.children.map(renderChild)}
+      {!!node.moreChildren?.length && (
+        <li>
+          <button type="button" aria-expanded={showMore} onClick={() => setShowMore((current) => !current)}
+            className="min-h-11 cursor-pointer px-3 text-left text-brasa-viva underline-offset-4 hover:underline focus-visible:outline-brasa-viva">
+            {showMore ? 'Ver só os destaques' : 'Ver todas as skills'}
+          </button>
+        </li>
+      )}
+      {showMore && node.moreChildren?.map(renderChild)}
+    </ul>
+  ) : node.content)
 
   return (
     <li>
@@ -95,11 +101,9 @@ function TreeItem({ node, expandedIds, toggle, reduced }: TreeItemProps) {
         <span className={label}>{node.name}</span>
       </button>
       <div id={groupId} className="ml-3 border-l border-aco/45 sm:ml-4">
-        {reduced ? (
-          expanded && <ul className="m-0 list-none p-0">{filhos}</ul>
-        ) : (
+        {reduced ? content : (
           <AnimatePresence initial={false}>
-            {expanded && <AnimatedChildren>{filhos}</AnimatedChildren>}
+            {expanded && <AnimatedChildren>{content}</AnimatedChildren>}
           </AnimatePresence>
         )}
       </div>

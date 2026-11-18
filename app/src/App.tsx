@@ -1,5 +1,4 @@
 import { ArquiteturaRepositorio } from './components/ArquiteturaRepositorio'
-import { Categorias } from './components/Categorias'
 import { Demonstracao } from './components/demo/Demonstracao'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
@@ -13,7 +12,6 @@ export default function App() {
         <Hero>
           <Demonstracao />
         </Hero>
-        <Categorias />
         <ArquiteturaRepositorio />
       </main>
       <Footer />
