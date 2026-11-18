@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { art, spark } from '../data/akmon'
+import { ArtScrollFlight } from './ArtScrollFlight'
 
 export type AnimMode = 'martelada' | 'brasa' | 'cursor' | null
 
@@ -359,6 +360,7 @@ export function ArtAnim() {
         <pre ref={brasaRef} className="brasa" aria-hidden="true">{art}</pre>
       )}
       <pre ref={faiscaRef} className="faisca">{spark}</pre>
+      {!animMode && <ArtScrollFlight bodyRef={corpoRef} sparksRef={faiscaRef} />}
     </figure>
   )
 }

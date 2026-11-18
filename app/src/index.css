@@ -58,6 +58,20 @@ a { color: inherit; }
 .art .faisca { position: absolute; inset: 0; color: var(--color-brasa-viva); }
 .art .faisca.impacto { filter: brightness(2) drop-shadow(0 0 6px var(--color-brasa-viva)); color: #FFFFFF; }
 
+/* A gravura mantém seu espaço enquanto as duas camadas de caracteres voam. */
+.art .voo-ascii {
+  position: absolute;
+  top: -24px;
+  left: -16px;
+  width: calc(100% + 32px);
+  height: calc(100% + 24px);
+  visibility: hidden;
+  pointer-events: none;
+}
+.art .voo-ascii-corpo { mix-blend-mode: difference; }
+.art[data-scroll-flight="finished"] pre { visibility: hidden; }
+.art[data-scroll-flight="flying"] .voo-ascii { visibility: visible; }
+
 /* variação brasa: arte acende de baixo para cima */
 .art .brasa {
   position: absolute;

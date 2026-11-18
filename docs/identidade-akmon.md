@@ -12,6 +12,7 @@ Registro das decisões tomadas em 28/10/2026. Ainda não é o guia de marca fina
 ## Herói
 
 - Hefesto martelando numa forja em gravura ASCII (93 colunas × 70 linhas, `docs/ascii/ferreiro.html`), cotada como desenho técnico na Identidade A.
+- **Fagulhas** é a animação padrão do topo da página. Ao rolar, os caracteres se soltam da gravura, sobem e se espalham. Ao voltar ao topo, a gravura se recompõe. Com movimento reduzido, a gravura fica estática.
 
 ## Direção escolhida: Identidade A — Catálogo de Ferramentaria
 
