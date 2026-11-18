@@ -1,3 +1,4 @@
+import { ArquiteturaRepositorio } from './components/ArquiteturaRepositorio'
 import { Categorias } from './components/Categorias'
 import { Demonstracao } from './components/demo/Demonstracao'
 import { Footer } from './components/Footer'
@@ -13,6 +14,7 @@ export default function App() {
           <Demonstracao />
         </Hero>
         <Categorias />
+        <ArquiteturaRepositorio />
       </main>
       <Footer />
     </div>
