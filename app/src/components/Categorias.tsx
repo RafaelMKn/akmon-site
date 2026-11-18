@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { catalogo } from '../data/catalogo'
-import type { CatalogoSkill } from '../data/catalogo-types'
 import { Secao } from './Secao'
 
 const cats = catalogo.categorias
@@ -13,25 +12,29 @@ function tituloDaSecao(n: number) {
   return n === 1 ? `${cap} folha, ${w} pasta` : `${cap} folhas, ${w} pastas`
 }
 
-// Destaques primeiro; dentro de cada grupo mantém a ordem do array (o gerador já ordena).
-function destaquesPrimeiro(skills: CatalogoSkill[]) {
-  return [...skills.filter((s) => s.destaque), ...skills.filter((s) => !s.destaque)]
-}
-
 export function Categorias() {
   const [i, setI] = useState(0)
+  const [mostrarTodas, setMostrarTodas] = useState(false)
 
   if (cats.length === 0) {
     return (
-      <Secao id="categorias" num="§ 01" titulo="Categorias" tituloId="h-cats" texto="O catálogo de skills ainda não foi gerado.">
+      <Secao id="categorias" titulo="Categorias" tituloId="h-cats" texto="O catálogo de skills ainda não foi gerado.">
         <></>
       </Secao>
     )
   }
 
   const c = cats[i]
-  const lista = destaquesPrimeiro(c.skills)
-  const nDestaques = c.skills.filter((s) => s.destaque).length
+  const destaques = c.skills.filter((s) => s.destaque)
+  const nDestaques = destaques.length
+  const temOutrasSkills = c.skills.length > nDestaques
+  const lista = mostrarTodas ? [...destaques, ...c.skills.filter((s) => !s.destaque)] : destaques
+
+  function selecionarCategoria(idx: number) {
+    if (idx === i) return
+    setI(idx)
+    setMostrarTodas(false)
+  }
 
   // `pasta` é única; `id` (prefixo numérico) pode repetir entre categorias.
   function teclado(e: React.KeyboardEvent, idx: number) {
@@ -42,12 +45,12 @@ export function Categorias() {
     else if (e.key === 'End') j = cats.length - 1
     else return
     e.preventDefault()
-    setI(j)
+    selecionarCategoria(j)
     document.getElementById(`tab-${cats[j].pasta}`)?.focus()
   }
 
   return (
-    <Secao id="categorias" num="§ 01" titulo={tituloDaSecao(cats.length)} tituloId="h-cats"
+    <Secao id="categorias" titulo={tituloDaSecao(cats.length)} tituloId="h-cats"
       texto="Cada categoria é uma pasta numerada do repositório. A barra embaixo de cada aba mostra quantas skills a pasta tem.">
       <div role="tablist" aria-label="Categorias de skills"
         className="mb-7 flex flex-wrap gap-px border border-tinta bg-tinta">
@@ -61,7 +64,7 @@ export function Categorias() {
             aria-controls="folha"
             aria-label={`${t.id} ${t.curto}, ${t.total} skills`}
             tabIndex={idx === i ? 0 : -1}
-            onClick={() => setI(idx)}
+            onClick={() => selecionarCategoria(idx)}
             onKeyDown={(e) => teclado(e, idx)}
             className="group relative grid min-h-[150px] min-w-0 grow basis-[calc(50%-1px)] cursor-pointer grid-rows-[auto_1fr_auto] gap-2 bg-papel pt-3.5 text-left max-[820px]:min-h-[120px] min-[641px]:basis-[calc(33.333%-1px)] min-[821px]:basis-[calc(16.666%-1px)] aria-selected:bg-tinta aria-selected:text-papel focus-visible:-outline-offset-4"
           >
@@ -89,7 +92,21 @@ export function Categorias() {
             </p>
           </div>
         </div>
-        <ul className="m-0 list-none border-t border-aco p-0">
+        {temOutrasSkills && (
+          <button
+            type="button"
+            aria-expanded={mostrarTodas}
+            aria-controls="skills-da-categoria"
+            onClick={() => setMostrarTodas((todas) => !todas)}
+            className="mb-4 cursor-pointer border-2 border-tinta bg-transparent px-[18px] py-[11px] font-titulo text-[15px] leading-none font-bold tracking-[.08em] text-tinta uppercase hover:border-brasa hover:bg-brasa hover:text-papel"
+          >
+            {mostrarTodas ? 'Ver só os destaques' : 'Ver todas as skills'}
+          </button>
+        )}
+        {!mostrarTodas && temOutrasSkills && nDestaques === 0 && (
+          <p className="mb-4 text-sm text-tinta-2">Esta categoria ainda não tem skills em destaque.</p>
+        )}
+        <ul id="skills-da-categoria" className="m-0 list-none border-t border-aco p-0">
           {lista.map((s) => (
             <li key={s.slug} className="border-b border-aco">
               <a

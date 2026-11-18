@@ -64,9 +64,6 @@ export function Montagem() {
           {estado === 'erro' && 'O navegador bloqueou a cópia. Selecione o texto do prompt e copie na mão.'}
         </p>
       </div>
-      <p className="mt-3 text-[13px] text-aco-claro">
-        Cole no Claude Code, Codex, Google Antigravity, OpenClaw ou Hermes. O agente entrevista você e só instala com a sua permissão.
-      </p>
     </div>
   )
 }

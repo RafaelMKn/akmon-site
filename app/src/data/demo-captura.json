@@ -1,0 +1,152 @@
+{
+  "prompt": "Crie a seção hero de uma landing page para um app de agendamento online para clínicas odontológicas. Entregue um único arquivo index.html na pasta atual, com HTML e CSS inline, sem dependências externas, responsivo. Ao terminar, responda em 3 linhas o que você entregou.",
+  "harness": "Hermes Agent v0.22.5",
+  "modelo": "claude-opus-5-5",
+  "data": "2026-11-16",
+  "execucoes": [
+    {
+      "id": "sem-akmon",
+      "rotulo": "Hermes sem Akmon",
+      "skill": null,
+      "anuncio": null,
+      "passos": [
+        {
+          "ferramenta": "search_files",
+          "argumento": "*",
+          "emS": 5.3
+        },
+        {
+          "ferramenta": "write_file",
+          "argumento": "index.html",
+          "emS": 54.7
+        }
+      ],
+      "tokens": {
+        "entrada": 22168,
+        "saida": 6792
+      },
+      "chamadasApi": 3,
+      "screenshot": "/demo/sem-akmon.png",
+      "screenshotMobile": "/demo/sem-akmon-m.png",
+      "resumo": "Entreguei index.html, um arquivo único com HTML e CSS inline, ícones em SVG embutido e nenhuma dependência externa.\nO hero do \"Sorria Agenda\" tem menu, título, subtítulo, dois botões (teste grátis e demonstração), selos de confiança, avaliação dos clientes e uma prévia da agenda da clínica com cartões flutuantes animados.\nÉ responsivo (desktop, tablet e celular), segue boas práticas de acessibilidade e respeita quem prefere menos animação; ainda não abri no navegador para conferir o visual.",
+      "duracaoS": 59.9
+    },
+    {
+      "id": "com-akmon",
+      "rotulo": "Hermes + Akmon",
+      "skill": "claude-design",
+      "anuncio": null,
+      "passos": [
+        {
+          "ferramenta": "skill_view",
+          "argumento": "claude-design",
+          "emS": 7.9
+        },
+        {
+          "ferramenta": "search_files",
+          "argumento": "*",
+          "emS": 7.9
+        },
+        {
+          "ferramenta": "write_file",
+          "argumento": "index.html",
+          "emS": 62.2
+        },
+        {
+          "ferramenta": "patch",
+          "argumento": "index.html",
+          "emS": 66.4
+        }
+      ],
+      "tokens": {
+        "entrada": 139168,
+        "saida": 7496
+      },
+      "chamadasApi": 4,
+      "screenshot": "/demo/com-akmon.png",
+      "screenshotMobile": "/demo/com-akmon-m.png",
+      "resumo": "Criei o arquivo index.html: a seção hero do app \"Cadeira\", com menu, título, texto de apoio, dois botões e três vantagens, ao lado de uma prévia clicável da tela onde o paciente escolhe dia e horário, com um lembrete de WhatsApp.\nÉ um arquivo só, com CSS inline, sem JavaScript e sem fontes ou imagens de fora. O layout de duas colunas vira uma coluna abaixo de 920px e se ajusta de novo abaixo de 480px.\nSó confirmei que o arquivo foi gravado inteiro. Não abri no navegador nem testei em tamanhos de tela reais, e o nome \"Cadeira\" e os textos são provisórios.",
+      "duracaoS": 72.5
+    }
+  ],
+  "diferencas": [
+    {
+      "criterio": "Números de marketing inventados na página",
+      "sem": 4,
+      "com": 0,
+      "evidencia": "sem: '+1.200 clínicas', 'até 60%', '−60% de faltas', '4,9/5'"
+    },
+    {
+      "criterio": "Cards sobrepondo texto (desktop 1440px)",
+      "sem": 2,
+      "com": 0,
+      "evidencia": "screenshots /demo/sem-akmon.png e /demo/com-akmon.png"
+    }
+  ],
+  "catalogo": [
+    {
+      "slug": "claude-design",
+      "categoria": "02-design-ui-motion-3d"
+    },
+    {
+      "slug": "modern-web-design",
+      "categoria": "02-design-ui-motion-3d"
+    },
+    {
+      "slug": "design-dna",
+      "categoria": "02-design-ui-motion-3d"
+    },
+    {
+      "slug": "popular-web-designs",
+      "categoria": "02-design-ui-motion-3d"
+    },
+    {
+      "slug": "redesign-landing-page",
+      "categoria": "02-design-ui-motion-3d"
+    },
+    {
+      "slug": "motion-framer",
+      "categoria": "02-design-ui-motion-3d"
+    },
+    {
+      "slug": "gsap-scrolltrigger",
+      "categoria": "02-design-ui-motion-3d"
+    },
+    {
+      "slug": "lottie-animations",
+      "categoria": "02-design-ui-motion-3d"
+    },
+    {
+      "slug": "threejs-webgl",
+      "categoria": "02-design-ui-motion-3d"
+    },
+    {
+      "slug": "canvas",
+      "categoria": "02-design-ui-motion-3d"
+    },
+    {
+      "slug": "design-md",
+      "categoria": "02-design-ui-motion-3d"
+    },
+    {
+      "slug": "editorial-html-content",
+      "categoria": "02-design-ui-motion-3d"
+    },
+    {
+      "slug": "ad-creative",
+      "categoria": "02-design-ui-motion-3d"
+    },
+    {
+      "slug": "scroll-reveal-libraries",
+      "categoria": "02-design-ui-motion-3d"
+    }
+  ],
+  "opcoesRoteador": [
+    "claude-design",
+    "modern-web-design",
+    "design-dna",
+    "popular-web-designs",
+    "redesign-landing-page",
+    "editorial-html-content"
+  ]
+}

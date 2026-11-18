@@ -7,12 +7,9 @@ export function Header() {
         <Simbolo />
         <span className="font-marca text-[22px] leading-none font-extrabold tracking-[.04em] uppercase">Akmon</span>
       </a>
-      <span className="font-mono text-[11px] leading-none font-semibold tracking-[.12em] text-tinta-2 uppercase max-[640px]:hidden">
-        Catálogo de Ferramentaria · Nº 01
-      </span>
       <nav aria-label="Principal" className="ml-auto flex gap-[22px] font-titulo text-sm leading-none font-bold tracking-[.06em] uppercase">
         <a className="inline-flex items-center gap-1 no-underline hover:text-brasa max-[640px]:hidden" href="#categorias">Categorias</a>
-        <a className="inline-flex items-center gap-1 no-underline hover:text-brasa max-[640px]:hidden" href="#instalar">Instalar</a>
+        <a className="inline-flex items-center gap-1 no-underline hover:text-brasa max-[640px]:hidden" href="#montagem">Instalar</a>
         <a className="inline-flex items-center gap-1 no-underline hover:text-brasa" href="https://github.com/RafaelMKn/skills-library">
           GitHub<Icon name="out" />
         </a>

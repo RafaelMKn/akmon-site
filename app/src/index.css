@@ -29,7 +29,7 @@
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html:not(.movimento-forcado) *, html:not(.movimento-forcado) *::before, html:not(.movimento-forcado) *::after { animation: none !important; transition: none !important; }
   .art .brasa { display: none !important; }
   .art .faisca.impacto { filter: none !important; color: var(--color-brasa-viva) !important; }
 }
