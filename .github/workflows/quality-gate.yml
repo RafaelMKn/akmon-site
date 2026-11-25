@@ -85,8 +85,31 @@ jobs:
           server_pid=$!
           trap 'kill "$server_pid" 2>/dev/null || true' EXIT
           for route in $QUALITY_ROUTES; do
-            curl --fail --silent --show-error --retry 10 --retry-connrefused --retry-delay 1 --max-time 3 \
-              "http://127.0.0.1:4173$route" > /dev/null
+            url="http://127.0.0.1:4173$route"
+            deadline=$((SECONDS + 30))
+            while :; do
+              if ! kill -0 "$server_pid" 2>/dev/null; then
+                echo "::error::Vite preview encerrou durante a inicialização"
+                cat "$RUNNER_TEMP/quality-preview.log"
+                exit 1
+              fi
+              status="$(curl --silent --max-time 2 --output /dev/null --write-out '%{http_code}' "$url" || true)"
+              if [[ "$status" == 200 ]]; then break; fi
+              if (( SECONDS >= deadline )); then
+                echo "::error::A prévia não retornou HTTP 200 para $route em 30 s (último status: $status)"
+                cat "$RUNNER_TEMP/quality-preview.log"
+                exit 1
+              fi
+              sleep 1
+            done
+            for warmup in 1 2; do
+              status="$(curl --silent --show-error --compressed --max-time 5 --output /dev/null --write-out '%{http_code}' "$url")"
+              if [[ "$status" != 200 ]]; then
+                echo "::error::Aquecimento $warmup de $route retornou HTTP $status"
+                exit 1
+              fi
+            done
+            echo "QUALITY_PREVIEW $route HTTP 200; dois aquecimentos concluídos"
           done
 
           lhci=.github/quality-tools/node_modules/.bin/lhci

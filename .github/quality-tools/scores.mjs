@@ -1,6 +1,6 @@
 import { appendFileSync, readFileSync, readdirSync } from 'node:fs';
 
-const reports = readdirSync('.lighthouseci').filter(name => /^lhr-.*\.json$/.test(name));
+const reports = readdirSync('.lighthouseci').filter(name => /^lhr-.*\.json$/.test(name)).sort();
 if (!reports.length) throw new Error('Lighthouse CI não gerou relatórios.');
 const byUrl = new Map();
 for (const name of reports) {
@@ -13,9 +13,19 @@ const categories = ['performance', 'accessibility', 'seo'];
 const rows = [];
 for (const [url, values] of byUrl) {
   const route = new URL(url).pathname;
-  const medians = categories.map(category => {
-    const scores = values.map(value => value[category]?.score).sort((a, b) => a - b);
-    if (scores.some(score => typeof score !== 'number')) throw new Error('Nota ausente: ' + category);
+  const samples = values.map(value => categories.map(category => {
+    const score = value[category]?.score;
+    if (typeof score !== 'number') throw new Error('Nota ausente: ' + category);
+    return score;
+  }));
+  for (const [index, [performance, accessibility, seo]] of samples.entries()) {
+    console.log('LIGHTHOUSE_MOBILE_RUN ' + route + ' run=' + (index + 1) +
+      ' performance=' + Math.round(performance * 100) +
+      ' accessibility=' + Math.round(accessibility * 100) +
+      ' seo=' + Math.round(seo * 100));
+  }
+  const medians = categories.map((_, index) => {
+    const scores = samples.map(sample => sample[index]).sort((a, b) => a - b);
     return Math.round(scores[Math.floor(scores.length / 2)] * 100);
   });
   console.log('LIGHTHOUSE_MOBILE ' + route + ' performance=' + medians[0] +
