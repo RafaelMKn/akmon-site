@@ -1,0 +1,102 @@
+name: Quality gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SKILLS_LIBRARY_SHA: a7a80e527151fac6d040f2ab2f83dccb7b152a56
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - name: Configurar Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: |
+            app/package-lock.json
+            .github/quality-tools/package-lock.json
+
+      - name: Instalar dependências
+        working-directory: app
+        run: npm ci
+
+      - name: Buscar revisão fixada da biblioteca pública
+        env:
+          GIT_TERMINAL_PROMPT: '0'
+        run: |
+          set -euo pipefail
+          skills_dir="$RUNNER_TEMP/skills-library"
+          git init -q "$skills_dir"
+          git -C "$skills_dir" -c credential.helper= fetch --depth=1 --no-tags \
+            https://github.com/RafaelMKn/skills-library.git "$SKILLS_LIBRARY_SHA"
+          git -C "$skills_dir" checkout --detach FETCH_HEAD
+          printf 'SKILLS_DIR=%s\n' "$skills_dir" >> "$GITHUB_ENV"
+
+      - name: Validar revisão da biblioteca
+        run: |
+          set -euo pipefail
+          actual_sha="$(git -C "$SKILLS_DIR" rev-parse --verify HEAD)"
+          if [[ "$actual_sha" != "$SKILLS_LIBRARY_SHA" ]]; then
+            printf 'Revisão divergente. Esperada %s, obtida %s.\n' "$SKILLS_LIBRARY_SHA" "$actual_sha" >&2
+            exit 1
+          fi
+          printf 'Revisão conferida: %s\n' "$actual_sha"
+
+      - name: Gerar catálogo a partir da biblioteca pública
+        working-directory: app
+        env:
+          SKILLS_SHA: ${{ env.SKILLS_LIBRARY_SHA }}
+        run: npm run catalogo
+
+      - name: Typecheck
+        working-directory: app
+        run: npm exec -- tsc -b
+
+      - name: Testes
+        working-directory: app
+        run: npm test
+
+      - name: Build
+        working-directory: app
+        run: npm run build -- --base=/akmon-site/
+
+      - name: Instalar ferramentas de auditoria
+        run: npm ci --prefix .github/quality-tools
+
+      - name: Lighthouse CI mobile e axe
+        env:
+          QUALITY_ROUTES: "/akmon-site/"
+        run: |
+          set -euo pipefail
+          export CHROME_PATH="$(command -v google-chrome)"
+          (cd app && exec node node_modules/vite/bin/vite.js preview --host 127.0.0.1 --port 4173 --strictPort --base=/akmon-site/) > "$RUNNER_TEMP/quality-preview.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for route in $QUALITY_ROUTES; do
+            curl --fail --silent --show-error --retry 10 --retry-connrefused --retry-delay 1 --max-time 3 \
+              "http://127.0.0.1:4173$route" > /dev/null
+          done
+
+          lhci=.github/quality-tools/node_modules/.bin/lhci
+          config=.github/quality-tools/lighthouserc.cjs
+          result=0
+          if "$lhci" collect --config="$config"; then
+            node .github/quality-tools/scores.mjs || result=1
+            "$lhci" assert --config="$config" || result=1
+          else
+            result=1
+          fi
+          node .github/quality-tools/axe.mjs || result=1
+          exit "$result"
