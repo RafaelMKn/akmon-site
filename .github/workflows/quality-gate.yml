@@ -34,11 +34,15 @@ jobs:
         working-directory: app
         env:
           GIT_TERMINAL_PROMPT: '0'
+          SKILLS_SHA: a7a80e527151fac6d040f2ab2f83dccb7b152a56
         run: |
+          set -euo pipefail
           export SKILLS_DIR="$RUNNER_TEMP/skills-library"
-          git -c credential.helper= clone --depth 1 --single-branch --branch main \
-            https://github.com/RafaelMKn/skills-library.git "$SKILLS_DIR"
-          export SKILLS_SHA="$(git -C "$SKILLS_DIR" rev-parse HEAD)"
+          git init -q "$SKILLS_DIR"
+          git -C "$SKILLS_DIR" -c credential.helper= fetch --depth=1 --no-tags \
+            https://github.com/RafaelMKn/skills-library.git "$SKILLS_SHA"
+          git -C "$SKILLS_DIR" checkout --detach FETCH_HEAD
+          test "$(git -C "$SKILLS_DIR" rev-parse HEAD)" = "$SKILLS_SHA"
           npm run catalogo
 
       - name: Typecheck
@@ -62,10 +66,7 @@ jobs:
         run: |
           set -euo pipefail
           export CHROME_PATH="$(command -v google-chrome)"
-          preview="$RUNNER_TEMP/quality-preview"
-          mkdir "$preview"
-          ln -s "$GITHUB_WORKSPACE/app/dist" "$preview/akmon-site"
-          python3 -m http.server 4173 --bind 127.0.0.1 --directory "$preview" > "$RUNNER_TEMP/quality-preview.log" 2>&1 &
+          (cd app && exec node node_modules/vite/bin/vite.js preview --host 127.0.0.1 --port 4173 --strictPort --base=/akmon-site/) > "$RUNNER_TEMP/quality-preview.log" 2>&1 &
           server_pid=$!
           trap 'kill "$server_pid" 2>/dev/null || true' EXIT
           for route in $QUALITY_ROUTES; do
