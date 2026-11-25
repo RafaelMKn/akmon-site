@@ -1,0 +1,86 @@
+name: Quality gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - name: Configurar Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: |
+            app/package-lock.json
+            .github/quality-tools/package-lock.json
+
+      - name: Instalar dependências
+        working-directory: app
+        run: npm ci
+
+      - name: Gerar catálogo a partir da biblioteca pública
+        working-directory: app
+        env:
+          GIT_TERMINAL_PROMPT: '0'
+        run: |
+          export SKILLS_DIR="$RUNNER_TEMP/skills-library"
+          git -c credential.helper= clone --depth 1 --single-branch --branch main \
+            https://github.com/RafaelMKn/skills-library.git "$SKILLS_DIR"
+          export SKILLS_SHA="$(git -C "$SKILLS_DIR" rev-parse HEAD)"
+          npm run catalogo
+
+      - name: Typecheck
+        working-directory: app
+        run: npm exec -- tsc -b
+
+      - name: Testes
+        working-directory: app
+        run: npm test
+
+      - name: Build
+        working-directory: app
+        run: npm run build -- --base=/akmon-site/
+
+      - name: Instalar ferramentas de auditoria
+        run: npm ci --prefix .github/quality-tools
+
+      - name: Lighthouse CI mobile e axe
+        env:
+          QUALITY_ROUTES: "/akmon-site/"
+        run: |
+          set -euo pipefail
+          export CHROME_PATH="$(command -v google-chrome)"
+          preview="$RUNNER_TEMP/quality-preview"
+          mkdir "$preview"
+          ln -s "$GITHUB_WORKSPACE/app/dist" "$preview/akmon-site"
+          python3 -m http.server 4173 --bind 127.0.0.1 --directory "$preview" > "$RUNNER_TEMP/quality-preview.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for route in $QUALITY_ROUTES; do
+            curl --fail --silent --show-error --retry 10 --retry-connrefused --retry-delay 1 --max-time 3 \
+              "http://127.0.0.1:4173$route" > /dev/null
+          done
+
+          lhci=.github/quality-tools/node_modules/.bin/lhci
+          config=.github/quality-tools/lighthouserc.cjs
+          result=0
+          if "$lhci" collect --config="$config"; then
+            node .github/quality-tools/scores.mjs || result=1
+            "$lhci" assert --config="$config" || result=1
+          else
+            result=1
+          fi
+          node .github/quality-tools/axe.mjs || result=1
+          exit "$result"

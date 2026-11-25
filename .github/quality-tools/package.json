@@ -1,0 +1,9 @@
+{
+  "name": "site-quality-tools",
+  "private": true,
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.1",
+    "@lhci/cli": "0.16.1",
+    "playwright": "1.65.1"
+  }
+}
