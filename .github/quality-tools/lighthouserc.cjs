@@ -2,7 +2,7 @@ module.exports = {
   ci: {
     collect: {
       url: process.env.QUALITY_ROUTES.split(' ').map(route => new URL(route, 'http://127.0.0.1:4173').href),
-      numberOfRuns: 3,
+      numberOfRuns: 5,
       settings: {
         formFactor: 'mobile',
         onlyCategories: ['performance', 'accessibility', 'seo'],
